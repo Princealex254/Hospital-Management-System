@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prince Alex Hospital – Hospital Management System (HMS)</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Make Firebase available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAuth = auth;
+    </script>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="hospital-header">
+                <h1>🏥 Prince Alex Hospital</h1>
+                <h2>Hospital Management System (HMS)</h2>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginFormContainer">
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Login</button>
+                    
+                    <div class="login-options">
+                        <p>Don't have an account? <a href="#" onclick="showRegisterForm()">Register here</a></p>
+                        <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerFormContainer" style="display: none;">
+                <form id="registerForm" class="login-form">
+                    <div class="form-group">
+                        <label for="regDisplayName">Full Name:</label>
+                        <input type="text" id="regDisplayName" name="displayName" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regEmail">Email:</label>
+                        <input type="email" id="regEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">Password:</label>
+                        <input type="password" id="regPassword" name="password" required placeholder="Create a password" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password:</label>
+                        <input type="password" id="regConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regRole">Role:</label>
+                        <select id="regRole" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="STAFF">Staff</option>
+                            <option value="NURSE">Nurse</option>
+                            <option value="LAB">Lab Technician</option>
+                            <option value="RECEPTION">Reception</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Register</button>
+                    
+                    <div class="login-options">
+                        <p>Already have an account? <a href="#" onclick="showLoginForm()">Login here</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Forgot Password Form -->
+            <div id="forgotPasswordContainer" style="display: none;">
+                <form id="forgotPasswordForm" class="login-form">
+                    <div class="form-group">
+                        <label for="resetEmail">Email:</label>
+                        <input type="email" id="resetEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Send Reset Email</button>
+                    
+                    <div class="login-options">
+                        <p><a href="#" onclick="showLoginForm()">Back to Login</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="login-footer">
+                <p>Secure Hospital Management System</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="firebase-auth-system.js"></script>
+    <script src="login-handler.js"></script>
+</body>
+</html>

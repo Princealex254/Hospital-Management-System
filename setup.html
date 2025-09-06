@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prince Alex Hospital HMS - Setup</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Make Firebase available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAuth = auth;
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .setup-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .setup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .setup-header h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+        }
+
+        .setup-header p {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .setup-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+        }
+
+        .setup-section h2 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin: 0 0 15px 0;
+        }
+
+        .setup-section p {
+            color: #7f8c8d;
+            margin: 0 0 15px 0;
+            line-height: 1.5;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d5f4e6;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+        }
+
+        .status.error {
+            background: #fadbd8;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .status.info {
+            background: #d6eaf8;
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .credentials {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .credentials strong {
+            color: #2c3e50;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .step h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .step p {
+            margin: 0;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>🏥 Prince Alex Hospital HMS</h1>
+            <p>Initial Setup & Configuration</p>
+        </div>
+
+        <div class="setup-section">
+            <h2>1. Firebase Configuration</h2>
+            <p>Your Firebase project is already configured and ready to use.</p>
+            <div class="status success">
+                ✅ Firebase initialized successfully
+            </div>
+        </div>
+
+        <div class="setup-section">
+            <h2>2. Create Admin User</h2>
+            <p>Create the first administrator account to manage the system.</p>
+            <button class="btn btn-success" onclick="createAdmin()">Create Admin User</button>
+            <div id="adminStatus"></div>
+        </div>
+
+        <div class="setup-section">
+            <h2>3. Create Sample Users (Optional)</h2>
+            <p>Create sample users for testing different roles and permissions.</p>
+            <button class="btn btn-warning" onclick="createSampleUsers()">Create Sample Users</button>
+            <div id="sampleUsersStatus"></div>
+        </div>
+
+        <div class="setup-section">
+            <h2>4. Firestore Security Rules</h2>
+            <p>Copy and paste these security rules into your Firebase Console → Firestore → Rules:</p>
+            <button class="btn" onclick="copySecurityRules()">Copy Security Rules</button>
+            <div class="code-block" id="securityRules">
+                <!-- Security rules will be populated here -->
+            </div>
+        </div>
+
+        <div class="setup-section">
+            <h2>5. Test Login</h2>
+            <p>Once setup is complete, test the login system with the created credentials.</p>
+            <button class="btn" onclick="goToLogin()">Go to Login Page</button>
+        </div>
+
+        <div class="setup-section">
+            <h2>Default Credentials</h2>
+            <div class="credentials">
+                <strong>Admin:</strong><br>
+                Email: admin@princealexhospital.com<br>
+                Password: Admin123!
+            </div>
+            <div class="credentials">
+                <strong>Sample Users:</strong><br>
+                Doctor: doctor@princealexhospital.com / Doctor123!<br>
+                Nurse: nurse@princealexhospital.com / Nurse123!<br>
+                Pharmacy: pharmacy@princealexhospital.com / Pharmacy123!<br>
+                Lab: lab@princealexhospital.com / Lab123!<br>
+                Reception: reception@princealexhospital.com / Reception123!
+            </div>
+        </div>
+
+        <div class="setup-section">
+            <h2>Next Steps</h2>
+            <div class="step">
+                <h3>1. Enable Authentication</h3>
+                <p>Go to Firebase Console → Authentication → Sign-in method → Enable Email/Password</p>
+            </div>
+            <div class="step">
+                <h3>2. Set Security Rules</h3>
+                <p>Copy the security rules above to Firebase Console → Firestore → Rules</p>
+            </div>
+            <div class="step">
+                <h3>3. Create Admin User</h3>
+                <p>Click "Create Admin User" button above</p>
+            </div>
+            <div class="step">
+                <h3>4. Test Login</h3>
+                <p>Go to login page and test with admin credentials</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-setup.js"></script>
+    <script>
+        // Populate security rules
+        document.addEventListener('DOMContentLoaded', function() {
+            const securityRules = document.getElementById('securityRules');
+            securityRules.textContent = AdminSetup.getSecurityRules();
+        });
+
+        async function createAdmin() {
+            const statusDiv = document.getElementById('adminStatus');
+            statusDiv.innerHTML = '<div class="status info">Creating admin user...</div>';
+            
+            try {
+                await AdminSetup.setupAdmin();
+                statusDiv.innerHTML = '<div class="status success">✅ Admin user created successfully!</div>';
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">❌ Error creating admin user: ' + error.message + '</div>';
+            }
+        }
+
+        async function createSampleUsers() {
+            const statusDiv = document.getElementById('sampleUsersStatus');
+            statusDiv.innerHTML = '<div class="status info">Creating sample users...</div>';
+            
+            try {
+                await AdminSetup.setupSampleUsers();
+                statusDiv.innerHTML = '<div class="status success">✅ Sample users created successfully!</div>';
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">❌ Error creating sample users: ' + error.message + '</div>';
+            }
+        }
+
+        function copySecurityRules() {
+            const rules = AdminSetup.getSecurityRules();
+            navigator.clipboard.writeText(rules).then(() => {
+                alert('Security rules copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy to clipboard. Please select and copy the rules manually.');
+            });
+        }
+
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

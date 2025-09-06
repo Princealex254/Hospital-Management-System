@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing & Payments - Prince Alex Hospital HMS</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Make Firebase available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAuth = auth;
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🏥 Prince Alex Hospital</h1>
+                <h2>Hospital Management System (HMS)</h2>
+            </div>
+            <div class="user-info">
+                <h3 class="welcome-message">Welcome User</h3>
+                <p>Department</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-header">
+                <h1>💰 Billing & Payments</h1>
+                <p>Manage patient bills, payments, and financial records</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRevenue">$0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingBills">0</div>
+                    <div class="stat-label">Pending Bills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="paidBills">0</div>
+                    <div class="stat-label">Paid Bills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="overdueBills">0</div>
+                    <div class="stat-label">Overdue Bills</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Generate New Bill
+                </div>
+                <div class="card-body">
+                    <form id="billingForm">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="billPatientName">Patient Name:</label>
+                                    <input type="text" id="billPatientName" name="billPatientName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billPatientId">Patient ID:</label>
+                                    <input type="text" id="billPatientId" name="billPatientId" placeholder="Optional">
+                                </div>
+                                <div class="form-group">
+                                    <label for="billDate">Bill Date:</label>
+                                    <input type="date" id="billDate" name="billDate" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="billType">Bill Type:</label>
+                                    <select id="billType" name="billType" required>
+                                        <option value="">Select Bill Type</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Treatment">Treatment</option>
+                                        <option value="Lab Tests">Lab Tests</option>
+                                        <option value="Medication">Medication</option>
+                                        <option value="Emergency">Emergency</option>
+                                        <option value="Surgery">Surgery</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDate">Due Date:</label>
+                                    <input type="date" id="dueDate" name="dueDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="paymentMethod">Payment Method:</label>
+                                    <select id="paymentMethod" name="paymentMethod">
+                                        <option value="Cash">Cash</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Insurance">Insurance</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Services & Charges:</label>
+                            <div id="servicesContainer">
+                                <div class="service-item" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="Service description" class="service-description" style="flex: 1;">
+                                    <input type="number" placeholder="Amount" class="service-amount" min="0" step="0.01" style="width: 120px;">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeService(this)">Remove</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addService()">Add Service</button>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="subtotal">Subtotal:</label>
+                                    <input type="number" id="subtotal" name="subtotal" readonly>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="taxRate">Tax Rate (%):</label>
+                                    <input type="number" id="taxRate" name="taxRate" value="8.5" min="0" max="100" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="totalAmount">Total Amount:</label>
+                            <input type="number" id="totalAmount" name="totalAmount" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billNotes">Notes:</label>
+                            <textarea id="billNotes" name="billNotes" rows="3" placeholder="Additional notes or special instructions..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Generate Bill</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Bills & Payments
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="searchBills" class="search-input" placeholder="Search bills...">
+                        <select id="filterBills" class="filter-select">
+                            <option value="">All Bills</option>
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                    </div>
+                    <div id="billsTable">
+                        <!-- Bills table will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Process Payment</h2>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <input type="hidden" id="paymentBillId">
+                    
+                    <div class="patient-info" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3>Bill Information</h3>
+                        <p><strong>Patient:</strong> <span id="modalPatientName"></span></p>
+                        <p><strong>Bill ID:</strong> <span id="modalBillId"></span></p>
+                        <p><strong>Total Amount:</strong> <span id="modalTotalAmount"></span></p>
+                        <p><strong>Due Date:</strong> <span id="modalDueDate"></span></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentAmount">Payment Amount:</label>
+                        <input type="number" id="paymentAmount" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method:</label>
+                        <select id="paymentMethodSelect" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Insurance">Insurance</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Check">Check</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentReference">Payment Reference:</label>
+                        <input type="text" id="paymentReference" placeholder="Transaction ID, check number, etc.">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentNotes">Payment Notes:</label>
+                        <textarea id="paymentNotes" rows="3" placeholder="Additional payment notes..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closePaymentModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="processPayment()">Process Payment</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="firebase-auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="billing.js"></script>
+</body>
+</html>

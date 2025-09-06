@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratory - Prince Alex Hospital HMS</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Make Firebase available globally
+        window.firebaseApp = app;
+        window.firebaseDb = db;
+        window.firebaseAuth = auth;
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🏥 Prince Alex Hospital</h1>
+                <h2>Hospital Management System (HMS)</h2>
+            </div>
+            <div class="user-info">
+                <h3 class="welcome-message">Welcome User</h3>
+                <p>Department</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-header">
+                <h1>🧪 Laboratory</h1>
+                <p>Manage lab requests, perform tests, and upload results</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Pending Lab Requests
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="searchRequests" class="search-input" placeholder="Search lab requests...">
+                        <select id="filterRequests" class="filter-select">
+                            <option value="">All Requests</option>
+                            <option value="Critical">Critical</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="Routine">Routine</option>
+                        </select>
+                    </div>
+                    <div id="labRequestsTable">
+                        <!-- Lab requests table will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Lab Results
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <input type="text" id="searchResults" class="search-input" placeholder="Search lab results...">
+                        <select id="filterResults" class="filter-select">
+                            <option value="">All Results</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    <div id="labResultsTable">
+                        <!-- Lab results table will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Lab Result Modal -->
+    <div id="labResultModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Lab Test Results</h2>
+            </div>
+            <div class="modal-body">
+                <form id="labResultForm">
+                    <input type="hidden" id="resultRequestId">
+                    <input type="hidden" id="resultPatientId">
+                    <input type="hidden" id="resultPatientName">
+                    <input type="hidden" id="resultTestType">
+                    
+                    <div class="patient-info" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3>Test Information</h3>
+                        <p><strong>Patient:</strong> <span id="modalPatientName"></span></p>
+                        <p><strong>Test Type:</strong> <span id="modalTestType"></span></p>
+                        <p><strong>Priority:</strong> <span id="modalPriority"></span></p>
+                        <p><strong>Requested By:</strong> <span id="modalDoctor"></span></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="testResults">Test Results:</label>
+                        <textarea id="testResults" rows="6" placeholder="Enter detailed test results, values, and observations..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="normalRange">Normal Range:</label>
+                        <input type="text" id="normalRange" placeholder="e.g., 3.5-5.0 mg/dL">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interpretation">Interpretation:</label>
+                        <select id="interpretation" required>
+                            <option value="">Select Interpretation</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Abnormal - High">Abnormal - High</option>
+                            <option value="Abnormal - Low">Abnormal - Low</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recommendations">Recommendations:</label>
+                        <textarea id="recommendations" rows="3" placeholder="Recommendations for the requesting doctor..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="technicianNotes">Technician Notes:</label>
+                        <textarea id="technicianNotes" rows="3" placeholder="Additional notes from the lab technician..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeLabResultModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitLabResult()">Submit Results</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="firebase-auth.js"></script>
+    <script src="shared.js"></script>
+    <script src="lab.js"></script>
+</body>
+</html>
