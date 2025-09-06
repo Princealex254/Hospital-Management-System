@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prince Alex Hospital - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #3a7bd5;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 18px;
+      background: #3a7bd5;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #2f5fa5;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Prince Alex Hospital</h2>
+    <form id="loginForm">
+      <label for="username">Name:</label>
+      <input type="text" id="username" placeholder="Enter your name">
+
+      <label for="department">Department:</label>
+      <select id="department">
+        <option value="">-- Select Department --</option>
+        <option value="admin">Admin</option>
+        <option value="doctor">Doctor</option>
+        <option value="nurse">Nurse</option>
+        <option value="pharmacy">Pharmacy</option>
+        <option value="lab">Lab</option>
+        <option value="triage">Triage</option>
+        <option value="reception">Reception</option>
+      </select>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const messageDiv = document.getElementById("message");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const department = document.getElementById("department").value;
+
+      if (!username || !department) {
+        showMessage("Please enter your name and select a department.", "error");
+        return;
+      }
+
+      // Save user session
+      localStorage.setItem("loggedInUser", JSON.stringify({ username, department }));
+
+      showMessage("Login successful! Redirecting...", "success");
+
+      setTimeout(() => {
+        switch (department) {
+          case "admin":
+            window.location.href = "admin.html";
+            break;
+          case "doctor":
+            window.location.href = "doctors.html";
+            break;
+          case "nurse":
+            window.location.href = "patients.html";
+            break;
+          case "pharmacy":
+            window.location.href = "pharmacy.html";
+            break;
+          case "lab":
+            window.location.href = "lab.html";
+            break;
+          case "triage":
+            window.location.href = "triage.html";
+            break;
+          case "reception":
+            window.location.href = "appointments.html";
+            break;
+          default:
+            window.location.href = "index.html";
+        }
+      }, 1500);
+    });
+
+    function showMessage(msg, type) {
+      messageDiv.textContent = msg;
+      messageDiv.className = "message " + type;
+      messageDiv.style.display = "block";
+    }
+  </script>
+</body>
+</html>

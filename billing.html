@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Prince Alex Hospital - Billing</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+body{display:flex;min-height:100vh;background:#f4f7fa}
+.sidebar{width:220px;background:#004085;color:#fff;display:flex;flex-direction:column;padding:20px}
+.sidebar h2{font-size:20px;margin-bottom:18px;text-align:center}
+.sidebar a{color:#fff;text-decoration:none;padding:10px;border-radius:8px;margin:6px 0;display:block}
+.sidebar a:hover{background:#0657b8}
+.main{flex:1;padding:20px}
+.topbar{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:12px 18px;border-radius:10px;box-shadow:0 3px 8px rgba(0,0,0,0.08);margin-bottom:18px}
+.topbar h1{color:#004085;font-size:20px}
+.topbar .meta{color:#334155;font-size:13px}
+table{width:100%;border-collapse:separate;border-spacing:0 10px}
+th,td{padding:12px;text-align:left;background:#fff}
+th{background:#004085;color:#fff}
+tr{border-radius:8px;transition:0.15s}
+tr:hover{background:#f1f8ff}
+.btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;color:#fff}
+.btn.primary{background:#004085}
+.btn.secondary{background:#6b7280}
+input[type="number"],input[type="text"]{padding:6px;border-radius:6px;border:1px solid #d1d5db;width:100%;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000}
+.modal-content{background:#fff;width:600px;max-width:95%;border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,23,0.3)}
+.modal-content h2{color:#004085;margin-bottom:10px;text-align:center}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+.toast{position:fixed;right:20px;top:20px;padding:12px 16px;border-radius:8px;color:#fff;display:none;z-index:1100}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+@media print {
+  body * {visibility:hidden;}
+  #receipt, #receipt * {visibility:visible;}
+  #receipt {position:absolute;top:0;left:0;width:100%;}
+}
+.table-inner{width:100%;border-collapse:collapse;margin-top:10px;}
+.table-inner th,.table-inner td{border:1px solid #d1d5db;padding:6px;text-align:left;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<h2>Prince Alex</h2>
+<a href="index.html">🏠 Dashboard</a>
+<a href="patients.html">🧑‍🤝 Patients</a>
+<a href="doctors.html">👨‍⚕️ Doctors</a>
+<a href="triage.html">🩺 Triage</a>
+<a href="lab.html">🧪 Lab</a>
+<a href="pharmacy.html">💊 Pharmacy</a>
+<a href="billing.html" style="background:rgba(255,255,255,0.06);">💵 Billing</a>
+<a href="#" onclick="logout()">🚪 Logout</a>
+</div>
+
+<div class="main">
+<div class="topbar">
+<div>
+<h1>Billing Dashboard</h1>
+<div class="small-muted">Add medicines, quantities, and amounts, then generate receipts</div>
+</div>
+<div class="meta" id="userMeta">Welcome</div>
+</div>
+
+<section>
+<table id="billingTable">
+<thead>
+<tr>
+<th>Patient</th>
+<th>Doctor Notes</th>
+<th>Medicines</th>
+<th>Total Amount (Ksh)</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</section>
+</div>
+
+<!-- Modal: Add Medicines / Billing -->
+<div class="modal" id="billingModal">
+<div class="modal-content">
+<h2>Billing Details</h2>
+<div class="field">
+<label>Patient Name:</label>
+<div id="billingPatientName" style="font-weight:600"></div>
+</div>
+
+<div class="field">
+<button class="btn primary" onclick="addMedicineRow()">+ Add Medicine</button>
+</div>
+
+<table class="table-inner" id="medicinesTable">
+<thead>
+<tr>
+<th>Medicine</th>
+<th>Quantity</th>
+<th>Price (Ksh)</th>
+<th>Subtotal</th>
+<th>Remove</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<div class="field">
+<label>Total Amount:</label>
+<div id="totalAmount" style="font-weight:600;">0</div>
+</div>
+
+<div class="modal-actions">
+<button class="btn secondary" onclick="closeBillingModal()">Cancel</button>
+<button class="btn primary" onclick="saveBilling()">Save & Generate Receipt</button>
+</div>
+</div>
+</div>
+
+<!-- Receipt container -->
+<div id="receipt" style="display:none; padding:20px; max-width:600px; margin:auto; border:1px solid #004085;">
+<h2 style="text-align:center; color:#004085">Prince Alex Hospital</h2>
+<p style="text-align:center; font-size:13px; color:#475569;">123 Hospital Rd, Vihiga | Tel: 0717384875 | Email: info@princealexhospital.com</p>
+<hr>
+<div id="receiptContent"></div>
+<hr>
+<p style="text-align:center; font-size:12px;">Thank you for choosing Prince Alex Hospital</p>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const getLS=k=>JSON.parse(localStorage.getItem(k)||'[]');
+const setLS=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+const billingTableBody=document.querySelector('#billingTable tbody');
+const billingModal=document.getElementById('billingModal');
+const billingPatientName=document.getElementById('billingPatientName');
+const medicinesTable=document.getElementById('medicinesTable').querySelector('tbody');
+const totalAmountDiv=document.getElementById('totalAmount');
+const toast=document.getElementById('toast');
+const receipt=document.getElementById('receipt');
+const receiptContent=document.getElementById('receiptContent');
+const userMeta=document.getElementById('userMeta');
+const logged=JSON.parse(localStorage.getItem('loggedInUser')||'null');
+userMeta.innerText=logged?`Staff: ${logged.username}`:'Billing';
+
+let patients=getLS('patients');
+let currentBillingIndex=-1;
+
+function showToast(msg,type='success'){
+toast.innerText=msg;
+toast.className='toast '+(type==='error'?'error':'success');
+toast.style.display='block';
+setTimeout(()=>toast.style.display='none',2600);
+}
+
+function renderTable(){
+patients=getLS('patients');
+billingTableBody.innerHTML='';
+
+const billablePatients = patients.filter(p=>p.pharmacy && p.pharmacy.completed);
+if(billablePatients.length===0){
+billingTableBody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#9b1c1c">No patients ready for billing</td></tr>';
+return;
+}
+
+billablePatients.forEach((p,i)=>{
+const total = p.billing && p.billing.medicines ? p.billing.medicines.reduce((sum,m)=>sum+(m.subtotal||0),0) : 0;
+const medicinesList = p.billing && p.billing.medicines ? p.billing.medicines.map(m=>`${m.name} (${m.qty})`).join(', ') : '-';
+const tr=document.createElement('tr');
+tr.innerHTML=`
+<td><strong>${p.name}</strong><div class="small-muted">${p.age} yrs</div></td>
+<td>${p.doctor ? p.doctor.diagnosis : '-'}</td>
+<td>${medicinesList}</td>
+<td>${total}</td>
+<td><button class="btn primary" onclick="openBillingModal(${patients.indexOf(p)})">Add / Update</button></td>
+`;
+billingTableBody.appendChild(tr);
+});
+}
+
+function openBillingModal(i){
+currentBillingIndex=i;
+const p = patients[i];
+billingPatientName.innerText = p.name;
+medicinesTable.innerHTML='';
+if(p.billing && p.billing.medicines){
+p.billing.medicines.forEach(m=>addMedicineRow(m.name,m.qty,m.price));
+}
+updateTotal();
+billingModal.style.display='flex';
+}
+
+function addMedicineRow(name='', qty='', price=''){
+const tr=document.createElement('tr');
+tr.innerHTML=`
+<td><input type="text" value="${name}" placeholder="Medicine name" oninput="updateSubtotal(this)"/></td>
+<td><input type="number" value="${qty}" min="1" oninput="updateSubtotal(this)"/></td>
+<td><input type="number" value="${price}" min="0" oninput="updateSubtotal(this)"/></td>
+<td class="subtotal">0</td>
+<td><button class="btn secondary" onclick="removeRow(this)">Remove</button></td>
+`;
+medicinesTable.appendChild(tr);
+updateSubtotal(tr);
+}
+
+function updateSubtotal(input){
+const tr=input.closest('tr');
+const qty = parseFloat(tr.cells[1].querySelector('input').value)||0;
+const price = parseFloat(tr.cells[2].querySelector('input').value)||0;
+tr.querySelector('.subtotal').innerText = (qty*price).toFixed(2);
+updateTotal();
+}
+
+function updateTotal(){
+let total=0;
+medicinesTable.querySelectorAll('tr').forEach(tr=>{
+total+=parseFloat(tr.querySelector('.subtotal').innerText)||0;
+});
+totalAmountDiv.innerText=total.toFixed(2);
+}
+
+function removeRow(btn){
+btn.closest('tr').remove();
+updateTotal();
+}
+
+function saveBilling(){
+if(currentBillingIndex===-1) return showToast('No patient selected','error');
+const p = patients[currentBillingIndex];
+const medicines=[];
+medicinesTable.querySelectorAll('tr').forEach(tr=>{
+const name=tr.cells[0].querySelector('input').value.trim();
+const qty=parseInt(tr.cells[1].querySelector('input').value)||0;
+const price=parseFloat(tr.cells[2].querySelector('input').value)||0;
+if(name && qty>0 && price>=0){
+medicines.push({name, qty, price, subtotal:qty*price});
+}
+});
+p.billing={medicines, timestamp:new Date().toISOString()};
+setLS('patients',patients);
+showToast('Billing saved successfully');
+closeBillingModal();
+renderTable();
+generateReceipt(p);
+}
+
+function generateReceipt(p){
+let rows='';
+p.billing.medicines.forEach(m=>{
+rows+=`<tr><td>${m.name}</td><td>${m.qty}</td><td>${m.price.toFixed(2)}</td><td>${m.subtotal.toFixed(2)}</td></tr>`;
+});
+const total = p.billing.medicines.reduce((sum,m)=>sum+m.subtotal,0);
+receiptContent.innerHTML=`
+<p><strong>Patient Name:</strong> ${p.name}</p>
+<p><strong>Age:</strong> ${p.age}</p>
+<p><strong>Doctor Notes:</strong> ${p.doctor ? p.doctor.diagnosis : '-'}</p>
+<table class="table-inner">
+<thead><tr><th>Medicine</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+<tbody>${rows}</tbody>
+<tfoot><tr><th colspan="3">Total</th><th>${total.toFixed(2)}</th></tr></tfoot>
+</table>
+<p><strong>Date:</strong> ${new Date(p.billing.timestamp).toLocaleString()}</p>
+`;
+receipt.style.display='block';
+window.print();
+receipt.style.display='none';
+}
+
+function closeBillingModal(){
+billingModal.style.display='none';
+currentBillingIndex=-1;
+}
+
+function logout(){
+localStorage.removeItem('loggedInUser');
+window.location.href='index.html';
+}
+
+renderTable();
+</script>
+</body>
+</html>

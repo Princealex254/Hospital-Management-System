@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Prince Alex Hospital - Admin Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+body{display:flex;min-height:100vh;background:#f4f7fa}
+.sidebar{width:220px;background:#004085;color:#fff;display:flex;flex-direction:column;padding:20px}
+.sidebar h2{font-size:20px;margin-bottom:18px;text-align:center}
+.sidebar a{color:#fff;text-decoration:none;padding:10px;border-radius:8px;margin:6px 0;display:block}
+.sidebar a:hover{background:#0657b8}
+.main{flex:1;padding:20px}
+.topbar{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:12px 18px;border-radius:10px;box-shadow:0 3px 8px rgba(0,0,0,0.08);margin-bottom:18px}
+.topbar h1{color:#004085;font-size:20px}
+.topbar .meta{color:#334155;font-size:13px}
+.table-container{background:#fff;padding:10px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
+table{width:100%;border-collapse:separate;border-spacing:0 8px}
+th,td{padding:10px;text-align:left;background:#fff}
+th{background:#004085;color:#fff}
+tr{border-radius:8px;transition:0.15s}
+tr:hover{background:#f1f8ff}
+.btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;color:#fff;margin-right:6px}
+.btn.primary{background:#004085}
+.btn.secondary{background:#6b7280}
+.btn.danger{background:#dc2626}
+.filter-section{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+.filter-section select{padding:6px;border-radius:6px;border:1px solid #d1d5db}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000}
+.modal-content{background:#fff;width:520px;max-width:96%;max-height:90vh;overflow-y:auto;border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,23,0.3)}
+.modal-content h2{color:#004085;margin-bottom:8px;text-align:center}
+.field{margin-bottom:10px}
+label{display:block;font-weight:600;margin-bottom:6px}
+input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #d1d5db}
+.toast{position:fixed;right:20px;top:20px;padding:12px 16px;border-radius:8px;color:#fff;display:none;z-index:1100}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<h2>Prince Alex</h2>
+<a href="index.html" style="background:rgba(255,255,255,0.06);">🏠 Admin Dashboard</a>
+<a href="#" onclick="logout()">🚪 Logout</a>
+</div>
+
+<div class="main">
+<div class="topbar">
+<div>
+<h1>Admin Dashboard</h1>
+<div class="small-muted">Manage patients, staff, and generate reports</div>
+</div>
+<div class="meta" id="userMeta">Welcome Admin</div>
+</div>
+
+<div class="table-container">
+<div class="filter-section">
+<label>Filter Status:</label>
+<select id="filterStatus"><option value="">All</option><option>New</option><option>Triaged</option><option>Doctor</option><option>Pharmacy</option><option>Billing</option><option>Discharged</option></select>
+<label>Filter Staff:</label>
+<select id="filterStaff"><option value="">All Staff</option></select>
+<label>Filter Dept:</label>
+<select id="filterDept"><option value="">All Departments</option></select>
+<button class="btn primary" onclick="downloadReport('patients')">Download Patients Report</button>
+<button class="btn primary" onclick="downloadReport('staff')">Download Staff Report</button>
+</div>
+<table id="patientsTable">
+<thead>
+<tr>
+<th>Name</th><th>Age</th><th>Contact</th><th>Status</th><th>Assigned Staff</th><th>Actions</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<button class="btn primary" onclick="openPatientModal()">+ Add Patient</button>
+<button class="btn secondary" onclick="openStaffModal()">+ Add Staff</button>
+</div>
+</div>
+
+<!-- Patient Modal -->
+<div class="modal" id="patientModal">
+<div class="modal-content">
+<h2>Patient Details</h2>
+<div class="field"><label>Name:</label><input id="patientName" /></div>
+<div class="field"><label>Age:</label><input type="number" id="patientAge" /></div>
+<div class="field"><label>Contact:</label><input id="patientContact" /></div>
+<div class="field"><label>Status:</label>
+<select id="patientStatus">
+<option>New</option><option>Triaged</option><option>Doctor</option><option>Pharmacy</option><option>Billing</option><option>Discharged</option>
+</select>
+</div>
+<div class="field"><label>Assigned Staff:</label>
+<select id="patientStaff"><option value="">Select Staff</option></select>
+</div>
+<div class="field"><label>Medical History:</label><textarea id="patientHistory" placeholder="History notes separated by date"></textarea></div>
+<div class="modal-actions">
+<button class="btn secondary" onclick="closePatientModal()">Cancel</button>
+<button class="btn primary" onclick="savePatient()">Save</button>
+</div>
+</div>
+</div>
+
+<!-- Staff Modal -->
+<div class="modal" id="staffModal">
+<div class="modal-content">
+<h2>Staff Details</h2>
+<div class="field"><label>Name:</label><input id="staffName" /></div>
+<div class="field"><label>Department:</label><input id="staffDept" /></div>
+<div class="modal-actions">
+<button class="btn secondary" onclick="closeStaffModal()">Cancel</button>
+<button class="btn primary" onclick="saveStaff()">Save</button>
+</div>
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const getLS=k=>JSON.parse(localStorage.getItem(k)||'[]');
+const setLS=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+const patientsTableBody=document.querySelector('#patientsTable tbody');
+const toast=document.getElementById('toast');
+const filterStatus=document.getElementById('filterStatus');
+const filterStaff=document.getElementById('filterStaff');
+const filterDept=document.getElementById('filterDept');
+
+let patientList=getLS('patients');
+let staffList=getLS('staff');
+let currentPatientIndex=-1;
+let currentStaffIndex=-1;
+
+function showToast(msg,type='success'){
+toast.innerText=msg;
+toast.className='toast '+(type==='error'?'error':'success');
+toast.style.display='block';
+setTimeout(()=>toast.style.display='none',2600);
+}
+
+// Populate staff filter and patient assignment dropdown
+function populateStaffFilters(){
+filterStaff.innerHTML='<option value="">All Staff</option>';
+filterDept.innerHTML='<option value="">All Departments</option>';
+patientStaff.innerHTML='<option value="">Select Staff</option>';
+staffList.forEach(s=>{
+const opt=document.createElement('option'); opt.value=s.name; opt.textContent=s.name; filterStaff.appendChild(opt);
+const opt2=document.createElement('option'); opt2.value=s.name; opt2.textContent=s.name; patientStaff.appendChild(opt2);
+});
+[...new Set(staffList.map(s=>s.department).filter(d=>d))].forEach(d=>{
+const opt=document.createElement('option'); opt.value=d; opt.textContent=d; filterDept.appendChild(opt);
+});
+}
+
+// Render patient table
+function renderPatients(){
+patientList=getLS('patients');
+patientsTableBody.innerHTML='';
+if(!patientList.length){patientsTableBody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#9b1c1c">No patients found</td></tr>'; return;}
+const statusF=filterStatus.value, staffF=filterStaff.value, deptF=filterDept.value;
+const filtered=patientList.filter(p=>{
+const dept=staffList.find(s=>s.name===p.assignedStaff)?.department||'';
+return (!statusF||p.status===statusF)&&(!staffF||p.assignedStaff===staffF)&&(!deptF||dept===deptF);
+});
+if(!filtered.length){patientsTableBody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#9b1c1c">No patients found</td></tr>'; return;}
+filtered.forEach((p,i)=>{
+const tr=document.createElement('tr');
+tr.innerHTML=`<td>${p.name}</td><td>${p.age}</td><td>${p.contact||'-'}</td><td>${p.status||'-'}</td><td>${p.assignedStaff||'-'}</td>
+<td>
+<button class="btn primary" onclick="editPatient(${i})">Edit</button>
+<button class="btn danger" onclick="deletePatient(${i})">Delete</button>
+</td>`;
+patientsTableBody.appendChild(tr);
+});
+}
+
+// Patient modal functions
+const patientModal=document.getElementById('patientModal');
+const patientName=document.getElementById('patientName');
+const patientAge=document.getElementById('patientAge');
+const patientContact=document.getElementById('patientContact');
+const patientStatus=document.getElementById('patientStatus');
+const patientStaff=document.getElementById('patientStaff');
+const patientHistory=document.getElementById('patientHistory');
+
+function openPatientModal(){currentPatientIndex=-1;patientName.value='';patientAge.value='';patientContact.value='';patientStatus.value='New';patientStaff.value='';patientHistory.value='';patientModal.style.display='flex';}
+function closePatientModal(){patientModal.style.display='none';currentPatientIndex=-1;}
+function editPatient(i){currentPatientIndex=i;const p=patientList[i];patientName.value=p.name;patientAge.value=p.age;patientContact.value=p.contact||'';patientStatus.value=p.status||'New';patientStaff.value=p.assignedStaff||'';patientHistory.value=p.medicalHistory?JSON.stringify(p.medicalHistory):'';patientModal.style.display='flex';}
+function savePatient(){const data={name:patientName.value, age:parseInt(patientAge.value)||0, contact:patientContact.value, status:patientStatus.value, assignedStaff:patientStaff.value, medicalHistory:patientHistory.value?JSON.parse(patientHistory.value):[]};if(currentPatientIndex===-1){patientList.push(data);}else{patientList[currentPatientIndex]=data;}setLS('patients',patientList);showToast('Patient saved');closePatientModal();renderPatients();window.dispatchEvent(new Event('patientsUpdated'));}
+
+// Delete patient
+function deletePatient(i){if(confirm('Delete this patient?')){patientList.splice(i,1);setLS('patients',patientList);renderPatients();showToast('Patient deleted');}}
+
+// Staff modal functions
+const staffModal=document.getElementById('staffModal');
+const staffName=document.getElementById('staffName');
+const staffDept=document.getElementById('staffDept');
+
+function openStaffModal(){currentStaffIndex=-1;staffName.value='';staffDept.value='';staffModal.style.display='flex';}
+function closeStaffModal(){staffModal.style.display='none';currentStaffIndex=-1;}
+function saveStaff(){const data={name:staffName.value, department:staffDept.value};if(currentStaffIndex===-1){staffList.push(data);}else{staffList[currentStaffIndex]=data;}setLS('staff',staffList);showToast('Staff saved');closeStaffModal();populateStaffFilters();renderPatients();}
+
+// Download reports
+function downloadReport(type='patients'){const data=type==='patients'?patientList:staffList;if(!data.length)return showToast('No data to export','error');const csv=[Object.keys(data[0]).join(','),...data.map(d=>Object.values(d).map(v=>JSON.stringify(v)).join(','))].join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${type}_report.csv`;a.click();URL.revokeObjectURL(url);showToast(`${type.charAt(0).toUpperCase()+type.slice(1)} report downloaded`);}
+function logout(){localStorage.removeItem('loggedInUser');window.location.href='login.html';}
+
+// Filters
+filterStatus.addEventListener('change',renderPatients);
+filterStaff.addEventListener('change',renderPatients);
+filterDept.addEventListener('change',renderPatients);
+
+// Listen for real-time updates
+window.addEventListener('patientsUpdated',renderPatients);
+
+populateStaffFilters();
+renderPatients();
+</script>
+</body>
+</html>
