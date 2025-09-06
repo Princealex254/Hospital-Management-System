@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Prince Alex Hospital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .sidebar h2 {
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 16px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-critical {
+            background: #dc3545;
+            color: white;
+        }
+
+        .priority-high {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .patient-card {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .patient-card h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .patient-card p {
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1rem;
+                max-height: 90vh;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .consultation-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .consultation-section h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>🏥 Prince Alex Hospital</h2>
+        <nav>
+            <a href="doctors.html" class="nav-item active">
+                <i>👨‍⚕️</i> Doctor Dashboard
+            </a>
+            <a href="patients.html" class="nav-item">
+                <i>🏥</i> Patients
+            </a>
+            <a href="lab.html" class="nav-item">
+                <i>🧪</i> Lab Requests
+            </a>
+            <a href="pharmacy.html" class="nav-item">
+                <i>💊</i> Prescriptions
+            </a>
+            <a href="billing.html" class="nav-item">
+                <i>💰</i> Billing
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Doctor Dashboard</h1>
+            <div class="user-info">
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPatients">0</div>
+                <div class="stat-label">My Patients</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingConsultations">0</div>
+                <div class="stat-label">Pending Consultations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="labRequests">0</div>
+                <div class="stat-label">Lab Requests Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="prescriptions">0</div>
+                <div class="stat-label">Prescriptions Written</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>My Patients</h3>
+                <div class="search-bar">
+                    <input type="text" id="patientSearch" placeholder="Search patients...">
+                </div>
+                <div id="myPatients">
+                    <p>Loading patients...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Consultation Notes</h3>
+                <form id="consultationForm">
+                    <div class="form-group">
+                        <label for="consultationPatient">Select Patient</label>
+                        <select id="consultationPatient" required>
+                            <option value="">Select Patient</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="consultationType">Consultation Type</label>
+                        <select id="consultationType" required>
+                            <option value="">Select Type</option>
+                            <option value="initial">Initial Consultation</option>
+                            <option value="followup">Follow-up</option>
+                            <option value="emergency">Emergency</option>
+                            <option value="routine">Routine Check</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="diagnosis">Diagnosis</label>
+                        <textarea id="diagnosis" placeholder="Enter diagnosis..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="treatmentPlan">Treatment Plan</label>
+                        <textarea id="treatmentPlan" placeholder="Enter treatment plan..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" placeholder="Enter additional notes..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Consultation</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Patient Actions</h3>
+            <div id="patientActions">
+                <p>Select a patient to view available actions.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Recent Consultations</h3>
+            <div class="search-bar">
+                <input type="text" id="consultationSearch" placeholder="Search consultations...">
+            </div>
+            <div id="consultationHistory">
+                <p>Loading consultation history...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div id="patientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Patient Details & Actions</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="patientDetails">
+                <!-- Patient details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lab Request Modal -->
+    <div id="labRequestModal" class="modal" role="dialog" aria-labelledby="labModalTitle" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="labModalTitle">Send Lab Request</h3>
+                <span class="close" onclick="closeLabModal()" aria-label="Close lab request modal">&times;</span>
+            </div>
+            <form id="labRequestForm">
+                <div class="form-group">
+                    <label for="labPatientName">Patient Name</label>
+                    <input type="text" id="labPatientName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="labTests">Lab Tests</label>
+                    <textarea id="labTests" placeholder="Enter lab tests required..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="labPriority">Priority</label>
+                    <select id="labPriority" required>
+                        <option value="">Select Priority</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="routine">Routine</option>
+                        <option value="stat">STAT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="labNotes">Notes</label>
+                    <textarea id="labNotes" placeholder="Additional notes for lab..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Send Lab Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Prescription Modal -->
+    <div id="prescriptionModal" class="modal" role="dialog" aria-labelledby="prescriptionModalTitle" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="prescriptionModalTitle">Write Prescription</h3>
+                <span class="close" onclick="closePrescriptionModal()" aria-label="Close prescription modal">&times;</span>
+            </div>
+            <form id="prescriptionForm">
+                <div class="form-group">
+                    <label for="prescriptionPatientName">Patient Name</label>
+                    <input type="text" id="prescriptionPatientName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="medicationName">Medication Name</label>
+                    <input type="text" id="medicationName" required>
+                </div>
+                <div class="form-group">
+                    <label for="dosage">Dosage</label>
+                    <input type="text" id="dosage" placeholder="e.g., 500mg" required>
+                </div>
+                <div class="form-group">
+                    <label for="frequency">Frequency</label>
+                    <input type="text" id="frequency" placeholder="e.g., Twice daily" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration</label>
+                    <input type="text" id="duration" placeholder="e.g., 7 days" required>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Instructions</label>
+                    <textarea id="instructions" placeholder="Special instructions..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Write Prescription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.appspot.com",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let myPatients = [];
+        let allConsultations = [];
+        let doctorProfile = null;
+
+        // Utility functions
+        function showAlert(message, type = 'success') {
+            // Create alert element if it doesn't exist
+            let alertDiv = document.getElementById('alertMessage');
+            if (!alertDiv) {
+                alertDiv = document.createElement('div');
+                alertDiv.id = 'alertMessage';
+                alertDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 12px 20px;
+                    border-radius: 5px;
+                    color: white;
+                    font-weight: 500;
+                    z-index: 10000;
+                    max-width: 400px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                `;
+                document.body.appendChild(alertDiv);
+            }
+
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            
+            // Set background color based on type
+            if (type === 'error') {
+                alertDiv.style.background = '#dc3545';
+            } else if (type === 'warning') {
+                alertDiv.style.background = '#ffc107';
+                alertDiv.style.color = '#333';
+            } else if (type === 'info') {
+                alertDiv.style.background = '#17a2b8';
+            } else {
+                alertDiv.style.background = '#28a745';
+            }
+
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Modal management with ESC key support
+        const ModalManager = {
+            open: function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    // Set aria-expanded for accessibility
+                    const trigger = document.querySelector(`[aria-controls="${modalId}"]`);
+                    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+                }
+            },
+            close: function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    // Set aria-expanded for accessibility
+                    const trigger = document.querySelector(`[aria-controls="${modalId}"]`);
+                    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+                }
+            },
+            closeAll: function() {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = 'none';
+                    const trigger = document.querySelector(`[aria-controls="${modal.id}"]`);
+                    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        // ESC key support for modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                ModalManager.closeAll();
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    ModalManager.close(modal.id);
+                }
+            });
+        };
+
+        // Check authentication
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                
+                // Load doctor profile to get display name
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    if (userDoc.exists()) {
+                        doctorProfile = userDoc.data();
+                        const displayName = doctorProfile.name || doctorProfile.displayName || user.email;
+                        document.getElementById('userEmail').textContent = displayName;
+                    } else {
+                        document.getElementById('userEmail').textContent = user.email;
+                    }
+                } catch (error) {
+                    console.error('Error loading doctor profile:', error);
+                    document.getElementById('userEmail').textContent = user.email;
+                }
+                
+                await loadDashboardData();
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                await Promise.all([
+                    loadMyPatients(),
+                    loadConsultations(),
+                    loadStats()
+                ]);
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Load my patients
+        async function loadMyPatients() {
+            try {
+                const patientsQuery = query(collection(db, 'patients'), where('assignedDoctor', '==', currentUser.uid));
+                const patientsSnapshot = await getDocs(patientsQuery);
+                
+                myPatients = [];
+                patientsSnapshot.forEach((doc) => {
+                    myPatients.push({ id: doc.id, ...doc.data() });
+                });
+
+                displayMyPatients(myPatients);
+                populatePatientSelect();
+            } catch (error) {
+                console.error('Error loading patients:', error);
+                document.getElementById('myPatients').innerHTML = '<p>Error loading patients.</p>';
+            }
+        }
+
+        // Display my patients
+        function displayMyPatients(patients) {
+            const myPatientsDiv = document.getElementById('myPatients');
+            
+            if (patients.length === 0) {
+                myPatientsDiv.innerHTML = '<p>No patients assigned to you.</p>';
+                return;
+            }
+
+            let patientsHTML = '';
+            patients.forEach((patient) => {
+                patientsHTML += `
+                    <div class="patient-card" onclick="viewPatient('${patient.id}')">
+                        <h4>${patient.name}</h4>
+                        <p><strong>Age:</strong> ${patient.age} | <strong>Gender:</strong> ${patient.gender}</p>
+                        <p><strong>Phone:</strong> ${patient.phone}</p>
+                        <p><strong>Status:</strong> ${patient.status || 'active'}</p>
+                    </div>
+                `;
+            });
+
+            myPatientsDiv.innerHTML = patientsHTML;
+        }
+
+        // Populate patient select for consultations
+        function populatePatientSelect() {
+            const patientSelect = document.getElementById('consultationPatient');
+            patientSelect.innerHTML = '<option value="">Select Patient</option>';
+            
+            myPatients.forEach((patient) => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = patient.name;
+                patientSelect.appendChild(option);
+            });
+        }
+
+        // Load consultations
+        async function loadConsultations() {
+            try {
+                const consultationsQuery = query(collection(db, 'consultations'), where('doctorId', '==', currentUser.uid), orderBy('createdAt', 'desc'));
+                const consultationsSnapshot = await getDocs(consultationsQuery);
+                
+                allConsultations = [];
+                consultationsSnapshot.forEach((doc) => {
+                    allConsultations.push({ id: doc.id, ...doc.data() });
+                });
+
+                displayConsultations(allConsultations);
+            } catch (error) {
+                console.error('Error loading consultations:', error);
+                document.getElementById('consultationHistory').innerHTML = '<p>Error loading consultations.</p>';
+            }
+        }
+
+        // Display consultations
+        function displayConsultations(consultations) {
+            const consultationHistory = document.getElementById('consultationHistory');
+            
+            if (consultations.length === 0) {
+                consultationHistory.innerHTML = '<p>No consultations found.</p>';
+                return;
+            }
+
+            let consultationsHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Type</th>
+                            <th>Diagnosis</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            consultations.forEach((consultation) => {
+                consultationsHTML += `
+                    <tr>
+                        <td>${consultation.patientName}</td>
+                        <td>${consultation.type}</td>
+                        <td>${consultation.diagnosis || 'Not specified'}</td>
+                        <td>${consultation.createdAt ? new Date(consultation.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}</td>
+                        <td>
+                            <button class="btn btn-info" onclick="viewConsultation('${consultation.id}')" style="padding: 4px 8px; font-size: 0.8rem;">View</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            consultationsHTML += '</tbody></table>';
+            consultationHistory.innerHTML = consultationsHTML;
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                // Count my patients
+                document.getElementById('totalPatients').textContent = myPatients.length;
+
+                // Count pending consultations
+                const pendingConsultations = allConsultations.filter(c => c.status === 'pending');
+                document.getElementById('pendingConsultations').textContent = pendingConsultations.length;
+
+                // Count lab requests
+                const labRequestsQuery = query(collection(db, 'labRequests'), where('doctorId', '==', currentUser.uid));
+                const labRequestsSnapshot = await getDocs(labRequestsQuery);
+                document.getElementById('labRequests').textContent = labRequestsSnapshot.size;
+
+                // Count prescriptions
+                const prescriptionsQuery = query(collection(db, 'prescriptions'), where('doctorId', '==', currentUser.uid));
+                const prescriptionsSnapshot = await getDocs(prescriptionsQuery);
+                document.getElementById('prescriptions').textContent = prescriptionsSnapshot.size;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Consultation form submission
+        document.getElementById('consultationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const patientId = document.getElementById('consultationPatient').value;
+            const patient = myPatients.find(p => p.id === patientId);
+            
+            if (!patient) {
+                alert('Please select a valid patient.');
+                return;
+            }
+
+            const consultationData = {
+                patientId: patientId,
+                patientName: patient.name,
+                doctorId: currentUser.uid,
+                doctorName: currentUser.email,
+                type: document.getElementById('consultationType').value,
+                diagnosis: document.getElementById('diagnosis').value,
+                treatmentPlan: document.getElementById('treatmentPlan').value,
+                notes: document.getElementById('notes').value,
+                status: 'completed',
+                createdAt: serverTimestamp() // Use Firestore server timestamp
+            };
+
+            try {
+                await addDoc(collection(db, 'consultations'), consultationData);
+                showAlert('Consultation saved successfully!', 'success');
+                document.getElementById('consultationForm').reset();
+                await loadConsultations();
+                await loadStats();
+            } catch (error) {
+                console.error('Error saving consultation:', error);
+                showAlert('Error saving consultation. Please try again.', 'error');
+            }
+        });
+
+        // Search patients
+        document.getElementById('patientSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredPatients = myPatients.filter(patient => 
+                patient.name.toLowerCase().includes(searchTerm) ||
+                patient.phone.includes(searchTerm)
+            );
+            displayMyPatients(filteredPatients);
+        });
+
+        // Search consultations
+        document.getElementById('consultationSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredConsultations = allConsultations.filter(consultation => 
+                consultation.patientName.toLowerCase().includes(searchTerm) ||
+                consultation.diagnosis.toLowerCase().includes(searchTerm) ||
+                consultation.type.toLowerCase().includes(searchTerm)
+            );
+            displayConsultations(filteredConsultations);
+        });
+
+        // View patient details
+        window.viewPatient = function(patientId) {
+            const patient = myPatients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            const patientDetails = document.getElementById('patientDetails');
+            patientDetails.innerHTML = `
+                <div class="consultation-section">
+                    <h4>Patient Information</h4>
+                    <p><strong>Name:</strong> ${patient.name}</p>
+                    <p><strong>Age:</strong> ${patient.age}</p>
+                    <p><strong>Gender:</strong> ${patient.gender}</p>
+                    <p><strong>Phone:</strong> ${patient.phone}</p>
+                    <p><strong>Email:</strong> ${patient.email || 'Not provided'}</p>
+                    <p><strong>Address:</strong> ${patient.address}</p>
+                    <p><strong>Medical History:</strong> ${patient.medicalHistory || 'None recorded'}</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-info" onclick="sendLabRequest('${patient.id}', '${patient.name}')" aria-controls="labRequestModal" aria-expanded="false" aria-label="Send lab request for ${patient.name}">Send Lab Request</button>
+                    <button class="btn btn-warning" onclick="writePrescription('${patient.id}', '${patient.name}')" aria-controls="prescriptionModal" aria-expanded="false" aria-label="Write prescription for ${patient.name}">Write Prescription</button>
+                    <button class="btn btn-success" onclick="dischargePatient('${patient.id}')" aria-label="Discharge ${patient.name}">Discharge Patient</button>
+                </div>
+            `;
+
+            document.getElementById('patientModal').style.display = 'block';
+        };
+
+        // Send lab request
+        window.sendLabRequest = function(patientId, patientName) {
+            document.getElementById('labPatientName').value = patientName;
+            ModalManager.open('labRequestModal');
+            ModalManager.close('patientModal');
+            window.currentPatientId = patientId;
+        };
+
+        // Write prescription
+        window.writePrescription = function(patientId, patientName) {
+            document.getElementById('prescriptionPatientName').value = patientName;
+            ModalManager.open('prescriptionModal');
+            ModalManager.close('patientModal');
+            window.currentPatientId = patientId;
+        };
+
+        // Discharge patient
+        window.dischargePatient = async function(patientId) {
+            if (confirm('Are you sure you want to discharge this patient?')) {
+                try {
+                    await updateDoc(doc(db, 'patients', patientId), {
+                        status: 'discharged',
+                        dischargedAt: serverTimestamp(), // Use Firestore server timestamp
+                        dischargedBy: currentUser.uid
+                    });
+                    showAlert('Patient discharged successfully!', 'success');
+                    await loadMyPatients();
+                } catch (error) {
+                    console.error('Error discharging patient:', error);
+                    showAlert('Error discharging patient. Please try again.', 'error');
+                }
+            }
+        };
+
+        // Lab request form submission
+        document.getElementById('labRequestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const labRequestData = {
+                patientId: window.currentPatientId,
+                patientName: document.getElementById('labPatientName').value,
+                doctorId: currentUser.uid,
+                doctorName: currentUser.email,
+                tests: document.getElementById('labTests').value,
+                priority: document.getElementById('labPriority').value,
+                notes: document.getElementById('labNotes').value,
+                status: 'pending',
+                createdAt: serverTimestamp() // Use Firestore server timestamp
+            };
+
+            try {
+                await addDoc(collection(db, 'labRequests'), labRequestData);
+                showAlert('Lab request sent successfully!', 'success');
+                document.getElementById('labRequestForm').reset();
+                ModalManager.close('labRequestModal');
+                await loadStats();
+            } catch (error) {
+                console.error('Error sending lab request:', error);
+                showAlert('Error sending lab request. Please try again.', 'error');
+            }
+        });
+
+        // Prescription form submission
+        document.getElementById('prescriptionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const prescriptionData = {
+                patientId: window.currentPatientId,
+                patientName: document.getElementById('prescriptionPatientName').value,
+                doctorId: currentUser.uid,
+                doctorName: currentUser.email,
+                medicationName: document.getElementById('medicationName').value,
+                dosage: document.getElementById('dosage').value,
+                frequency: document.getElementById('frequency').value,
+                duration: document.getElementById('duration').value,
+                instructions: document.getElementById('instructions').value,
+                status: 'pending',
+                createdAt: serverTimestamp() // Use Firestore server timestamp
+            };
+
+            try {
+                await addDoc(collection(db, 'prescriptions'), prescriptionData);
+                showAlert('Prescription written successfully!', 'success');
+                document.getElementById('prescriptionForm').reset();
+                ModalManager.close('prescriptionModal');
+                await loadStats();
+            } catch (error) {
+                console.error('Error writing prescription:', error);
+                showAlert('Error writing prescription. Please try again.', 'error');
+            }
+        });
+
+        // View consultation
+        window.viewConsultation = function(consultationId) {
+            const consultation = allConsultations.find(c => c.id === consultationId);
+            if (!consultation) return;
+
+            alert(`Consultation Details:\n\nPatient: ${consultation.patientName}\nType: ${consultation.type}\nDiagnosis: ${consultation.diagnosis}\nTreatment Plan: ${consultation.treatmentPlan}\nNotes: ${consultation.notes}`);
+        };
+
+        // Close modals
+        window.closeModal = function() {
+            document.getElementById('patientModal').style.display = 'none';
+        };
+
+        window.closeLabModal = function() {
+            ModalManager.close('labRequestModal');
+        };
+
+        window.closePrescriptionModal = function() {
+            ModalManager.close('prescriptionModal');
+        };
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const patientModal = document.getElementById('patientModal');
+            const labModal = document.getElementById('labRequestModal');
+            const prescriptionModal = document.getElementById('prescriptionModal');
+            
+            if (event.target === patientModal) {
+                patientModal.style.display = 'none';
+            }
+            if (event.target === labModal) {
+                labModal.style.display = 'none';
+            }
+            if (event.target === prescriptionModal) {
+                prescriptionModal.style.display = 'none';
+            }
+        };
+
+        // Logout function
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        };
+    </script>
+</body>
+</html>
