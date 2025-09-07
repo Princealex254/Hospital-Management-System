@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            flex: 1;
+            min-width: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .tab.active {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .prescription-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .prescription-card.completed {
+            border-left-color: #10b981;
+        }
+
+        .prescription-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .patient-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .prescription-details {
+            color: #666;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .prescription-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .dispense-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .dispense-btn:hover {
+            background: #d97706;
+        }
+
+        .view-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+        }
+
+        .medicine-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .medicine-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .medicine-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medicine-details {
+            color: #666;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medicines-list {
+            margin-bottom: 1rem;
+        }
+
+        .medicine-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .medicine-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medicine-specs {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medicine-instructions {
+            color: #059669;
+            font-size: 0.85rem;
+            font-style: italic;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .modal-title {
+            color: #f59e0b;
+            font-size: 1.3rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .medication-item {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .medication-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .medication-name {
+            font-weight: bold;
+            color: #333;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medication-specs {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medication-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .medication-form input {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .billing-summary {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .billing-summary h4 {
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0c4a6e;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .voucher-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .voucher-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f59e0b;
+            padding-bottom: 1rem;
+        }
+
+        .hospital-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f59e0b;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .hospital-details {
+            color: #666;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .patient-info {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .medicines-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .medicines-table th,
+        .medicines-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .medicines-table th {
+            background: #f8fafc;
+            font-weight: bold;
+        }
+
+        .total-section {
+            background: #f0f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #0ea5e9;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .total-final {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0c4a6e;
+            border-top: 2px solid #0ea5e9;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .voucher-footer {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .voucher-footer p {
+            margin-bottom: 0.25rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .voucher-footer p:last-child {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .prescription-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .prescription-actions {
+                justify-content: center;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .medication-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>Prince Alex Hospital - Pharmacy Department</h1>
+        </div>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button id="logoutBtn" class="nav-btn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Pharmacy</h3>
+            <button class="close-sidebar" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                Dashboard
+            </a>
+            <div class="sidebar-section">
+                <h4>Actions</h4>
+                <button class="nav-btn sidebar-logout" id="sidebarLogoutBtn">
+                    <span class="sidebar-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="prescriptions">Prescriptions</div>
+            <div class="tab" data-tab="inventory">Inventory</div>
+        </div>
+
+        <!-- Prescriptions Tab -->
+        <div class="tab-content active" id="prescriptionsTab">
+            <div class="section">
+                <h3 class="section-title">Pending Prescriptions</h3>
+                <div id="pendingPrescriptions">
+                    <div class="loading">Loading prescriptions...</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Completed Prescriptions</h3>
+                <div id="completedPrescriptions">
+                    <div class="loading">Loading completed prescriptions...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Tab -->
+        <div class="tab-content" id="inventoryTab">
+            <div class="section">
+                <h3 class="section-title">Medicine Inventory</h3>
+                <div id="inventoryList">
+                    <div class="loading">Loading inventory...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables
+        let prescriptions = [];
+        let medicines = [];
+        let currentBill = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            } else {
+                loadData();
+            }
+        });
+
+        // Load data
+        async function loadData() {
+            try {
+                // Load prescriptions
+                const prescriptionsSnapshot = await getDocs(collection(db, 'prescriptions'));
+                prescriptions = prescriptionsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load medicines
+                const medicinesSnapshot = await getDocs(collection(db, 'medicines'));
+                medicines = medicinesSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderPrescriptions();
+                renderInventory();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Error loading data', 'error');
+            }
+        }
+
+        // Render prescriptions
+        function renderPrescriptions() {
+            const pendingPrescriptions = prescriptions.filter(p => p.status === 'Pending');
+            const completedPrescriptions = prescriptions.filter(p => p.status === 'Completed');
+
+            renderPrescriptionSection('pendingPrescriptions', pendingPrescriptions, 'pending');
+            renderPrescriptionSection('completedPrescriptions', completedPrescriptions, 'completed');
+        }
+
+        // Render prescription section
+        function renderPrescriptionSection(containerId, prescriptions, status) {
+            const container = document.getElementById(containerId);
+            
+            if (prescriptions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No ' + status + ' prescriptions</h3><p>All prescriptions have been processed</p></div>';
+                return;
+            }
+
+            container.innerHTML = prescriptions.map(prescription => {
+                let medicinesHtml = '';
+                if (prescription.medications) {
+                    medicinesHtml = '<div class="medicines-list"><h4>Prescribed Medicines:</h4>' +
+                        prescription.medications.map(medicine => 
+                            '<div class="medicine-item">' +
+                                '<div class="medicine-name">' + medicine.name + '</div>' +
+                                '<div class="medicine-specs">' + medicine.dosage + ' • ' + medicine.frequency + ' • ' + medicine.duration + '</div>' +
+                                (medicine.quantity ? '<div class="medicine-specs">Quantity: ' + medicine.quantity + '</div>' : '') +
+                                (medicine.instructions ? '<div class="medicine-instructions">' + medicine.instructions + '</div>' : '') +
+                                (medicine.notes ? '<div class="medicine-instructions">Notes: ' + medicine.notes + '</div>' : '') +
+                            '</div>'
+                        ).join('') +
+                    '</div>';
+                }
+
+                let actionsHtml = '';
+                if (status === 'pending') {
+                    actionsHtml = '<button class="action-btn dispense-btn" onclick="startDispensing(\'' + prescription.id + '\')">Start Dispensing</button>';
+                }
+                actionsHtml += '<button class="action-btn view-btn" onclick="viewPrescription(\'' + prescription.id + '\')">View Details</button>';
+
+                return '<div class="prescription-card ' + status + '">' +
+                    '<div class="prescription-header">' +
+                        '<div>' +
+                            '<div class="patient-name">' + prescription.patientName + '</div>' +
+                            '<div class="prescription-details">Prescription ID: ' + prescription.id + ' • ' + new Date(prescription.createdAt).toLocaleString() + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    medicinesHtml +
+                    '<div class="prescription-actions">' + actionsHtml + '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // Render inventory
+        function renderInventory() {
+            const container = document.getElementById('inventoryList');
+            
+            if (medicines.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No medicines in inventory</h3><p>Add medicines to start managing inventory</p></div>';
+                return;
+            }
+
+            container.innerHTML = medicines.map(medicine => 
+                '<div class="medicine-card">' +
+                    '<div class="medicine-name">' + medicine.name + '</div>' +
+                    '<div class="medicine-details">' +
+                        'Type: ' + medicine.type + ' | Strength: ' + medicine.strength + '<br>' +
+                        'Stock: ' + medicine.currentStock + ' ' + medicine.unit + ' | Price: KES ' + medicine.unitPrice.toFixed(2) + '<br>' +
+                        'Expiry: ' + medicine.expiryDate +
+                    '</div>' +
+                '</div>'
+            ).join('');
+        }
+
+        // Start dispensing process
+        window.startDispensing = function(prescriptionId) {
+            const prescription = prescriptions.find(p => p.id === prescriptionId);
+            if (!prescription) {
+                showToast('Prescription not found', 'error');
+                return;
+            }
+
+            showDispensingModal(prescription);
+        };
+
+        // Show dispensing modal
+        function showDispensingModal(prescription) {
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = 
+                '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                        '<h3 class="modal-title">💊 Dispense Prescription - ' + prescription.patientName + '</h3>' +
+                        '<button class="close-btn" onclick="this.closest(\'.modal\').remove()">&times;</button>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Patient Information</label>' +
+                        '<input type="text" value="' + prescription.patientName + '" readonly>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Prescription ID</label>' +
+                        '<input type="text" value="' + prescription.id + '" readonly>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<h4>Medications & Pricing</h4>' +
+                        '<div id="medicationsList">' +
+                            (prescription.medications ? prescription.medications.map((medicine, index) => 
+                                '<div class="medication-item">' +
+                                    '<div class="medication-header">' +
+                                        '<div class="medication-name">' + medicine.name + '</div>' +
+                                    '</div>' +
+                                    '<div class="medication-specs">' +
+                                        medicine.dosage + ' • ' + medicine.frequency + ' • ' + medicine.duration +
+                                        (medicine.quantity ? ' • Quantity: ' + medicine.quantity : '') +
+                                    '</div>' +
+                                    (medicine.instructions ? '<div class="medicine-instructions">' + medicine.instructions + '</div>' : '') +
+                                    (medicine.notes ? '<div class="medicine-instructions">Notes: ' + medicine.notes + '</div>' : '') +
+                                    '<div class="medication-form">' +
+                                        '<input type="number" id="quantity_' + index + '" placeholder="Dispensed Quantity" min="1" value="' + (medicine.quantity || 1) + '">' +
+                                        '<input type="number" id="price_' + index + '" placeholder="Unit Price" min="0" step="0.01" onchange="updateMedicinePrice(' + index + ')">' +
+                                        '<input type="number" id="total_' + index + '" placeholder="Total" readonly>' +
+                                    '</div>' +
+                                '</div>'
+                            ).join('') : '<p>No medications found in this prescription.</p>') +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="billing-summary">' +
+                        '<h4>Billing Summary</h4>' +
+                        '<div class="total-amount" id="totalAmount">Total: $0.00</div>' +
+                    '</div>' +
+                    '<div class="modal-actions">' +
+                        '<button class="btn btn-secondary" onclick="this.closest(\'.modal\').remove()">Cancel</button>' +
+                        '<button class="btn btn-success" onclick="generateBill(\'' + prescription.id + '\')">Generate Bill & Complete</button>' +
+                    '</div>' +
+                '</div>';
+            
+            document.body.appendChild(modal);
+
+            // Initialize medicine data
+            modal.prescriptionMedicines = prescription.medications || [];
+            updateTotalAmount();
+        }
+
+        // Update medicine price
+        window.updateMedicinePrice = function(index) {
+            const modal = document.querySelector('.modal.show');
+            const priceInput = modal.querySelector('#price_' + index);
+            const quantityInput = modal.querySelector('#quantity_' + index);
+            const totalInput = modal.querySelector('#total_' + index);
+            
+            const price = parseFloat(priceInput.value) || 0;
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const total = price * quantity;
+            
+            totalInput.value = total.toFixed(2);
+            
+            // Update medicine data
+            if (modal.prescriptionMedicines[index]) {
+                modal.prescriptionMedicines[index].unitPrice = price;
+                modal.prescriptionMedicines[index].dispensedQuantity = quantity;
+                modal.prescriptionMedicines[index].totalPrice = total;
+            }
+            
+            updateTotalAmount();
+        };
+
+        // Update total amount
+        function updateTotalAmount() {
+            const modal = document.querySelector('.modal.show');
+            let total = 0;
+            
+            modal.prescriptionMedicines.forEach((medicine, index) => {
+                const totalInput = modal.querySelector('#total_' + index);
+                if (totalInput) {
+                    total += parseFloat(totalInput.value) || 0;
+                }
+            });
+            
+            document.getElementById('totalAmount').textContent = 'Total: KES ' + total.toFixed(2);
+        }
+
+        // Generate bill and complete dispensing
+        window.generateBill = async function(prescriptionId) {
+            const modal = document.querySelector('.modal.show');
+            const prescription = prescriptions.find(p => p.id === prescriptionId);
+            
+            if (!modal.prescriptionMedicines || modal.prescriptionMedicines.length === 0) {
+                showToast('No medicines to dispense', 'warning');
+                return;
+            }
+
+            // Validate all medicines have prices
+            let hasInvalidPrices = false;
+            modal.prescriptionMedicines.forEach((medicine, index) => {
+                const priceInput = modal.querySelector('#price_' + index);
+                if (!priceInput.value || parseFloat(priceInput.value) <= 0) {
+                    hasInvalidPrices = true;
+                }
+            });
+
+            if (hasInvalidPrices) {
+                showToast('Please set valid prices for all medicines', 'error');
+                return;
+            }
+
+            try {
+                // Calculate total amount
+                const totalAmount = modal.prescriptionMedicines.reduce((sum, medicine) => {
+                    return sum + (medicine.totalPrice || 0);
+                }, 0);
+
+                const billData = {
+                    prescriptionId: prescriptionId,
+                    patientId: prescription.patientId,
+                    patientName: prescription.patientName,
+                    medicines: modal.prescriptionMedicines,
+                    totalAmount: totalAmount,
+                    status: 'Pending',
+                    billType: 'Pharmacy',
+                    createdAt: new Date().toISOString(),
+                    dispensedBy: 'Pharmacy Staff'
+                };
+
+                // Save bill to billing collection
+                const billRef = await addDoc(collection(db, 'billing'), billData);
+                
+                // Update prescription status
+                await updateDoc(doc(db, 'prescriptions', prescriptionId), {
+                    status: 'Completed',
+                    completedAt: new Date().toISOString(),
+                    dispensedMedicines: modal.prescriptionMedicines,
+                    totalAmount: totalAmount
+                });
+
+                // Create discharge record
+                await addDoc(collection(db, 'discharges'), {
+                    patientId: prescription.patientId,
+                    patientName: prescription.patientName,
+                    dischargeDate: new Date().toISOString(),
+                    dischargeType: 'Routine',
+                    dischargeReason: 'Treatment completed - Prescription dispensed',
+                    billId: billRef.id,
+                    totalAmount: totalAmount,
+                    createdAt: new Date().toISOString()
+                });
+                
+                showToast('Prescription dispensed successfully! Bill created and forwarded to billing. Patient can now proceed to billing for payment.', 'success');
+                
+                modal.remove();
+                loadData();
+                
+                // Optionally redirect to billing page
+                setTimeout(() => {
+                    if (confirm('Bill created successfully! Would you like to go to the billing page to process payment?')) {
+                        window.location.href = 'billing.html';
+                    }
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error generating bill:', error);
+                showToast('Error generating bill', 'error');
+            }
+        };
+
+        // Show voucher
+        function showVoucher() {
+            if (!currentBill) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = 
+                '<div class="modal-content voucher-modal-content">' +
+                    '<div class="modal-header">' +
+                        '<h3 class="modal-title">📄 Pharmacy Voucher</h3>' +
+                        '<button class="close-btn" onclick="this.closest(\'.modal\').remove()">&times;</button>' +
+                    '</div>' +
+                    '<div class="voucher-content" id="voucherContent">' +
+                        '<div class="voucher-header">' +
+                            '<div class="hospital-name">Prince Alex Hospital</div>' +
+                            '<div class="hospital-details">' +
+                                'Hospital Management System (HMS)<br>' +
+                                'Pharmacy Department<br>' +
+                                new Date().toLocaleDateString() + ' • ' + new Date().toLocaleTimeString() +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="voucher-body">' +
+                            '<div class="patient-info">' +
+                                '<strong>Patient:</strong> ' + currentBill.patientName + '<br>' +
+                                '<strong>Bill ID:</strong> ' + currentBill.id + '<br>' +
+                                '<strong>Date:</strong> ' + new Date(currentBill.createdAt).toLocaleString() +
+                            '</div>' +
+                            '<table class="medicines-table">' +
+                                '<thead>' +
+                                    '<tr>' +
+                                        '<th>Medicine</th>' +
+                                        '<th>Dosage</th>' +
+                                        '<th>Quantity</th>' +
+                                        '<th>Unit Price</th>' +
+                                        '<th>Total</th>' +
+                                    '</tr>' +
+                                '</thead>' +
+                                '<tbody>' +
+                                    currentBill.medicines.map(medicine => 
+                                        '<tr>' +
+                                            '<td>' + medicine.name + '</td>' +
+                                            '<td>' + medicine.dosage + '</td>' +
+                                            '<td>' + (medicine.dispensedQuantity || medicine.quantity) + '</td>' +
+                                            '<td>KES ' + medicine.unitPrice.toFixed(2) + '</td>' +
+                                            '<td>KES ' + medicine.totalPrice.toFixed(2) + '</td>' +
+                                        '</tr>'
+                                    ).join('') +
+                                '</tbody>' +
+                            '</table>' +
+                            '<div class="total-section">' +
+                                '<div class="total-final">' +
+                                    '<span>Total Amount:</span>' +
+                                    '<span>KES ' + currentBill.totalAmount.toFixed(2) + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="voucher-footer">' +
+                            '<p>Thank you for choosing Prince Alex Hospital!</p>' +
+                            '<p>This voucher serves as proof of medicine dispensation.</p>' +
+                            '<p>Please keep this document for your records.</p>' +
+                            '<p>Voucher ID: ' + currentBill.id + ' | ' + new Date().toLocaleDateString() + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="modal-actions">' +
+                        '<button class="btn btn-secondary" onclick="this.closest(\'.modal\').remove()">Close</button>' +
+                        '<button class="btn btn-success" onclick="downloadVoucher()">Download Voucher</button>' +
+                    '</div>' +
+                '</div>';
+            
+            document.body.appendChild(modal);
+        }
+
+
+
+        // Show toast
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(tabName + 'Tab').classList.add('active');
+            });
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

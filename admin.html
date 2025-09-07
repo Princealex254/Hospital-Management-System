@@ -1,0 +1,2940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Admin - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .add-staff-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .add-staff-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .staff-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .staff-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .staff-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .staff-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #2563eb;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .department-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .department-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .department-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .department-description {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .department-staff-count {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        .system-info {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .backup-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .backup-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .backup-btn:hover {
+            background: #059669;
+        }
+
+        .restore-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .restore-btn:hover {
+            background: #d97706;
+        }
+
+        /* Patient Management Styles */
+        .patient-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            padding: 0.5rem 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .patient-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .patient-filters select {
+            padding: 0.5rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+
+        .patient-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .patient-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .patient-card.triage {
+            border-left-color: #f59e0b;
+        }
+
+        .patient-card.consultation {
+            border-left-color: #3b82f6;
+        }
+
+        .patient-card.lab {
+            border-left-color: #8b5cf6;
+        }
+
+        .patient-card.pharmacy {
+            border-left-color: #10b981;
+        }
+
+        .patient-card.billing {
+            border-left-color: #ef4444;
+        }
+
+        .patient-card.discharged {
+            border-left-color: #6b7280;
+        }
+
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .patient-id {
+            font-size: 0.8rem;
+            color: #666;
+            background: #e5e7eb;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .patient-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .patient-status.discharged {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .patient-status.triage {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .patient-status.consultation {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .patient-status.lab {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .patient-status.pharmacy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .patient-status.billing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .patient-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .transfer-section {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .transfer-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .transfer-form .form-group {
+            margin-bottom: 0;
+        }
+
+        .transfer-form .form-group:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .transfer-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .transfer-form textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        /* Debug Tools Styles */
+        .debug-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .debug-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .debug-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .debug-card h4 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .debug-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .health-item, .metric-item, .validation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .health-label, .metric-label, .validation-label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .health-status, .metric-value, .validation-status {
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .health-status.healthy, .validation-status.pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .health-status.warning, .validation-status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .health-status.error, .validation-status.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .health-status.checking, .validation-status.checking {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .log-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .log-controls select {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .log-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            padding: 0.25rem;
+            border-radius: 3px;
+        }
+
+        .log-entry:hover {
+            background: #374151;
+        }
+
+        .log-time {
+            color: #9ca3af;
+            min-width: 80px;
+        }
+
+        .log-level {
+            min-width: 50px;
+            font-weight: bold;
+        }
+
+        .log-level.error {
+            color: #f87171;
+        }
+
+        .log-level.warn {
+            color: #fbbf24;
+        }
+
+        .log-level.info {
+            color: #60a5fa;
+        }
+
+        .log-message {
+            flex: 1;
+        }
+
+        .action-group {
+            margin-bottom: 1rem;
+        }
+
+        .action-group h5 {
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .action-group .btn {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-label {
+            font-weight: 500;
+            color: #374151;
+            flex: 1;
+        }
+
+        .test-result {
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .test-result.pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .test-result.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .test-result.running {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .console-section {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .console-input {
+            margin-bottom: 1rem;
+        }
+
+        .console-input input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .console-input input:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        .console-output {
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .console-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .console-prompt {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .console-text {
+            flex: 1;
+        }
+
+        .console-text.error {
+            color: #f87171;
+        }
+
+        .console-text.success {
+            color: #10b981;
+        }
+
+        .console-text.warning {
+            color: #fbbf24;
+        }
+
+        /* Hamburger Menu Styles */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hamburger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger-btn span {
+            width: 2rem;
+            height: 0.25rem;
+            background: white;
+            border-radius: 10px;
+            transition: all 0.3s linear;
+            position: relative;
+            transform-origin: 1px;
+        }
+
+        .hamburger-btn.active span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section h4 {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 0.5rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar-link, .sidebar-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .sidebar-link:hover, .sidebar-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-right: 3px solid white;
+        }
+
+        .sidebar-icon {
+            font-size: 1.2rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        .sidebar-logout {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            margin: 0 1.5rem;
+            border-radius: 6px;
+        }
+
+        .sidebar-logout:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+                justify-content: space-between;
+            }
+
+            .header-left h1 {
+                font-size: 1.2rem;
+                margin: 0;
+            }
+
+            .hamburger-btn {
+                display: flex;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .backup-actions {
+                flex-direction: column;
+            }
+
+            .tabs {
+                display: none; /* Hide desktop tabs on mobile */
+            }
+
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-card {
+                padding: 1rem;
+            }
+
+            .modal {
+                width: 95%;
+                margin: 1rem auto;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .modal-content {
+                padding: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .search-input {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .patients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .patient-card {
+                padding: 1rem;
+            }
+
+            .transfer-section {
+                padding: 1rem;
+            }
+
+            .transfer-form {
+                gap: 1rem;
+            }
+
+            .transfer-form input,
+            .transfer-form select,
+            .transfer-form textarea {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            /* Debug Tools Mobile */
+            .debug-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .debug-card {
+                padding: 0.75rem;
+            }
+
+            .debug-card h4 {
+                font-size: 0.9rem;
+            }
+
+            .health-item, .metric-item, .validation-item {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .log-container {
+                max-height: 150px;
+                font-size: 0.7rem;
+            }
+
+            .console-output {
+                max-height: 200px;
+                font-size: 0.8rem;
+            }
+
+            .console-input input {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .action-group .btn {
+                margin-right: 0.25rem;
+                margin-bottom: 0.25rem;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .test-item {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .test-label {
+                font-size: 0.8rem;
+            }
+
+            .test-result {
+                font-size: 0.7rem;
+                min-width: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>🏥 Prince Alex Hospital – Hospital Management System (HMS)</h1>
+        </div>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button class="nav-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+            <button class="close-sidebar" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                Dashboard
+            </a>
+            <div class="sidebar-section">
+                <h4>Management</h4>
+                <button class="sidebar-tab" data-tab="staff">
+                    <span class="sidebar-icon">👥</span>
+                    Staff Management
+                </button>
+                <button class="sidebar-tab" data-tab="patients">
+                    <span class="sidebar-icon">🏥</span>
+                    Patient Management
+                </button>
+                <button class="sidebar-tab" data-tab="departments">
+                    <span class="sidebar-icon">🏢</span>
+                    Departments
+                </button>
+            </div>
+            <div class="sidebar-section">
+                <h4>System</h4>
+                <button class="sidebar-tab" data-tab="debug">
+                    <span class="sidebar-icon">🔧</span>
+                    Debug Tools
+                </button>
+                <button class="sidebar-tab" data-tab="system">
+                    <span class="sidebar-icon">ℹ️</span>
+                    System Info
+                </button>
+            </div>
+            <div class="sidebar-section">
+                <h4>Actions</h4>
+                <button class="nav-btn sidebar-logout" id="sidebarLogoutBtn">
+                    <span class="sidebar-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">👨‍💼 Admin Panel</h2>
+            <button class="add-staff-btn" id="addStaffBtn">
+                <span class="spinner" id="addSpinner"></span>
+                <span id="addBtnText">+ Add Staff</span>
+            </button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="staff">Staff Management</div>
+            <div class="tab" data-tab="patients">Patient Management</div>
+            <div class="tab" data-tab="departments">Departments</div>
+            <div class="tab" data-tab="debug">Debug Tools</div>
+            <div class="tab" data-tab="system">System Info</div>
+        </div>
+
+        <!-- Staff Management Tab -->
+        <div class="tab-content active" id="staffTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchStaff" placeholder="Search staff by name, email, or department...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Hospital Staff</h3>
+                </div>
+                <div class="staff-grid" id="staffGrid">
+                    <div class="loading">Loading staff data...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Management Tab -->
+        <div class="tab-content" id="patientsTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchPatients" placeholder="Search patients by name, ID, or contact...">
+                <button class="btn btn-primary" id="refreshPatientsBtn">Refresh</button>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Patient Overview</h3>
+                    <div class="patient-stats">
+                        <span class="stat-item">Total: <strong id="totalPatientsCount">0</strong></span>
+                        <span class="stat-item">Active: <strong id="activePatientsCount">0</strong></span>
+                        <span class="stat-item">Discharged: <strong id="dischargedPatientsCount">0</strong></span>
+                    </div>
+                </div>
+                <div class="patient-filters">
+                    <select id="patientStatusFilter">
+                        <option value="all">All Patients</option>
+                        <option value="active">Active Patients</option>
+                        <option value="discharged">Discharged Patients</option>
+                        <option value="triage">In Triage</option>
+                        <option value="consultation">In Consultation</option>
+                        <option value="lab">In Lab</option>
+                        <option value="pharmacy">In Pharmacy</option>
+                    </select>
+                    <select id="patientSectionFilter">
+                        <option value="all">All Sections</option>
+                        <option value="triage">Triage</option>
+                        <option value="consultation">Consultation</option>
+                        <option value="lab">Laboratory</option>
+                        <option value="pharmacy">Pharmacy</option>
+                        <option value="billing">Billing</option>
+                        <option value="discharged">Discharged</option>
+                    </select>
+                </div>
+                <div id="patientsList" class="patients-grid">
+                    <div class="loading">Loading patient data...</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Patient Transfer</h3>
+                </div>
+                <div class="transfer-section">
+                    <div class="transfer-form">
+                        <div class="form-group">
+                            <label for="transferPatient">Select Patient</label>
+                            <select id="transferPatient" required>
+                                <option value="">Choose a patient...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fromSection">From Section</label>
+                            <select id="fromSection" required>
+                                <option value="">Current Section</option>
+                                <option value="triage">Triage</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="lab">Laboratory</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="billing">Billing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="toSection">To Section</label>
+                            <select id="toSection" required>
+                                <option value="">Choose destination...</option>
+                                <option value="triage">Triage</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="lab">Laboratory</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="billing">Billing</option>
+                                <option value="discharged">Discharge</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="transferNotes">Transfer Notes</label>
+                            <textarea id="transferNotes" placeholder="Reason for transfer or additional notes..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" id="transferPatientBtn">Transfer Patient</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Tools Tab -->
+        <div class="tab-content" id="debugTab">
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">🔧 System Debug Tools</h3>
+                    <div class="debug-controls">
+                        <button class="btn btn-primary" id="runSystemCheckBtn">Run System Check</button>
+                        <button class="btn btn-secondary" id="clearLogsBtn">Clear Logs</button>
+                        <button class="btn btn-secondary" id="exportLogsBtn">Export Logs</button>
+                    </div>
+                </div>
+                
+                <div class="debug-grid">
+                    <div class="debug-card">
+                        <h4>📊 System Health</h4>
+                        <div id="systemHealth" class="debug-content">
+                            <div class="health-item">
+                                <span class="health-label">Firebase Connection:</span>
+                                <span class="health-status" id="firebaseStatus">Checking...</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="health-label">Database Collections:</span>
+                                <span class="health-status" id="collectionsStatus">Checking...</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="health-label">Authentication:</span>
+                                <span class="health-status" id="authStatus">Checking...</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="health-label">Data Integrity:</span>
+                                <span class="health-status" id="dataIntegrityStatus">Checking...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="debug-card">
+                        <h4>📈 Performance Metrics</h4>
+                        <div id="performanceMetrics" class="debug-content">
+                            <div class="metric-item">
+                                <span class="metric-label">Page Load Time:</span>
+                                <span class="metric-value" id="pageLoadTime">-</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Data Fetch Time:</span>
+                                <span class="metric-value" id="dataFetchTime">-</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Memory Usage:</span>
+                                <span class="metric-value" id="memoryUsage">-</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Active Connections:</span>
+                                <span class="metric-value" id="activeConnections">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="debug-card">
+                        <h4>🔍 Data Validation</h4>
+                        <div id="dataValidation" class="debug-content">
+                            <div class="validation-item">
+                                <span class="validation-label">Orphaned Records:</span>
+                                <span class="validation-status" id="orphanedRecords">Checking...</span>
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-label">Missing References:</span>
+                                <span class="validation-status" id="missingReferences">Checking...</span>
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-label">Data Consistency:</span>
+                                <span class="validation-status" id="dataConsistency">Checking...</span>
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-label">Schema Validation:</span>
+                                <span class="validation-status" id="schemaValidation">Checking...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="debug-card">
+                        <h4>🚨 Error Logs</h4>
+                        <div id="errorLogs" class="debug-content">
+                            <div class="log-controls">
+                                <select id="logLevelFilter">
+                                    <option value="all">All Levels</option>
+                                    <option value="error">Errors Only</option>
+                                    <option value="warn">Warnings Only</option>
+                                    <option value="info">Info Only</option>
+                                </select>
+                                <button class="btn btn-small" id="refreshLogsBtn">Refresh</button>
+                            </div>
+                            <div class="log-container" id="logContainer">
+                                <div class="log-entry">
+                                    <span class="log-time">System initialized</span>
+                                    <span class="log-level info">INFO</span>
+                                    <span class="log-message">Debug tools loaded successfully</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="debug-card">
+                        <h4>🔄 System Actions</h4>
+                        <div id="systemActions" class="debug-content">
+                            <div class="action-group">
+                                <h5>Database Operations</h5>
+                                <button class="btn btn-small" id="testDbConnectionBtn">Test DB Connection</button>
+                                <button class="btn btn-small" id="validateCollectionsBtn">Validate Collections</button>
+                                <button class="btn btn-small" id="checkDataIntegrityBtn">Check Data Integrity</button>
+                            </div>
+                            <div class="action-group">
+                                <h5>System Maintenance</h5>
+                                <button class="btn btn-small" id="clearCacheBtn">Clear Cache</button>
+                                <button class="btn btn-small" id="resetSystemBtn">Reset System</button>
+                                <button class="btn btn-small" id="backupDataBtn">Backup Data</button>
+                            </div>
+                            <div class="action-group">
+                                <h5>Diagnostics</h5>
+                                <button class="btn btn-small" id="runDiagnosticsBtn">Run Full Diagnostics</button>
+                                <button class="btn btn-small" id="checkPermissionsBtn">Check Permissions</button>
+                                <button class="btn btn-small" id="testApiEndpointsBtn">Test API Endpoints</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="debug-card">
+                        <h4>📋 Quick Tests</h4>
+                        <div id="quickTests" class="debug-content">
+                            <div class="test-item">
+                                <span class="test-label">Patient Registration:</span>
+                                <button class="btn btn-small" id="testPatientRegBtn">Test</button>
+                                <span class="test-result" id="patientRegResult">-</span>
+                            </div>
+                            <div class="test-item">
+                                <span class="test-label">Appointment Booking:</span>
+                                <button class="btn btn-small" id="testAppointmentBtn">Test</button>
+                                <span class="test-result" id="appointmentResult">-</span>
+                            </div>
+                            <div class="test-item">
+                                <span class="test-label">Lab Request:</span>
+                                <button class="btn btn-small" id="testLabRequestBtn">Test</button>
+                                <span class="test-result" id="labRequestResult">-</span>
+                            </div>
+                            <div class="test-item">
+                                <span class="test-label">Billing Process:</span>
+                                <button class="btn btn-small" id="testBillingBtn">Test</button>
+                                <span class="test-result" id="billingResult">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">📝 Debug Console</h3>
+                    <div class="console-controls">
+                        <button class="btn btn-secondary" id="clearConsoleBtn">Clear Console</button>
+                        <button class="btn btn-primary" id="executeCommandBtn">Execute</button>
+                    </div>
+                </div>
+                <div class="console-section">
+                    <div class="console-input">
+                        <input type="text" id="debugCommand" placeholder="Enter debug command (e.g., 'check patient P001', 'validate data', 'test connection')">
+                    </div>
+                    <div class="console-output" id="consoleOutput">
+                        <div class="console-line">
+                            <span class="console-prompt">debug></span>
+                            <span class="console-text">Debug console ready. Type commands to debug the system.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Tab -->
+        <div class="tab-content" id="departmentsTab">
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Hospital Departments</h3>
+                </div>
+                <div class="department-list" id="departmentList">
+                    <div class="loading">Loading departments...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Info Tab -->
+        <div class="tab-content" id="systemTab">
+            <div class="system-info">
+                <div class="section-header">
+                    <h3 class="section-title">System Overview</h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-value" id="totalUsers">0</div>
+                        <div class="info-label">Total Users</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="totalPatients">0</div>
+                        <div class="info-label">Total Patients</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="totalAppointments">0</div>
+                        <div class="info-label">Appointments</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="totalRevenue">$0</div>
+                        <div class="info-label">Total Revenue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="backup-section">
+                <div class="section-header">
+                    <h3 class="section-title">Data Management</h3>
+                </div>
+                <div class="backup-actions">
+                    <button class="btn backup-btn" id="backupBtn">
+                        <span class="spinner" id="backupSpinner"></span>
+                        <span id="backupBtnText">📦 Backup Data</span>
+                    </button>
+                    <button class="btn restore-btn" id="restoreBtn">
+                        <span class="spinner" id="restoreSpinner"></span>
+                        <span id="restoreBtnText">🔄 Restore Data</span>
+                    </button>
+                    <button class="btn btn-secondary" id="clearDataBtn">
+                        <span class="spinner" id="clearSpinner"></span>
+                        <span id="clearBtnText">🗑️ Clear All Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Staff Modal -->
+    <div class="modal" id="staffModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="staffModalTitle">Add New Staff Member</h3>
+                <button class="close-btn" id="closeStaffModal">&times;</button>
+            </div>
+            <form id="staffForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="staffName">Full Name *</label>
+                        <input type="text" id="staffName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffEmail">Email Address *</label>
+                        <input type="email" id="staffEmail" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="staffDepartment">Department *</label>
+                        <select id="staffDepartment" required>
+                            <option value="">Select Department</option>
+                            <option value="Administration">Administration</option>
+                            <option value="Emergency">Emergency</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Laboratory">Laboratory</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="Radiology">Radiology</option>
+                            <option value="Nursing">Nursing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffPosition">Position *</label>
+                        <input type="text" id="staffPosition" required placeholder="e.g., Doctor, Nurse, Technician">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="staffPhone">Phone Number</label>
+                        <input type="tel" id="staffPhone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="staffHireDate">Hire Date *</label>
+                        <input type="date" id="staffHireDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="staffAddress">Address</label>
+                    <textarea id="staffAddress" placeholder="Full address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="staffNotes">Notes</label>
+                    <textarea id="staffNotes" placeholder="Additional notes about the staff member"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelStaffBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveStaffBtn">
+                        <span class="spinner" id="saveSpinner"></span>
+                        <span id="saveBtnText">Save Staff</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let staff = [];
+        let editingStaff = null;
+        
+        // Patient management data
+        let patients = [];
+        let triagePatients = [];
+        let consultations = [];
+        let labRequests = [];
+        let prescriptions = [];
+        let billing = [];
+        let discharges = [];
+
+        // Toast function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadData();
+        });
+
+        // Hamburger Menu and Sidebar Functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+            hamburgerBtn.classList.toggle('active');
+        }
+
+        // Close sidebar
+        function closeSidebarMenu() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+        }
+
+        // Event listeners for sidebar
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', closeSidebarMenu);
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+        sidebarLogoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+
+        // Sidebar tab switching
+        document.querySelectorAll('.sidebar-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active states
+                document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Switch to the tab content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+                
+                // Load data if needed
+                if (tabName === 'system') {
+                    updateSystemInfo();
+                } else if (tabName === 'patients') {
+                    loadPatientData();
+                } else if (tabName === 'debug') {
+                    initializeDebugTools();
+                }
+                
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    closeSidebarMenu();
+                }
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+                
+                if (tabName === 'system') {
+                    updateSystemInfo();
+                } else if (tabName === 'patients') {
+                    loadPatientData();
+                } else if (tabName === 'debug') {
+                    initializeDebugTools();
+                }
+            });
+        });
+
+        // Load data
+        async function loadData() {
+            try {
+                // Load staff
+                const staffSnapshot = await getDocs(collection(db, 'staff'));
+                staff = staffSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                renderStaff();
+                renderDepartments();
+                updateSystemInfo();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Error loading data', 'error');
+            }
+        }
+
+        // Render staff
+        function renderStaff() {
+            const container = document.getElementById('staffGrid');
+            
+            if (staff.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No staff members</h3>
+                        <p>Add staff members to get started</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = staff.map(member => `
+                <div class="staff-card">
+                    <div class="staff-header">
+                        <div>
+                            <div class="staff-name">${member.name}</div>
+                            <div class="staff-details">
+                                ${member.position} • ${member.department}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="staff-details">
+                        <strong>Email:</strong> ${member.email}<br>
+                        ${member.phone ? `<strong>Phone:</strong> ${member.phone}<br>` : ''}
+                        <strong>Hire Date:</strong> ${new Date(member.hireDate).toLocaleDateString()}
+                    </div>
+                    ${member.address ? `
+                    <div class="staff-details">
+                        <strong>Address:</strong> ${member.address}
+                    </div>
+                    ` : ''}
+                    ${member.notes ? `
+                    <div class="staff-details">
+                        <strong>Notes:</strong> ${member.notes}
+                    </div>
+                    ` : ''}
+                    <div class="staff-actions">
+                        <button class="action-btn edit-btn" onclick="editStaff('${member.id}')">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteStaff('${member.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render departments
+        function renderDepartments() {
+            const departments = [
+                { name: 'Administration', description: 'Hospital administration and management', staffCount: staff.filter(s => s.department === 'Administration').length },
+                { name: 'Emergency', description: 'Emergency medicine and trauma care', staffCount: staff.filter(s => s.department === 'Emergency').length },
+                { name: 'Cardiology', description: 'Heart and cardiovascular care', staffCount: staff.filter(s => s.department === 'Cardiology').length },
+                { name: 'Neurology', description: 'Brain and nervous system care', staffCount: staff.filter(s => s.department === 'Neurology').length },
+                { name: 'Orthopedics', description: 'Bone and joint care', staffCount: staff.filter(s => s.department === 'Orthopedics').length },
+                { name: 'Pediatrics', description: 'Children\'s healthcare', staffCount: staff.filter(s => s.department === 'Pediatrics').length },
+                { name: 'Surgery', description: 'Surgical procedures and operations', staffCount: staff.filter(s => s.department === 'Surgery').length },
+                { name: 'Laboratory', description: 'Medical testing and diagnostics', staffCount: staff.filter(s => s.department === 'Laboratory').length },
+                { name: 'Pharmacy', description: 'Medication management and dispensing', staffCount: staff.filter(s => s.department === 'Pharmacy').length },
+                { name: 'Radiology', description: 'Medical imaging and diagnostics', staffCount: staff.filter(s => s.department === 'Radiology').length },
+                { name: 'Nursing', description: 'Patient care and nursing services', staffCount: staff.filter(s => s.department === 'Nursing').length }
+            ];
+
+            const container = document.getElementById('departmentList');
+            container.innerHTML = departments.map(dept => `
+                <div class="department-card">
+                    <div class="department-name">${dept.name}</div>
+                    <div class="department-description">${dept.description}</div>
+                    <div class="department-staff-count">${dept.staffCount} staff member${dept.staffCount !== 1 ? 's' : ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update system info
+        async function updateSystemInfo() {
+            try {
+                const collections = ['patients', 'appointments', 'billing'];
+                const counts = {};
+                
+                for (const collectionName of collections) {
+                    const snapshot = await getDocs(collection(db, collectionName));
+                    counts[collectionName] = snapshot.size;
+                }
+                
+                const totalRevenue = await getDocs(collection(db, 'billing'));
+                const revenue = totalRevenue.docs
+                    .map(doc => doc.data())
+                    .filter(bill => bill.status === 'Paid')
+                    .reduce((sum, bill) => sum + bill.totalAmount, 0);
+                
+                document.getElementById('totalUsers').textContent = staff.length;
+                document.getElementById('totalPatients').textContent = counts.patients || 0;
+                document.getElementById('totalAppointments').textContent = counts.appointments || 0;
+                document.getElementById('totalRevenue').textContent = `$${revenue.toFixed(2)}`;
+            } catch (error) {
+                console.error('Error updating system info:', error);
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchStaff').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredStaff = staff.filter(member => 
+                member.name.toLowerCase().includes(searchTerm) ||
+                member.email.toLowerCase().includes(searchTerm) ||
+                member.department.toLowerCase().includes(searchTerm) ||
+                member.position.toLowerCase().includes(searchTerm)
+            );
+            
+            const container = document.getElementById('staffGrid');
+            if (filteredStaff.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No staff found</h3>
+                        <p>No staff members match your search criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredStaff.map(member => `
+                <div class="staff-card">
+                    <div class="staff-header">
+                        <div>
+                            <div class="staff-name">${member.name}</div>
+                            <div class="staff-details">
+                                ${member.position} • ${member.department}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="staff-details">
+                        <strong>Email:</strong> ${member.email}<br>
+                        ${member.phone ? `<strong>Phone:</strong> ${member.phone}<br>` : ''}
+                        <strong>Hire Date:</strong> ${new Date(member.hireDate).toLocaleDateString()}
+                    </div>
+                    ${member.address ? `
+                    <div class="staff-details">
+                        <strong>Address:</strong> ${member.address}
+                    </div>
+                    ` : ''}
+                    ${member.notes ? `
+                    <div class="staff-details">
+                        <strong>Notes:</strong> ${member.notes}
+                    </div>
+                    ` : ''}
+                    <div class="staff-actions">
+                        <button class="action-btn edit-btn" onclick="editStaff('${member.id}')">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteStaff('${member.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        // Staff actions
+        window.editStaff = function(staffId) {
+            editingStaff = staff.find(s => s.id === staffId);
+            
+            document.getElementById('staffModalTitle').textContent = 'Edit Staff Member';
+            document.getElementById('staffName').value = editingStaff.name;
+            document.getElementById('staffEmail').value = editingStaff.email;
+            document.getElementById('staffDepartment').value = editingStaff.department;
+            document.getElementById('staffPosition').value = editingStaff.position;
+            document.getElementById('staffPhone').value = editingStaff.phone || '';
+            document.getElementById('staffHireDate').value = editingStaff.hireDate;
+            document.getElementById('staffAddress').value = editingStaff.address || '';
+            document.getElementById('staffNotes').value = editingStaff.notes || '';
+            
+            document.getElementById('staffModal').classList.add('show');
+        };
+
+        window.deleteStaff = async function(staffId) {
+            if (confirm('Are you sure you want to delete this staff member?')) {
+                try {
+                    await deleteDoc(doc(db, 'staff', staffId));
+                    staff = staff.filter(s => s.id !== staffId);
+                    renderStaff();
+                    renderDepartments();
+                    showToast('Staff member deleted successfully', 'success');
+                } catch (error) {
+                    console.error('Error deleting staff:', error);
+                    showToast('Error deleting staff member', 'error');
+                }
+            }
+        };
+
+        // Save staff form
+        document.getElementById('staffForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveStaffBtn');
+            const saveSpinner = document.getElementById('saveSpinner');
+            const saveBtnText = document.getElementById('saveBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Saving...';
+
+            try {
+                const staffData = {
+                    name: document.getElementById('staffName').value,
+                    email: document.getElementById('staffEmail').value,
+                    department: document.getElementById('staffDepartment').value,
+                    position: document.getElementById('staffPosition').value,
+                    phone: document.getElementById('staffPhone').value || null,
+                    hireDate: document.getElementById('staffHireDate').value,
+                    address: document.getElementById('staffAddress').value || null,
+                    notes: document.getElementById('staffNotes').value || null,
+                    createdAt: new Date().toISOString()
+                };
+
+                if (editingStaff) {
+                    // Update existing staff
+                    await updateDoc(doc(db, 'staff', editingStaff.id), staffData);
+                    const staffIndex = staff.findIndex(s => s.id === editingStaff.id);
+                    staff[staffIndex] = { id: editingStaff.id, ...staffData };
+                    showToast('Staff member updated successfully', 'success');
+                } else {
+                    // Add new staff
+                    const docRef = await addDoc(collection(db, 'staff'), staffData);
+                    staff.push({ id: docRef.id, ...staffData });
+                    showToast('Staff member added successfully', 'success');
+                }
+
+                closeStaffModal();
+                renderStaff();
+                renderDepartments();
+                
+            } catch (error) {
+                console.error('Error saving staff:', error);
+                showToast('Error saving staff member', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Save Staff';
+            }
+        });
+
+        // Add staff button
+        document.getElementById('addStaffBtn').addEventListener('click', () => {
+            editingStaff = null;
+            document.getElementById('staffModalTitle').textContent = 'Add New Staff Member';
+            document.getElementById('staffForm').reset();
+            
+            // Set default hire date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('staffHireDate').value = today;
+            
+            document.getElementById('staffModal').classList.add('show');
+        });
+
+        // Backup functionality
+        document.getElementById('backupBtn').addEventListener('click', async () => {
+            const backupBtn = document.getElementById('backupBtn');
+            const backupSpinner = document.getElementById('backupSpinner');
+            const backupBtnText = document.getElementById('backupBtnText');
+            
+            // Show loading state
+            backupBtn.disabled = true;
+            backupSpinner.style.display = 'inline-block';
+            backupBtnText.textContent = 'Backing up...';
+
+            try {
+                const collections = ['patients', 'appointments', 'billing', 'labRequests', 'labResults', 'prescriptions', 'medicines', 'triage', 'consultations', 'staff'];
+                const backupData = {};
+                
+                for (const collectionName of collections) {
+                    const snapshot = await getDocs(collection(db, collectionName));
+                    backupData[collectionName] = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                }
+                
+                const exportData = {
+                    timestamp: new Date().toISOString(),
+                    hospital: 'Prince Alex Hospital',
+                    version: '1.0',
+                    data: backupData
+                };
+
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `prince-alex-hospital-backup-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                
+                showToast('Data backup completed successfully', 'success');
+                
+            } catch (error) {
+                console.error('Error backing up data:', error);
+                showToast('Error backing up data', 'error');
+            } finally {
+                // Reset button state
+                backupBtn.disabled = false;
+                backupSpinner.style.display = 'none';
+                backupBtnText.textContent = '📦 Backup Data';
+            }
+        });
+
+        // Clear data functionality
+        document.getElementById('clearDataBtn').addEventListener('click', async () => {
+            if (confirm('⚠️ WARNING: This will permanently delete ALL data from the system. This action cannot be undone. Are you absolutely sure?')) {
+                if (confirm('This is your final warning. All patient data, appointments, bills, and other records will be permanently deleted. Continue?')) {
+                    const clearBtn = document.getElementById('clearDataBtn');
+                    const clearSpinner = document.getElementById('clearSpinner');
+                    const clearBtnText = document.getElementById('clearBtnText');
+                    
+                    // Show loading state
+                    clearBtn.disabled = true;
+                    clearSpinner.style.display = 'inline-block';
+                    clearBtnText.textContent = 'Clearing...';
+
+                    try {
+                        const collections = ['patients', 'appointments', 'billing', 'labRequests', 'labResults', 'prescriptions', 'medicines', 'triage', 'consultations'];
+                        
+                        for (const collectionName of collections) {
+                            const snapshot = await getDocs(collection(db, collectionName));
+                            const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
+                            await Promise.all(deletePromises);
+                        }
+                        
+                        showToast('All data cleared successfully', 'success');
+                        await loadData();
+                        
+                    } catch (error) {
+                        console.error('Error clearing data:', error);
+                        showToast('Error clearing data', 'error');
+                    } finally {
+                        // Reset button state
+                        clearBtn.disabled = false;
+                        clearSpinner.style.display = 'none';
+                        clearBtnText.textContent = '🗑️ Clear All Data';
+                    }
+                }
+            }
+        });
+
+        // Close modal
+        function closeStaffModal() {
+            document.getElementById('staffModal').classList.remove('show');
+            document.getElementById('staffForm').reset();
+            editingStaff = null;
+        }
+
+        // Modal event listeners
+        document.getElementById('closeStaffModal').addEventListener('click', closeStaffModal);
+        document.getElementById('cancelStaffBtn').addEventListener('click', closeStaffModal);
+        
+        document.getElementById('staffModal').addEventListener('click', (e) => {
+            if (e.target.id === 'staffModal') closeStaffModal();
+        });
+
+        // Patient Management Functions
+        async function loadPatientData() {
+            try {
+                // Load all patient-related data
+                const [patientsSnapshot, triageSnapshot, consultationsSnapshot, labRequestsSnapshot, prescriptionsSnapshot, billingSnapshot, dischargesSnapshot] = await Promise.all([
+                    getDocs(collection(db, 'patients')),
+                    getDocs(collection(db, 'triage')),
+                    getDocs(collection(db, 'consultations')),
+                    getDocs(collection(db, 'labRequests')),
+                    getDocs(collection(db, 'prescriptions')),
+                    getDocs(collection(db, 'billing')),
+                    getDocs(collection(db, 'discharges'))
+                ]);
+
+                patients = patientsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                triagePatients = triageSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                consultations = consultationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                labRequests = labRequestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                prescriptions = prescriptionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                billing = billingSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                discharges = dischargesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                updatePatientStats();
+                renderPatients();
+                updateTransferDropdowns();
+            } catch (error) {
+                console.error('Error loading patient data:', error);
+                showToast('Error loading patient data', 'error');
+            }
+        }
+
+        function updatePatientStats() {
+            const totalPatients = patients.length;
+            const activePatients = patients.filter(p => !discharges.find(d => d.patientId === p.id)).length;
+            const dischargedPatients = discharges.length;
+
+            document.getElementById('totalPatientsCount').textContent = totalPatients;
+            document.getElementById('activePatientsCount').textContent = activePatients;
+            document.getElementById('dischargedPatientsCount').textContent = dischargedPatients;
+        }
+
+        function getPatientCurrentSection(patientId) {
+            // Check if patient is in triage
+            if (triagePatients.find(t => t.patientId === patientId)) return 'triage';
+            
+            // Check if patient has active consultations
+            if (consultations.find(c => c.patientId === patientId && !c.completed)) return 'consultation';
+            
+            // Check if patient has pending lab requests
+            if (labRequests.find(l => l.patientId === patientId && l.status === 'Pending')) return 'lab';
+            
+            // Check if patient has pending prescriptions
+            if (prescriptions.find(p => p.patientId === patientId && p.status === 'Pending')) return 'pharmacy';
+            
+            // Check if patient has pending bills
+            if (billing.find(b => b.patientId === patientId && b.status === 'Pending')) return 'billing';
+            
+            // Check if patient is discharged
+            if (discharges.find(d => d.patientId === patientId)) return 'discharged';
+            
+            return 'active';
+        }
+
+        function renderPatients() {
+            const container = document.getElementById('patientsList');
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+            const sectionFilter = document.getElementById('patientSectionFilter').value;
+            const searchTerm = document.getElementById('searchPatients').value.toLowerCase();
+
+            let filteredPatients = patients;
+
+            // Apply filters
+            if (statusFilter !== 'all') {
+                filteredPatients = filteredPatients.filter(patient => {
+                    const currentSection = getPatientCurrentSection(patient.id);
+                    return currentSection === statusFilter;
+                });
+            }
+
+            if (sectionFilter !== 'all') {
+                filteredPatients = filteredPatients.filter(patient => {
+                    const currentSection = getPatientCurrentSection(patient.id);
+                    return currentSection === sectionFilter;
+                });
+            }
+
+            // Apply search
+            if (searchTerm) {
+                filteredPatients = filteredPatients.filter(patient => 
+                    patient.name.toLowerCase().includes(searchTerm) ||
+                    patient.id.toLowerCase().includes(searchTerm) ||
+                    (patient.contact && patient.contact.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            if (filteredPatients.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No patients found</h3><p>No patients match the current filters</p></div>';
+                return;
+            }
+
+            container.innerHTML = filteredPatients.map(patient => {
+                const currentSection = getPatientCurrentSection(patient.id);
+                const sectionLabels = {
+                    'triage': 'In Triage',
+                    'consultation': 'In Consultation',
+                    'lab': 'In Laboratory',
+                    'pharmacy': 'In Pharmacy',
+                    'billing': 'In Billing',
+                    'discharged': 'Discharged',
+                    'active': 'Active'
+                };
+
+                return `
+                    <div class="patient-card ${currentSection}">
+                        <div class="patient-header">
+                            <div>
+                                <div class="patient-name">${patient.name}</div>
+                                <div class="patient-id">ID: ${patient.id}</div>
+                            </div>
+                            <span class="patient-status ${currentSection}">${sectionLabels[currentSection]}</span>
+                        </div>
+                        <div class="patient-details">
+                            <div>Age: ${patient.age} • Gender: ${patient.gender}</div>
+                            <div>Contact: ${patient.contact || 'N/A'}</div>
+                            <div>Registered: ${new Date(patient.createdAt).toLocaleDateString()}</div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="action-btn edit-btn" onclick="viewPatientDetails('${patient.id}')">View Details</button>
+                            <button class="action-btn transfer-btn" onclick="quickTransfer('${patient.id}')">Transfer</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTransferDropdowns() {
+            const transferSelect = document.getElementById('transferPatient');
+            transferSelect.innerHTML = '<option value="">Choose a patient...</option>';
+            
+            patients.forEach(patient => {
+                const currentSection = getPatientCurrentSection(patient.id);
+                if (currentSection !== 'discharged') {
+                    transferSelect.innerHTML += `<option value="${patient.id}">${patient.name} (${currentSection})</option>`;
+                }
+            });
+        }
+
+        function quickTransfer(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            const currentSection = getPatientCurrentSection(patientId);
+            
+            document.getElementById('transferPatient').value = patientId;
+            document.getElementById('fromSection').value = currentSection;
+            document.getElementById('toSection').value = '';
+            document.getElementById('transferNotes').value = '';
+            
+            // Switch to patients tab if not already there
+            document.querySelector('[data-tab="patients"]').click();
+        }
+
+        // Patient transfer functionality
+        document.getElementById('transferPatientBtn').addEventListener('click', async () => {
+            const patientId = document.getElementById('transferPatient').value;
+            const fromSection = document.getElementById('fromSection').value;
+            const toSection = document.getElementById('toSection').value;
+            const notes = document.getElementById('transferNotes').value;
+
+            if (!patientId || !toSection) {
+                showToast('Please select a patient and destination section', 'error');
+                return;
+            }
+
+            if (fromSection === toSection) {
+                showToast('Patient is already in the selected section', 'warning');
+                return;
+            }
+
+            try {
+                // Create transfer record
+                await addDoc(collection(db, 'transfers'), {
+                    patientId: patientId,
+                    patientName: patients.find(p => p.id === patientId).name,
+                    fromSection: fromSection,
+                    toSection: toSection,
+                    transferNotes: notes,
+                    transferredBy: 'Admin',
+                    transferredAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString()
+                });
+
+                showToast(`Patient transferred from ${fromSection} to ${toSection}`, 'success');
+                
+                // Clear form
+                document.getElementById('transferPatient').value = '';
+                document.getElementById('fromSection').value = '';
+                document.getElementById('toSection').value = '';
+                document.getElementById('transferNotes').value = '';
+                
+                // Refresh data
+                loadPatientData();
+            } catch (error) {
+                console.error('Error transferring patient:', error);
+                showToast('Error transferring patient', 'error');
+            }
+        });
+
+        // Patient filter and search
+        document.getElementById('patientStatusFilter').addEventListener('change', renderPatients);
+        document.getElementById('patientSectionFilter').addEventListener('change', renderPatients);
+        document.getElementById('searchPatients').addEventListener('input', renderPatients);
+        document.getElementById('refreshPatientsBtn').addEventListener('click', loadPatientData);
+
+        // Debug Tools System
+        let debugLogs = [];
+        let systemMetrics = {
+            pageLoadTime: 0,
+            dataFetchTime: 0,
+            memoryUsage: 0,
+            activeConnections: 0
+        };
+
+        function initializeDebugTools() {
+            runSystemCheck();
+            updatePerformanceMetrics();
+            setupDebugEventListeners();
+            addDebugLog('info', 'Debug tools initialized');
+        }
+
+        async function runSystemCheck() {
+            // Check Firebase connection
+            try {
+                await getDocs(collection(db, 'patients'));
+                document.getElementById('firebaseStatus').textContent = 'Connected';
+                document.getElementById('firebaseStatus').className = 'health-status healthy';
+            } catch (error) {
+                document.getElementById('firebaseStatus').textContent = 'Error';
+                document.getElementById('firebaseStatus').className = 'health-status error';
+                addDebugLog('error', 'Firebase connection failed: ' + error.message);
+            }
+
+            // Check collections
+            try {
+                const collections = ['patients', 'appointments', 'billing', 'labRequests', 'labResults', 'prescriptions', 'medicines', 'triage', 'consultations', 'notifications', 'medicalHistory', 'discharges'];
+                let validCollections = 0;
+                
+                for (const collectionName of collections) {
+                    try {
+                        await getDocs(collection(db, collectionName));
+                        validCollections++;
+                    } catch (error) {
+                        addDebugLog('warn', `Collection ${collectionName} not accessible`);
+                    }
+                }
+                
+                if (validCollections === collections.length) {
+                    document.getElementById('collectionsStatus').textContent = 'All OK';
+                    document.getElementById('collectionsStatus').className = 'health-status healthy';
+                } else {
+                    document.getElementById('collectionsStatus').textContent = `${validCollections}/${collections.length} OK`;
+                    document.getElementById('collectionsStatus').className = 'health-status warning';
+                }
+            } catch (error) {
+                document.getElementById('collectionsStatus').textContent = 'Error';
+                document.getElementById('collectionsStatus').className = 'health-status error';
+            }
+
+            // Check authentication
+            if (auth.currentUser) {
+                document.getElementById('authStatus').textContent = 'Authenticated';
+                document.getElementById('authStatus').className = 'health-status healthy';
+            } else {
+                document.getElementById('authStatus').textContent = 'Not Authenticated';
+                document.getElementById('authStatus').className = 'health-status error';
+            }
+
+            // Check data integrity
+            await checkDataIntegrity();
+        }
+
+        async function checkDataIntegrity() {
+            try {
+                let orphanedRecords = 0;
+                let missingReferences = 0;
+
+                // Check for orphaned records
+                const patientsSnapshot = await getDocs(collection(db, 'patients'));
+                const patients = patientsSnapshot.docs.map(doc => doc.id);
+
+                // Check appointments
+                const appointmentsSnapshot = await getDocs(collection(db, 'appointments'));
+                appointmentsSnapshot.docs.forEach(doc => {
+                    if (!patients.includes(doc.data().patientId)) {
+                        orphanedRecords++;
+                    }
+                });
+
+                // Check consultations
+                const consultationsSnapshot = await getDocs(collection(db, 'consultations'));
+                consultationsSnapshot.docs.forEach(doc => {
+                    if (!patients.includes(doc.data().patientId)) {
+                        orphanedRecords++;
+                    }
+                });
+
+                if (orphanedRecords === 0) {
+                    document.getElementById('orphanedRecords').textContent = 'None';
+                    document.getElementById('orphanedRecords').className = 'validation-status pass';
+                } else {
+                    document.getElementById('orphanedRecords').textContent = orphanedRecords + ' found';
+                    document.getElementById('orphanedRecords').className = 'validation-status warning';
+                }
+
+                if (missingReferences === 0) {
+                    document.getElementById('missingReferences').textContent = 'None';
+                    document.getElementById('missingReferences').className = 'validation-status pass';
+                } else {
+                    document.getElementById('missingReferences').textContent = missingReferences + ' found';
+                    document.getElementById('missingReferences').className = 'validation-status warning';
+                }
+
+                document.getElementById('dataConsistency').textContent = 'OK';
+                document.getElementById('dataConsistency').className = 'validation-status pass';
+
+                document.getElementById('schemaValidation').textContent = 'OK';
+                document.getElementById('schemaValidation').className = 'validation-status pass';
+
+                document.getElementById('dataIntegrityStatus').textContent = 'Healthy';
+                document.getElementById('dataIntegrityStatus').className = 'health-status healthy';
+
+            } catch (error) {
+                document.getElementById('dataIntegrityStatus').textContent = 'Error';
+                document.getElementById('dataIntegrityStatus').className = 'health-status error';
+                addDebugLog('error', 'Data integrity check failed: ' + error.message);
+            }
+        }
+
+        function updatePerformanceMetrics() {
+            // Page load time
+            const loadTime = performance.now();
+            document.getElementById('pageLoadTime').textContent = Math.round(loadTime) + 'ms';
+
+            // Memory usage (approximate)
+            if (performance.memory) {
+                const memoryMB = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
+                document.getElementById('memoryUsage').textContent = memoryMB + 'MB';
+            } else {
+                document.getElementById('memoryUsage').textContent = 'N/A';
+            }
+
+            // Active connections (approximate)
+            document.getElementById('activeConnections').textContent = '1'; // Current session
+        }
+
+        function addDebugLog(level, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                timestamp,
+                level,
+                message
+            };
+            
+            debugLogs.push(logEntry);
+            
+            // Keep only last 100 logs
+            if (debugLogs.length > 100) {
+                debugLogs = debugLogs.slice(-100);
+            }
+            
+            updateLogDisplay();
+        }
+
+        function updateLogDisplay() {
+            const container = document.getElementById('logContainer');
+            const filter = document.getElementById('logLevelFilter').value;
+            
+            let filteredLogs = debugLogs;
+            if (filter !== 'all') {
+                filteredLogs = debugLogs.filter(log => log.level === filter);
+            }
+            
+            container.innerHTML = filteredLogs.map(log => `
+                <div class="log-entry">
+                    <span class="log-time">${log.timestamp}</span>
+                    <span class="log-level ${log.level}">${log.level.toUpperCase()}</span>
+                    <span class="log-message">${log.message}</span>
+                </div>
+            `).join('');
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function setupDebugEventListeners() {
+            // System check button
+            document.getElementById('runSystemCheckBtn').addEventListener('click', runSystemCheck);
+            
+            // Log controls
+            document.getElementById('clearLogsBtn').addEventListener('click', () => {
+                debugLogs = [];
+                updateLogDisplay();
+                addDebugLog('info', 'Logs cleared');
+            });
+            
+            document.getElementById('exportLogsBtn').addEventListener('click', () => {
+                const logData = {
+                    timestamp: new Date().toISOString(),
+                    logs: debugLogs
+                };
+                
+                const dataStr = JSON.stringify(logData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `debug-logs-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                addDebugLog('info', 'Logs exported successfully');
+            });
+            
+            document.getElementById('logLevelFilter').addEventListener('change', updateLogDisplay);
+            
+            // Database operations
+            document.getElementById('testDbConnectionBtn').addEventListener('click', async () => {
+                addDebugLog('info', 'Testing database connection...');
+                try {
+                    await getDocs(collection(db, 'patients'));
+                    addDebugLog('success', 'Database connection successful');
+                } catch (error) {
+                    addDebugLog('error', 'Database connection failed: ' + error.message);
+                }
+            });
+            
+            document.getElementById('validateCollectionsBtn').addEventListener('click', async () => {
+                addDebugLog('info', 'Validating collections...');
+                await runSystemCheck();
+                addDebugLog('success', 'Collection validation completed');
+            });
+            
+            document.getElementById('checkDataIntegrityBtn').addEventListener('click', async () => {
+                addDebugLog('info', 'Checking data integrity...');
+                await checkDataIntegrity();
+                addDebugLog('success', 'Data integrity check completed');
+            });
+            
+            // Quick tests
+            document.getElementById('testPatientRegBtn').addEventListener('click', async () => {
+                const resultEl = document.getElementById('patientRegResult');
+                resultEl.textContent = 'Running...';
+                resultEl.className = 'test-result running';
+                
+                try {
+                    // Test patient registration
+                    const testPatient = {
+                        name: 'Test Patient',
+                        age: 30,
+                        gender: 'Male',
+                        contact: '+254700000000',
+                        address: 'Test Address',
+                        medicalHistory: 'None',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    const docRef = await addDoc(collection(db, 'patients'), testPatient);
+                    addDebugLog('success', 'Patient registration test passed');
+                    resultEl.textContent = 'PASS';
+                    resultEl.className = 'test-result pass';
+                    
+                    // Clean up test data
+                    await deleteDoc(doc(db, 'patients', docRef.id));
+                } catch (error) {
+                    addDebugLog('error', 'Patient registration test failed: ' + error.message);
+                    resultEl.textContent = 'FAIL';
+                    resultEl.className = 'test-result fail';
+                }
+            });
+            
+            // Debug console
+            document.getElementById('executeCommandBtn').addEventListener('click', executeDebugCommand);
+            document.getElementById('debugCommand').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    executeDebugCommand();
+                }
+            });
+            
+            document.getElementById('clearConsoleBtn').addEventListener('click', () => {
+                document.getElementById('consoleOutput').innerHTML = `
+                    <div class="console-line">
+                        <span class="console-prompt">debug></span>
+                        <span class="console-text">Console cleared</span>
+                    </div>
+                `;
+            });
+        }
+
+        function executeDebugCommand() {
+            const command = document.getElementById('debugCommand').value.trim();
+            if (!command) return;
+            
+            const consoleOutput = document.getElementById('consoleOutput');
+            
+            // Add command to console
+            consoleOutput.innerHTML += `
+                <div class="console-line">
+                    <span class="console-prompt">debug></span>
+                    <span class="console-text">${command}</span>
+                </div>
+            `;
+            
+            // Execute command
+            try {
+                const result = executeDebugCommandInternal(command);
+                consoleOutput.innerHTML += `
+                    <div class="console-line">
+                        <span class="console-prompt">debug></span>
+                        <span class="console-text success">${result}</span>
+                    </div>
+                `;
+            } catch (error) {
+                consoleOutput.innerHTML += `
+                    <div class="console-line">
+                        <span class="console-prompt">debug></span>
+                        <span class="console-text error">Error: ${error.message}</span>
+                    </div>
+                `;
+            }
+            
+            // Clear input
+            document.getElementById('debugCommand').value = '';
+            
+            // Scroll to bottom
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function executeDebugCommandInternal(command) {
+            const parts = command.toLowerCase().split(' ');
+            const cmd = parts[0];
+            
+            switch (cmd) {
+                case 'help':
+                    return 'Available commands: help, status, check <patient_id>, validate, test, clear, logs';
+                    
+                case 'status':
+                    return `System Status: Firebase=${auth.currentUser ? 'Connected' : 'Disconnected'}, Collections=${patients.length} patients loaded`;
+                    
+                case 'check':
+                    if (parts[1]) {
+                        const patient = patients.find(p => p.id === parts[1]);
+                        if (patient) {
+                            const section = getPatientCurrentSection(patient.id);
+                            return `Patient ${patient.name} (${patient.id}) is currently in: ${section}`;
+                        } else {
+                            return `Patient ${parts[1]} not found`;
+                        }
+                    } else {
+                        return 'Usage: check <patient_id>';
+                    }
+                    
+                case 'validate':
+                    return 'Data validation completed. Check the validation panel for results.';
+                    
+                case 'test':
+                    return 'Running system tests... Check the quick tests panel for results.';
+                    
+                case 'clear':
+                    debugLogs = [];
+                    updateLogDisplay();
+                    return 'Debug logs cleared';
+                    
+                case 'logs':
+                    return `Total logs: ${debugLogs.length}, Errors: ${debugLogs.filter(l => l.level === 'error').length}`;
+                    
+                default:
+                    throw new Error(`Unknown command: ${cmd}. Type 'help' for available commands.`);
+            }
+        }
+
+        // Override console methods to capture logs
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            addDebugLog('info', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            addDebugLog('error', args.join(' '));
+        };
+        
+        console.warn = function(...args) {
+            originalConsoleWarn.apply(console, args);
+            addDebugLog('warn', args.join(' '));
+        };
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Reception & Appointments - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .book-appointment-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .book-appointment-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .appointment-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .appointment-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointment-card.today {
+            border-left-color: #8b5cf6;
+            background: #faf5ff;
+        }
+
+        .appointment-card.upcoming {
+            border-left-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .appointment-card.completed {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .appointment-card.cancelled {
+            border-left-color: #6b7280;
+            background: #f3f4f6;
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .appointment-time {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-scheduled {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-confirmed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-cancelled {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .confirm-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            background: #059669;
+        }
+
+        .cancel-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #dc2626;
+        }
+
+        .reschedule-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .reschedule-btn:hover {
+            background: #d97706;
+        }
+
+        .view-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .calendar-view {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            background: #8b5cf6;
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .calendar-day {
+            background: white;
+            padding: 0.75rem;
+            min-height: 80px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: #f8fafc;
+        }
+
+        .calendar-day.today {
+            background: #faf5ff;
+            border: 2px solid #8b5cf6;
+        }
+
+        .calendar-day.has-appointments {
+            background: #eff6ff;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-count {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .calendar-view {
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                min-height: 60px;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>🏥 Prince Alex Hospital – Hospital Management System (HMS)</h1>
+        </div>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button class="nav-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Appointments</h3>
+            <button class="close-sidebar" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                Dashboard
+            </a>
+            <div class="sidebar-section">
+                <h4>Actions</h4>
+                <button class="nav-btn sidebar-logout" id="sidebarLogoutBtn">
+                    <span class="sidebar-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">📅 Reception & Appointments</h2>
+            <button class="book-appointment-btn" id="bookAppointmentBtn">
+                <span class="spinner" id="addSpinner"></span>
+                <span id="addBtnText">+ Book Appointment</span>
+            </button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="today">Today's Schedule</div>
+            <div class="tab" data-tab="upcoming">Upcoming</div>
+            <div class="tab" data-tab="calendar">Calendar View</div>
+        </div>
+
+        <!-- Today's Schedule Tab -->
+        <div class="tab-content active" id="todayTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchToday" placeholder="Search today's appointments...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Today's Appointments</h3>
+                </div>
+                <div class="appointment-list" id="todayAppointments">
+                    <div class="loading">Loading today's appointments...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Tab -->
+        <div class="tab-content" id="upcomingTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchUpcoming" placeholder="Search upcoming appointments...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Upcoming Appointments</h3>
+                </div>
+                <div class="appointment-list" id="upcomingAppointments">
+                    <div class="loading">Loading upcoming appointments...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div class="tab-content" id="calendarTab">
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Appointment Calendar</h3>
+                </div>
+                <div class="calendar-view" id="calendarView">
+                    <!-- Calendar will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Appointment Modal -->
+    <div class="modal" id="appointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="appointmentModalTitle">Book New Appointment</h3>
+                <button class="close-btn" id="closeAppointmentModal">&times;</button>
+            </div>
+            <form id="appointmentForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patientName">Patient Name *</label>
+                        <input type="text" id="patientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientContact">Contact Number *</label>
+                        <input type="tel" id="patientContact" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointmentDate">Appointment Date *</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentTime">Appointment Time *</label>
+                        <input type="time" id="appointmentTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointmentType">Appointment Type *</label>
+                        <select id="appointmentType" required>
+                            <option value="">Select Type</option>
+                            <option value="Consultation">Consultation</option>
+                            <option value="Follow-up">Follow-up</option>
+                            <option value="Check-up">Check-up</option>
+                            <option value="Emergency">Emergency</option>
+                            <option value="Procedure">Procedure</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorName">Doctor Name</label>
+                        <input type="text" id="doctorName" placeholder="Doctor's name (optional)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reason">Reason for Visit</label>
+                    <textarea id="reason" placeholder="Brief description of the reason for the appointment"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Additional Notes</label>
+                    <textarea id="notes" placeholder="Any additional notes or special requirements"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAppointmentBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveAppointmentBtn">
+                        <span class="spinner" id="saveSpinner"></span>
+                        <span id="saveBtnText">Book Appointment</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reschedule Appointment</h3>
+                <button class="close-btn" id="closeRescheduleModal">&times;</button>
+            </div>
+            <form id="rescheduleForm">
+                <div class="form-group">
+                    <label for="reschedulePatientInfo">Patient Information</label>
+                    <input type="text" id="reschedulePatientInfo" readonly>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newAppointmentDate">New Appointment Date *</label>
+                        <input type="date" id="newAppointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newAppointmentTime">New Appointment Time *</label>
+                        <input type="time" id="newAppointmentTime" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rescheduleReason">Reason for Rescheduling</label>
+                    <textarea id="rescheduleReason" placeholder="Reason for rescheduling"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelRescheduleBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveRescheduleBtn">
+                        <span class="spinner" id="rescheduleSpinner"></span>
+                        <span id="rescheduleBtnText">Reschedule</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let appointments = [];
+        let currentAppointment = null;
+
+        // Toast function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadAppointments();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+                
+                if (tabName === 'calendar') {
+                    generateCalendar();
+                }
+            });
+        });
+
+        // Load appointments
+        async function loadAppointments() {
+            try {
+                const appointmentsSnapshot = await getDocs(collection(db, 'appointments'));
+                appointments = appointmentsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                renderAppointments();
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                showToast('Error loading appointments', 'error');
+            }
+        }
+
+        // Render appointments
+        function renderAppointments() {
+            const today = new Date().toDateString();
+            const todayAppointments = appointments.filter(apt => 
+                new Date(apt.appointmentDate).toDateString() === today
+            );
+            const upcomingAppointments = appointments.filter(apt => 
+                new Date(apt.appointmentDate) > new Date() && 
+                new Date(apt.appointmentDate).toDateString() !== today
+            );
+
+            renderAppointmentSection('todayAppointments', todayAppointments, 'today');
+            renderAppointmentSection('upcomingAppointments', upcomingAppointments, 'upcoming');
+        }
+
+        // Render appointment section
+        function renderAppointmentSection(containerId, appointments, type) {
+            const container = document.getElementById(containerId);
+            
+            if (appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No ${type} appointments</h3>
+                        <p>No appointments scheduled for ${type === 'today' ? 'today' : 'upcoming dates'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appointments.map(appointment => {
+                const appointmentDateTime = new Date(`${appointment.appointmentDate}T${appointment.appointmentTime}`);
+                const isToday = new Date(appointment.appointmentDate).toDateString() === new Date().toDateString();
+                
+                return `
+                    <div class="appointment-card ${isToday ? 'today' : 'upcoming'}">
+                        <div class="appointment-header">
+                            <div>
+                                <div class="patient-name">${appointment.patientName}</div>
+                                <div class="appointment-details">
+                                    ${appointment.appointmentType} • ${appointment.doctorName || 'No doctor assigned'}
+                                </div>
+                            </div>
+                            <div class="appointment-time">
+                                ${appointmentDateTime.toLocaleString()}
+                            </div>
+                        </div>
+                        <div class="appointment-details">
+                            <strong>Contact:</strong> ${appointment.patientContact}
+                        </div>
+                        ${appointment.reason ? `
+                        <div class="appointment-details">
+                            <strong>Reason:</strong> ${appointment.reason}
+                        </div>
+                        ` : ''}
+                        <div class="appointment-actions">
+                            <button class="action-btn confirm-btn" onclick="confirmAppointment('${appointment.id}')">Confirm</button>
+                            <button class="action-btn reschedule-btn" onclick="rescheduleAppointment('${appointment.id}')">Reschedule</button>
+                            <button class="action-btn cancel-btn" onclick="cancelAppointment('${appointment.id}')">Cancel</button>
+                            <button class="action-btn view-btn" onclick="viewAppointment('${appointment.id}')">View</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Generate calendar
+        function generateCalendar() {
+            const calendarView = document.getElementById('calendarView');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Calendar headers
+            const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let calendarHTML = '';
+            
+            // Add headers
+            headers.forEach(header => {
+                calendarHTML += `<div class="calendar-header">${header}</div>`;
+            });
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                calendarHTML += '<div class="calendar-day"></div>';
+            }
+            
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(currentYear, currentMonth, day);
+                const dayAppointments = appointments.filter(apt => 
+                    new Date(apt.appointmentDate).toDateString() === dayDate.toDateString()
+                );
+                
+                const isToday = dayDate.toDateString() === today.toDateString();
+                const hasAppointments = dayAppointments.length > 0;
+                
+                calendarHTML += `
+                    <div class="calendar-day ${isToday ? 'today' : ''} ${hasAppointments ? 'has-appointments' : ''}" onclick="viewDayAppointments('${dayDate.toISOString()}')">
+                        <div class="day-number">${day}</div>
+                        ${hasAppointments ? `<div class="appointment-count">${dayAppointments.length} appointment${dayAppointments.length > 1 ? 's' : ''}</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            calendarView.innerHTML = calendarHTML;
+        }
+
+        // Search functionality
+        document.getElementById('searchToday').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const today = new Date().toDateString();
+            const filteredAppointments = appointments.filter(apt => 
+                new Date(apt.appointmentDate).toDateString() === today &&
+                (apt.patientName.toLowerCase().includes(searchTerm) || 
+                 apt.appointmentType.toLowerCase().includes(searchTerm))
+            );
+            renderAppointmentSection('todayAppointments', filteredAppointments, 'today');
+        });
+
+        document.getElementById('searchUpcoming').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const today = new Date().toDateString();
+            const filteredAppointments = appointments.filter(apt => 
+                new Date(apt.appointmentDate) > new Date() && 
+                new Date(apt.appointmentDate).toDateString() !== today &&
+                (apt.patientName.toLowerCase().includes(searchTerm) || 
+                 apt.appointmentType.toLowerCase().includes(searchTerm))
+            );
+            renderAppointmentSection('upcomingAppointments', filteredAppointments, 'upcoming');
+        });
+
+        // Appointment actions
+        window.confirmAppointment = async function(appointmentId) {
+            try {
+                await updateDoc(doc(db, 'appointments', appointmentId), {
+                    status: 'Confirmed',
+                    confirmedAt: new Date().toISOString()
+                });
+                showToast('Appointment confirmed', 'success');
+                await loadAppointments();
+            } catch (error) {
+                console.error('Error confirming appointment:', error);
+                showToast('Error confirming appointment', 'error');
+            }
+        };
+
+        window.cancelAppointment = async function(appointmentId) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                try {
+                    await updateDoc(doc(db, 'appointments', appointmentId), {
+                        status: 'Cancelled',
+                        cancelledAt: new Date().toISOString()
+                    });
+                    showToast('Appointment cancelled', 'success');
+                    await loadAppointments();
+                } catch (error) {
+                    console.error('Error cancelling appointment:', error);
+                    showToast('Error cancelling appointment', 'error');
+                }
+            }
+        };
+
+        window.rescheduleAppointment = function(appointmentId) {
+            currentAppointment = appointments.find(apt => apt.id === appointmentId);
+            
+            document.getElementById('reschedulePatientInfo').value = 
+                `${currentAppointment.patientName} - ${currentAppointment.appointmentType}`;
+            document.getElementById('newAppointmentDate').value = currentAppointment.appointmentDate;
+            document.getElementById('newAppointmentTime').value = currentAppointment.appointmentTime;
+            
+            document.getElementById('rescheduleModal').classList.add('show');
+        };
+
+        window.viewAppointment = function(appointmentId) {
+            const appointment = appointments.find(apt => apt.id === appointmentId);
+            showToast(`Appointment: ${appointment.patientName} - ${appointment.appointmentType}`, 'success');
+        };
+
+        window.viewDayAppointments = function(dateString) {
+            const date = new Date(dateString);
+            const dayAppointments = appointments.filter(apt => 
+                new Date(apt.appointmentDate).toDateString() === date.toDateString()
+            );
+            
+            if (dayAppointments.length === 0) {
+                showToast('No appointments for this day', 'warning');
+                return;
+            }
+            
+            const appointmentList = dayAppointments.map(apt => 
+                `${apt.patientName} - ${apt.appointmentTime}`
+            ).join('\n');
+            
+            alert(`Appointments for ${date.toLocaleDateString()}:\n\n${appointmentList}`);
+        };
+
+        // Save appointment form
+        document.getElementById('appointmentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveAppointmentBtn');
+            const saveSpinner = document.getElementById('saveSpinner');
+            const saveBtnText = document.getElementById('saveBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Booking...';
+
+            try {
+                const appointmentData = {
+                    patientName: document.getElementById('patientName').value,
+                    patientContact: document.getElementById('patientContact').value,
+                    appointmentDate: document.getElementById('appointmentDate').value,
+                    appointmentTime: document.getElementById('appointmentTime').value,
+                    appointmentType: document.getElementById('appointmentType').value,
+                    doctorName: document.getElementById('doctorName').value || null,
+                    reason: document.getElementById('reason').value || null,
+                    notes: document.getElementById('notes').value || null,
+                    status: 'Scheduled',
+                    createdAt: new Date().toISOString()
+                };
+
+                await addDoc(collection(db, 'appointments'), appointmentData);
+                
+                showToast('Appointment booked successfully', 'success');
+                closeAppointmentModal();
+                await loadAppointments();
+                
+            } catch (error) {
+                console.error('Error booking appointment:', error);
+                showToast('Error booking appointment', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Book Appointment';
+            }
+        });
+
+        // Save reschedule form
+        document.getElementById('rescheduleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveRescheduleBtn');
+            const saveSpinner = document.getElementById('rescheduleSpinner');
+            const saveBtnText = document.getElementById('rescheduleBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Rescheduling...';
+
+            try {
+                await updateDoc(doc(db, 'appointments', currentAppointment.id), {
+                    appointmentDate: document.getElementById('newAppointmentDate').value,
+                    appointmentTime: document.getElementById('newAppointmentTime').value,
+                    rescheduleReason: document.getElementById('rescheduleReason').value || null,
+                    rescheduledAt: new Date().toISOString()
+                });
+
+                showToast('Appointment rescheduled successfully', 'success');
+                closeRescheduleModal();
+                await loadAppointments();
+                
+            } catch (error) {
+                console.error('Error rescheduling appointment:', error);
+                showToast('Error rescheduling appointment', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Reschedule';
+            }
+        });
+
+        // Book appointment button
+        document.getElementById('bookAppointmentBtn').addEventListener('click', () => {
+            document.getElementById('appointmentModalTitle').textContent = 'Book New Appointment';
+            document.getElementById('appointmentForm').reset();
+            document.getElementById('appointmentModal').classList.add('show');
+        });
+
+        // Close modals
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').classList.remove('show');
+            document.getElementById('appointmentForm').reset();
+        }
+
+        function closeRescheduleModal() {
+            document.getElementById('rescheduleModal').classList.remove('show');
+            document.getElementById('rescheduleForm').reset();
+            currentAppointment = null;
+        }
+
+        // Modal event listeners
+        document.getElementById('closeAppointmentModal').addEventListener('click', closeAppointmentModal);
+        document.getElementById('closeRescheduleModal').addEventListener('click', closeRescheduleModal);
+        document.getElementById('cancelAppointmentBtn').addEventListener('click', closeAppointmentModal);
+        document.getElementById('cancelRescheduleBtn').addEventListener('click', closeRescheduleModal);
+        
+        document.getElementById('appointmentModal').addEventListener('click', (e) => {
+            if (e.target.id === 'appointmentModal') closeAppointmentModal();
+        });
+        
+        document.getElementById('rescheduleModal').addEventListener('click', (e) => {
+            if (e.target.id === 'rescheduleModal') closeRescheduleModal();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

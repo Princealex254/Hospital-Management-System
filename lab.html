@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Laboratory - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .request-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .request-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .request-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-card.pending {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .request-card.completed {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .request-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .process-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .process-btn:hover {
+            background: #059669;
+        }
+
+        .view-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .test-results {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .test-results h4 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .result-value {
+            color: #666;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .test-template {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .test-template h5 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .template-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .template-btn {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #10b981;
+            background: white;
+            color: #10b981;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .template-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>🏥 Prince Alex Hospital – Hospital Management System (HMS)</h1>
+        </div>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button class="nav-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Laboratory</h3>
+            <button class="close-sidebar" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                Dashboard
+            </a>
+            <div class="sidebar-section">
+                <h4>Actions</h4>
+                <button class="nav-btn sidebar-logout" id="sidebarLogoutBtn">
+                    <span class="sidebar-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">🧪 Laboratory</h2>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="requests">Lab Requests</div>
+            <div class="tab" data-tab="results">Test Results</div>
+        </div>
+
+        <!-- Lab Requests Tab -->
+        <div class="tab-content active" id="requestsTab">
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Pending Lab Requests</h3>
+                </div>
+                <div class="request-list" id="pendingRequests">
+                    <div class="loading">Loading lab requests...</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Completed Lab Requests</h3>
+                </div>
+                <div class="request-list" id="completedRequests">
+                    <div class="loading">Loading completed requests...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Results Tab -->
+        <div class="tab-content" id="resultsTab">
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">All Test Results</h3>
+                </div>
+                <div class="request-list" id="allResults">
+                    <div class="loading">Loading test results...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Lab Request Modal -->
+    <div class="modal" id="processModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Process Lab Request</h3>
+                <button class="close-btn" id="closeProcessModal">&times;</button>
+            </div>
+            <form id="processForm">
+                <div class="form-group">
+                    <label for="patientInfo">Patient Information</label>
+                    <input type="text" id="patientInfo" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="requestType">Request Type</label>
+                    <input type="text" id="requestType" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="testType">Test Type *</label>
+                    <select id="testType" required>
+                        <option value="">Select Test Type</option>
+                        <option value="Blood Test">Blood Test</option>
+                        <option value="Urine Test">Urine Test</option>
+                        <option value="X-Ray">X-Ray</option>
+                        <option value="CT Scan">CT Scan</option>
+                        <option value="MRI">MRI</option>
+                        <option value="ECG">ECG</option>
+                        <option value="Ultrasound">Ultrasound</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="test-template">
+                    <h5>Quick Test Templates</h5>
+                    <div class="template-buttons">
+                        <button type="button" class="template-btn" data-template="blood">Blood Panel</button>
+                        <button type="button" class="template-btn" data-template="urine">Urine Analysis</button>
+                        <button type="button" class="template-btn" data-template="cardiac">Cardiac Panel</button>
+                    </div>
+                </div>
+
+                <div class="test-results">
+                    <h4>Test Results</h4>
+                    <div id="testResultsContainer">
+                        <div class="result-item">
+                            <span class="result-name">Test Name</span>
+                            <input type="text" placeholder="Result Value" style="width: 150px; padding: 0.25rem; border: 1px solid #e5e7eb; border-radius: 5px;">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addTestResult" style="margin-top: 0.5rem;">+ Add Test</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="labNotes">Lab Notes</label>
+                    <textarea id="labNotes" placeholder="Additional observations or notes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="Completed">Completed</option>
+                        <option value="Pending Review">Pending Review</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProcessBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveProcessBtn">
+                        <span class="spinner" id="saveSpinner"></span>
+                        <span id="saveBtnText">Save Results</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Results Modal -->
+    <div class="modal" id="viewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Test Results</h3>
+                <button class="close-btn" id="closeViewModal">&times;</button>
+            </div>
+            <div id="viewResultsContent">
+                <!-- Results will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let labRequests = [];
+        let labResults = [];
+        let currentRequest = null;
+
+        // Toast function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadData();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+
+        // Load data
+        async function loadData() {
+            try {
+                // Load lab requests
+                const requestsSnapshot = await getDocs(collection(db, 'labRequests'));
+                labRequests = requestsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // Load lab results
+                const resultsSnapshot = await getDocs(collection(db, 'labResults'));
+                labResults = resultsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderRequests();
+                renderResults();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Error loading data', 'error');
+            }
+        }
+
+        // Render requests
+        function renderRequests() {
+            const pendingRequests = labRequests.filter(req => req.status === 'Pending');
+            const completedRequests = labRequests.filter(req => req.status === 'Completed');
+
+            renderRequestSection('pendingRequests', pendingRequests, 'pending');
+            renderRequestSection('completedRequests', completedRequests, 'completed');
+        }
+
+        // Render request section
+        function renderRequestSection(containerId, requests, status) {
+            const container = document.getElementById(containerId);
+            
+            if (requests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No ${status} requests</h3>
+                        <p>All lab requests have been processed</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = requests.map(request => `
+                <div class="request-card ${status}">
+                    <div class="request-header">
+                        <div>
+                            <div class="patient-name">${request.patientName}</div>
+                            <div class="request-details">
+                                Request ID: ${request.id} • ${request.requestType || 'General'}
+                            </div>
+                        </div>
+                        <span class="status-badge status-${status}">${status}</span>
+                    </div>
+                    <div class="request-details">
+                        <strong>Requested:</strong> ${new Date(request.createdAt).toLocaleString()}
+                    </div>
+                    <div class="request-actions">
+                        ${status === 'pending' ? `
+                            <button class="action-btn process-btn" onclick="processRequest('${request.id}')">Process</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewResults('${request.id}')">View Results</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render results
+        function renderResults() {
+            const container = document.getElementById('allResults');
+            
+            if (labResults.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No test results</h3>
+                        <p>No lab results available yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = labResults.map(result => `
+                <div class="request-card completed">
+                    <div class="request-header">
+                        <div>
+                            <div class="patient-name">${result.patientName}</div>
+                            <div class="request-details">
+                                ${result.testType} • ${result.status}
+                            </div>
+                        </div>
+                        <span class="status-badge status-completed">Completed</span>
+                    </div>
+                    <div class="request-details">
+                        <strong>Completed:</strong> ${new Date(result.completedAt).toLocaleString()}
+                    </div>
+                    <div class="request-actions">
+                        <button class="action-btn view-btn" onclick="viewResults('${result.requestId}')">View Results</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Process request
+        window.processRequest = function(requestId) {
+            currentRequest = labRequests.find(req => req.id === requestId);
+            
+            document.getElementById('patientInfo').value = currentRequest.patientName;
+            document.getElementById('requestType').value = currentRequest.requestType || 'General';
+            
+            document.getElementById('processModal').classList.add('show');
+        };
+
+        // View results
+        window.viewResults = function(requestId) {
+            const result = labResults.find(res => res.requestId === requestId);
+            
+            if (!result) {
+                showToast('No results found for this request', 'warning');
+                return;
+            }
+
+            const content = document.getElementById('viewResultsContent');
+            content.innerHTML = `
+                <div class="form-group">
+                    <label>Patient:</label>
+                    <input type="text" value="${result.patientName}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Test Type:</label>
+                    <input type="text" value="${result.testType}" readonly>
+                </div>
+                <div class="test-results">
+                    <h4>Test Results</h4>
+                    ${result.testResults ? Object.entries(result.testResults).map(([name, value]) => `
+                        <div class="result-item">
+                            <span class="result-name">${name}</span>
+                            <span class="result-value">${value}</span>
+                        </div>
+                    `).join('') : '<p>No test results recorded</p>'}
+                </div>
+                ${result.labNotes ? `
+                <div class="form-group">
+                    <label>Lab Notes:</label>
+                    <textarea readonly>${result.labNotes}</textarea>
+                </div>
+                ` : ''}
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" value="${result.status}" readonly>
+                </div>
+            `;
+            
+            document.getElementById('viewModal').classList.add('show');
+        };
+
+        // Test templates
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const template = btn.dataset.template;
+                loadTestTemplate(template);
+            });
+        });
+
+        // Load test template
+        function loadTestTemplate(template) {
+            const container = document.getElementById('testResultsContainer');
+            
+            const templates = {
+                blood: [
+                    { name: 'Hemoglobin', value: '' },
+                    { name: 'White Blood Cells', value: '' },
+                    { name: 'Red Blood Cells', value: '' },
+                    { name: 'Platelets', value: '' },
+                    { name: 'Glucose', value: '' }
+                ],
+                urine: [
+                    { name: 'Protein', value: '' },
+                    { name: 'Glucose', value: '' },
+                    { name: 'Ketones', value: '' },
+                    { name: 'pH', value: '' },
+                    { name: 'Specific Gravity', value: '' }
+                ],
+                cardiac: [
+                    { name: 'Troponin', value: '' },
+                    { name: 'CK-MB', value: '' },
+                    { name: 'BNP', value: '' },
+                    { name: 'Cholesterol', value: '' },
+                    { name: 'Triglycerides', value: '' }
+                ]
+            };
+
+            const tests = templates[template] || [];
+            container.innerHTML = tests.map(test => `
+                <div class="result-item">
+                    <span class="result-name">${test.name}</span>
+                    <input type="text" placeholder="Result Value" value="${test.value}" style="width: 150px; padding: 0.25rem; border: 1px solid #e5e7eb; border-radius: 5px;">
+                </div>
+            `).join('');
+        }
+
+        // Add test result
+        document.getElementById('addTestResult').addEventListener('click', () => {
+            const container = document.getElementById('testResultsContainer');
+            const newTest = document.createElement('div');
+            newTest.className = 'result-item';
+            newTest.innerHTML = `
+                <span class="result-name">
+                    <input type="text" placeholder="Test Name" style="width: 120px; padding: 0.25rem; border: 1px solid #e5e7eb; border-radius: 5px;">
+                </span>
+                <input type="text" placeholder="Result Value" style="width: 150px; padding: 0.25rem; border: 1px solid #e5e7eb; border-radius: 5px;">
+            `;
+            container.appendChild(newTest);
+        });
+
+        // Save process form
+        document.getElementById('processForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveProcessBtn');
+            const saveSpinner = document.getElementById('saveSpinner');
+            const saveBtnText = document.getElementById('saveBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Saving...';
+
+            try {
+                const testType = document.getElementById('testType').value;
+                const labNotes = document.getElementById('labNotes').value;
+                const status = document.getElementById('status').value;
+
+                // Collect test results
+                const testResults = {};
+                const resultItems = document.querySelectorAll('#testResultsContainer .result-item');
+                resultItems.forEach(item => {
+                    const nameInput = item.querySelector('input[placeholder="Test Name"]');
+                    const valueInput = item.querySelector('input[placeholder="Result Value"]');
+                    if (nameInput && valueInput && nameInput.value && valueInput.value) {
+                        testResults[nameInput.value] = valueInput.value;
+                    }
+                });
+
+                const resultData = {
+                    requestId: currentRequest.id,
+                    patientId: currentRequest.patientId,
+                    patientName: currentRequest.patientName,
+                    testType: testType,
+                    testResults: testResults,
+                    labNotes: labNotes || null,
+                    status: status,
+                    completedAt: new Date().toISOString()
+                };
+
+                // Save lab result
+                await addDoc(collection(db, 'labResults'), resultData);
+
+                // Update lab request status
+                await updateDoc(doc(db, 'labRequests', currentRequest.id), {
+                    status: 'Completed',
+                    completedAt: new Date().toISOString()
+                });
+
+                // Create notification for doctor
+                await addDoc(collection(db, 'notifications'), {
+                    type: 'lab_completed',
+                    title: 'Lab Test Completed',
+                    message: `Lab test results for ${currentRequest.patientName} are ready for review`,
+                    patientId: currentRequest.patientId,
+                    patientName: currentRequest.patientName,
+                    requestId: currentRequest.id,
+                    testType: testType,
+                    status: 'unread',
+                    createdAt: new Date().toISOString(),
+                    priority: 'high'
+                });
+
+                showToast('Lab results saved successfully', 'success');
+                closeProcessModal();
+                await loadData();
+                
+            } catch (error) {
+                console.error('Error saving lab results:', error);
+                showToast('Error saving lab results', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Save Results';
+            }
+        });
+
+        // Close modals
+        function closeProcessModal() {
+            document.getElementById('processModal').classList.remove('show');
+            document.getElementById('processForm').reset();
+            document.getElementById('testResultsContainer').innerHTML = `
+                <div class="result-item">
+                    <span class="result-name">Test Name</span>
+                    <input type="text" placeholder="Result Value" style="width: 150px; padding: 0.25rem; border: 1px solid #e5e7eb; border-radius: 5px;">
+                </div>
+            `;
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+
+        // Modal event listeners
+        document.getElementById('closeProcessModal').addEventListener('click', closeProcessModal);
+        document.getElementById('closeViewModal').addEventListener('click', closeViewModal);
+        document.getElementById('cancelProcessBtn').addEventListener('click', closeProcessModal);
+        
+        document.getElementById('processModal').addEventListener('click', (e) => {
+            if (e.target.id === 'processModal') closeProcessModal();
+        });
+        
+        document.getElementById('viewModal').addEventListener('click', (e) => {
+            if (e.target.id === 'viewModal') closeViewModal();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

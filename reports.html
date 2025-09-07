@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Reports & Analytics - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: #f8fafc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            transition: width 0.3s ease;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #6366f1;
+        }
+
+        .trend-indicator {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .trend-up {
+            color: #10b981;
+        }
+
+        .trend-down {
+            color: #ef4444;
+        }
+
+        .trend-neutral {
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>🏥 Prince Alex Hospital – Hospital Management System (HMS)</h1>
+        </div>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button class="nav-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Reports & Analytics</h3>
+            <button class="close-sidebar" id="closeSidebar">×</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                Dashboard
+            </a>
+            <div class="sidebar-section">
+                <h4>Actions</h4>
+                <button class="nav-btn sidebar-logout" id="sidebarLogoutBtn">
+                    <span class="sidebar-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">📊 Reports & Analytics</h2>
+            <button class="export-btn" id="exportBtn">
+                <span class="spinner" id="exportSpinner"></span>
+                <span id="exportBtnText">📥 Export Data</span>
+            </button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="overview">Overview</div>
+            <div class="tab" data-tab="patients">Patients</div>
+            <div class="tab" data-tab="revenue">Revenue</div>
+            <div class="tab" data-tab="operations">Operations</div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overviewTab">
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="overviewPeriod">Time Period</label>
+                        <select id="overviewPeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="refreshOverviewBtn">
+                            <span class="spinner" id="refreshSpinner"></span>
+                            <span id="refreshBtnText">Refresh Data</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPatients">0</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalAppointments">0</div>
+                    <div class="stat-label">Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRevenue">KES 0</div>
+                    <div class="stat-label">Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalBills">0</div>
+                    <div class="stat-label">Bills Generated</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Patient Flow Over Time</div>
+                <div class="chart-placeholder">
+                    📈 Patient Flow Chart<br>
+                    <small>Shows daily patient registrations and appointments</small>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Revenue Trends</div>
+                <div class="chart-placeholder">
+                    💰 Revenue Chart<br>
+                    <small>Shows daily revenue and payment trends</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patients Tab -->
+        <div class="tab-content" id="patientsTab">
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="patientPeriod">Time Period</label>
+                        <select id="patientPeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="refreshPatientsBtn">Refresh Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Patient Demographics</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="malePatients">0</div>
+                        <div class="stat-label">Male Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="femalePatients">0</div>
+                        <div class="stat-label">Female Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgAge">0</div>
+                        <div class="stat-label">Average Age</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Age Distribution</h3>
+                </div>
+                <div class="chart-placeholder">
+                    📊 Age Distribution Chart<br>
+                    <small>Shows patient distribution by age groups</small>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Patient Registrations</h3>
+                </div>
+                <table class="data-table" id="recentPatientsTable">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Registration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="loading">Loading patient data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Revenue Tab -->
+        <div class="tab-content" id="revenueTab">
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="revenuePeriod">Time Period</label>
+                        <select id="revenuePeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="refreshRevenueBtn">Refresh Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRevenueAmount">KES 0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="paidBills">0</div>
+                    <div class="stat-label">Paid Bills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pendingBills">0</div>
+                    <div class="stat-label">Pending Bills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgBillAmount">KES 0</div>
+                    <div class="stat-label">Average Bill Amount</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Revenue Breakdown by Service</h3>
+                </div>
+                <div class="chart-placeholder">
+                    💳 Service Revenue Chart<br>
+                    <small>Shows revenue breakdown by service type</small>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Payment Methods</h3>
+                </div>
+                <div class="chart-placeholder">
+                    💰 Payment Methods Chart<br>
+                    <small>Shows distribution of payment methods</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operations Tab -->
+        <div class="tab-content" id="operationsTab">
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="operationsPeriod">Time Period</label>
+                        <select id="operationsPeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="refreshOperationsBtn">Refresh Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Appointment Statistics</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalAppointmentsOps">0</div>
+                        <div class="stat-label">Total Appointments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedAppointments">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="cancelledAppointments">0</div>
+                        <div class="stat-label">Cancelled</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="appointmentCompletionRate">0%</div>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Lab Operations</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalLabRequests">0</div>
+                        <div class="stat-label">Lab Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedLabTests">0</div>
+                        <div class="stat-label">Completed Tests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingLabTests">0</div>
+                        <div class="stat-label">Pending Tests</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Pharmacy Operations</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalPrescriptions">0</div>
+                        <div class="stat-label">Prescriptions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="dispensedPrescriptions">0</div>
+                        <div class="stat-label">Dispensed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="medicineStock">0</div>
+                        <div class="stat-label">Medicines in Stock</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let allData = {
+            patients: [],
+            appointments: [],
+            billing: [],
+            labRequests: [],
+            labResults: [],
+            prescriptions: [],
+            medicines: [],
+            triage: [],
+            consultations: [],
+            notifications: [],
+            medicalHistory: [],
+            discharges: []
+        };
+
+        // Toast function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadAllData();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+
+        // Load all data
+        async function loadAllData() {
+            try {
+                const collections = ['patients', 'appointments', 'billing', 'labRequests', 'labResults', 'prescriptions', 'medicines', 'triage', 'consultations', 'notifications', 'medicalHistory', 'discharges'];
+                
+                for (const collectionName of collections) {
+                    const snapshot = await getDocs(collection(db, collectionName));
+                    allData[collectionName] = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                }
+                
+                updateOverviewStats();
+                updatePatientStats();
+                updateRevenueStats();
+                updateOperationsStats();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Error loading data', 'error');
+            }
+        }
+
+        // Update overview statistics
+        function updateOverviewStats() {
+            const period = parseInt(document.getElementById('overviewPeriod').value);
+            const cutoffDate = new Date(Date.now() - period * 24 * 60 * 60 * 1000);
+            
+            const recentPatients = allData.patients.filter(p => new Date(p.createdAt) >= cutoffDate);
+            const recentAppointments = allData.appointments.filter(a => new Date(a.createdAt) >= cutoffDate);
+            const recentBills = allData.billing.filter(b => {
+                const billDate = b.billDate || b.createdAt;
+                return new Date(billDate) >= cutoffDate;
+            });
+            const totalRevenue = allData.billing.filter(b => b.status === 'Paid').reduce((sum, b) => sum + b.totalAmount, 0);
+            
+            document.getElementById('totalPatients').textContent = recentPatients.length;
+            document.getElementById('totalAppointments').textContent = recentAppointments.length;
+            document.getElementById('totalRevenue').textContent = `KES ${totalRevenue.toFixed(2)}`;
+            document.getElementById('totalBills').textContent = recentBills.length;
+        }
+
+        // Update patient statistics
+        function updatePatientStats() {
+            const period = parseInt(document.getElementById('patientPeriod').value);
+            const cutoffDate = new Date(Date.now() - period * 24 * 60 * 60 * 1000);
+            
+            const recentPatients = allData.patients.filter(p => new Date(p.createdAt) >= cutoffDate);
+            const malePatients = recentPatients.filter(p => p.gender === 'Male').length;
+            const femalePatients = recentPatients.filter(p => p.gender === 'Female').length;
+            const avgAge = recentPatients.length > 0 ? 
+                Math.round(recentPatients.reduce((sum, p) => sum + p.age, 0) / recentPatients.length) : 0;
+            
+            document.getElementById('malePatients').textContent = malePatients;
+            document.getElementById('femalePatients').textContent = femalePatients;
+            document.getElementById('avgAge').textContent = avgAge;
+            
+            // Update recent patients table
+            const tableBody = document.querySelector('#recentPatientsTable tbody');
+            if (recentPatients.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" class="empty-state">No recent patients</td></tr>';
+            } else {
+                tableBody.innerHTML = recentPatients.slice(0, 10).map(patient => `
+                    <tr>
+                        <td>${patient.name}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.gender}</td>
+                        <td>${new Date(patient.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Update revenue statistics
+        function updateRevenueStats() {
+            const period = parseInt(document.getElementById('revenuePeriod').value);
+            const cutoffDate = new Date(Date.now() - period * 24 * 60 * 60 * 1000);
+            
+            const recentBills = allData.billing.filter(b => {
+                const billDate = b.billDate || b.createdAt;
+                return new Date(billDate) >= cutoffDate;
+            });
+            const paidBills = recentBills.filter(b => b.status === 'Paid');
+            const pendingBills = recentBills.filter(b => b.status === 'Pending');
+            const totalRevenue = paidBills.reduce((sum, b) => sum + b.totalAmount, 0);
+            const avgBillAmount = recentBills.length > 0 ? 
+                recentBills.reduce((sum, b) => sum + b.totalAmount, 0) / recentBills.length : 0;
+            
+            document.getElementById('totalRevenueAmount').textContent = `KES ${totalRevenue.toFixed(2)}`;
+            document.getElementById('paidBills').textContent = paidBills.length;
+            document.getElementById('pendingBills').textContent = pendingBills.length;
+            document.getElementById('avgBillAmount').textContent = `KES ${avgBillAmount.toFixed(2)}`;
+        }
+
+        // Update operations statistics
+        function updateOperationsStats() {
+            const period = parseInt(document.getElementById('operationsPeriod').value);
+            const cutoffDate = new Date(Date.now() - period * 24 * 60 * 60 * 1000);
+            
+            const recentAppointments = allData.appointments.filter(a => new Date(a.createdAt) >= cutoffDate);
+            const completedAppointments = recentAppointments.filter(a => a.status === 'Completed' || a.status === 'Confirmed').length;
+            const cancelledAppointments = recentAppointments.filter(a => a.status === 'Cancelled').length;
+            const completionRate = recentAppointments.length > 0 ? 
+                Math.round((completedAppointments / recentAppointments.length) * 100) : 0;
+            
+            const recentLabRequests = allData.labRequests.filter(l => new Date(l.createdAt) >= cutoffDate);
+            const completedLabTests = allData.labResults.filter(l => new Date(l.completedAt) >= cutoffDate).length;
+            const pendingLabTests = recentLabRequests.filter(l => l.status === 'Pending').length;
+            
+            const recentPrescriptions = allData.prescriptions.filter(p => new Date(p.createdAt) >= cutoffDate);
+            const dispensedPrescriptions = recentPrescriptions.filter(p => p.status === 'Completed').length;
+            
+            document.getElementById('totalAppointmentsOps').textContent = recentAppointments.length;
+            document.getElementById('completedAppointments').textContent = completedAppointments;
+            document.getElementById('cancelledAppointments').textContent = cancelledAppointments;
+            document.getElementById('appointmentCompletionRate').textContent = `${completionRate}%`;
+            
+            document.getElementById('totalLabRequests').textContent = recentLabRequests.length;
+            document.getElementById('completedLabTests').textContent = completedLabTests;
+            document.getElementById('pendingLabTests').textContent = pendingLabTests;
+            
+            document.getElementById('totalPrescriptions').textContent = recentPrescriptions.length;
+            document.getElementById('dispensedPrescriptions').textContent = dispensedPrescriptions;
+            document.getElementById('medicineStock').textContent = allData.medicines.length;
+        }
+
+        // Refresh buttons
+        document.getElementById('refreshOverviewBtn').addEventListener('click', () => {
+            updateOverviewStats();
+            showToast('Overview data refreshed', 'success');
+        });
+
+        document.getElementById('refreshPatientsBtn').addEventListener('click', () => {
+            updatePatientStats();
+            showToast('Patient data refreshed', 'success');
+        });
+
+        document.getElementById('refreshRevenueBtn').addEventListener('click', () => {
+            updateRevenueStats();
+            showToast('Revenue data refreshed', 'success');
+        });
+
+        document.getElementById('refreshOperationsBtn').addEventListener('click', () => {
+            updateOperationsStats();
+            showToast('Operations data refreshed', 'success');
+        });
+
+        // Export functionality
+        document.getElementById('exportBtn').addEventListener('click', async () => {
+            const exportBtn = document.getElementById('exportBtn');
+            const exportSpinner = document.getElementById('exportSpinner');
+            const exportBtnText = document.getElementById('exportBtnText');
+            
+            // Show loading state
+            exportBtn.disabled = true;
+            exportSpinner.style.display = 'inline-block';
+            exportBtnText.textContent = 'Exporting...';
+
+            try {
+                // Create export data
+                const exportData = {
+                    timestamp: new Date().toISOString(),
+                    hospital: 'Prince Alex Hospital',
+                    data: {
+                        patients: allData.patients,
+                        appointments: allData.appointments,
+                        billing: allData.billing,
+                        labRequests: allData.labRequests,
+                        labResults: allData.labResults,
+                        prescriptions: allData.prescriptions,
+                        medicines: allData.medicines,
+                        triage: allData.triage,
+                        consultations: allData.consultations,
+                        notifications: allData.notifications,
+                        medicalHistory: allData.medicalHistory,
+                        discharges: allData.discharges
+                    },
+                    summary: {
+                        totalPatients: allData.patients.length,
+                        totalAppointments: allData.appointments.length,
+                        totalBills: allData.billing.length,
+                        totalRevenue: `KES ${allData.billing.filter(b => b.status === 'Paid').reduce((sum, b) => sum + b.totalAmount, 0).toFixed(2)}`
+                    }
+                };
+
+                // Create and download file
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `prince-alex-hospital-data-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                
+                showToast('Data exported successfully', 'success');
+                
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showToast('Error exporting data', 'error');
+            } finally {
+                // Reset button state
+                exportBtn.disabled = false;
+                exportSpinner.style.display = 'none';
+                exportBtnText.textContent = '📥 Export Data';
+            }
+        });
+
+        // Period change listeners
+        document.getElementById('overviewPeriod').addEventListener('change', updateOverviewStats);
+        document.getElementById('patientPeriod').addEventListener('change', updatePatientStats);
+        document.getElementById('revenuePeriod').addEventListener('change', updateRevenueStats);
+        document.getElementById('operationsPeriod').addEventListener('change', updateOperationsStats);
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Billing - Prince Alex Hospital HMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .generate-bill-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-bill-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .bill-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .bill-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .bill-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .bill-card.pending {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .bill-card.paid {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .bill-card.overdue {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .bill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .bill-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .bill-amount {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-paid {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-overdue {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .services-list {
+            margin: 0.5rem 0;
+        }
+
+        .service-item {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bill-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .pay-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .pay-btn:hover {
+            background: #059669;
+        }
+
+        .view-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #d97706;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .services-section {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .services-section h4 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+
+        .service-row input {
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+        }
+
+        .remove-service {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .bill-summary {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-row.total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Voucher Styles */
+        .voucher-modal-content {
+            max-width: 800px;
+            width: 90%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .voucher-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .voucher-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #059669;
+        }
+
+        .hospital-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 0.5rem;
+        }
+
+        .hospital-details {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .voucher-body {
+            margin-bottom: 2rem;
+        }
+
+        .patient-info {
+            background: #f0fdf4;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #10b981;
+        }
+
+        .patient-info h4 {
+            color: #059669;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .patient-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .patient-details div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d1fae5;
+        }
+
+        .patient-details div:last-child {
+            border-bottom: none;
+        }
+
+        .medicines-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .medicines-table th,
+        .medicines-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .medicines-table th {
+            background: #059669;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .medicines-table td {
+            font-size: 0.9rem;
+        }
+
+        .medicines-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .total-section {
+            background: #f0fdf4;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid #10b981;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .total-final {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #059669;
+            border-top: 2px solid #10b981;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .voucher-footer {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e5e7eb;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .voucher-footer p {
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .voucher-footer p:last-child {
+            font-weight: 600;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        /* Discharge Styles */
+        .discharge-section {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .discharge-section h4 {
+            color: #059669;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .discharge-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .discharge-info div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d1fae5;
+        }
+
+        .discharge-info div:last-child {
+            border-bottom: none;
+        }
+
+        /* Payment Processing Styles */
+        .payment-summary {
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .payment-summary h4 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .payment-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-details div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .payment-details div:last-child {
+            border-bottom: none;
+        }
+
+        .amount-due {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #059669;
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #10b981;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .service-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 Prince Alex Hospital – Hospital Management System (HMS)</h1>
+        <div class="nav-buttons">
+            <a href="dashboard.html" class="nav-btn">Dashboard</a>
+            <button class="nav-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">💰 Billing</h2>
+            <button class="generate-bill-btn" id="generateBillBtn">
+                <span class="spinner" id="addSpinner"></span>
+                <span id="addBtnText">+ Generate Bill</span>
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalRevenue">$0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="pendingBills">0</div>
+                <div class="stat-label">Pending Bills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="paidBills">0</div>
+                <div class="stat-label">Paid Bills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="overdueBills">0</div>
+                <div class="stat-label">Overdue Bills</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="pending">Pending Bills</div>
+            <div class="tab" data-tab="paid">Paid Bills</div>
+            <div class="tab" data-tab="overdue">Overdue Bills</div>
+        </div>
+
+        <!-- Pending Bills Tab -->
+        <div class="tab-content active" id="pendingTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchPending" placeholder="Search pending bills...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Pending Bills</h3>
+                </div>
+                <div class="bill-list" id="pendingBillsList">
+                    <div class="loading">Loading pending bills...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paid Bills Tab -->
+        <div class="tab-content" id="paidTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchPaid" placeholder="Search paid bills...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Paid Bills</h3>
+                </div>
+                <div class="bill-list" id="paidBillsList">
+                    <div class="loading">Loading paid bills...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Bills Tab -->
+        <div class="tab-content" id="overdueTab">
+            <div class="search-section">
+                <input type="text" class="search-input" id="searchOverdue" placeholder="Search overdue bills...">
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h3 class="section-title">Overdue Bills</h3>
+                </div>
+                <div class="bill-list" id="overdueBillsList">
+                    <div class="loading">Loading overdue bills...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Bill Modal -->
+    <div class="modal" id="billModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="billModalTitle">Generate New Bill</h3>
+                <button class="close-btn" id="closeBillModal">&times;</button>
+            </div>
+            <form id="billForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patientName">Patient Name *</label>
+                        <input type="text" id="patientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientContact">Contact Number *</label>
+                        <input type="tel" id="patientContact" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="billDate">Bill Date *</label>
+                        <input type="date" id="billDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date *</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+
+                <div class="services-section">
+                    <h4>Services & Charges</h4>
+                    <div id="servicesContainer">
+                        <div class="service-row">
+                            <input type="text" placeholder="Service Description" class="service-description">
+                            <input type="number" placeholder="Quantity" class="service-quantity" min="1" value="1">
+                            <input type="number" placeholder="Price" class="service-price" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addServiceBtn">+ Add Service</button>
+                </div>
+
+                <div class="bill-summary">
+                    <h4>Bill Summary</h4>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount:</span>
+                        <span id="totalAmount">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="billNotes">Notes</label>
+                    <textarea id="billNotes" placeholder="Any additional notes for the bill"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBillBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveBillBtn">
+                        <span class="spinner" id="saveSpinner"></span>
+                        <span id="saveBtnText">Generate Bill</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Process Payment & Discharge</h3>
+                <button class="close-btn" id="closePaymentModal">&times;</button>
+            </div>
+            <form id="paymentForm">
+                <div class="patient-info">
+                    <h4>Patient Information</h4>
+                    <div class="patient-details">
+                        <div>
+                            <span>Patient Name:</span>
+                            <span id="paymentPatientInfo"></span>
+                        </div>
+                        <div>
+                            <span>Bill ID:</span>
+                            <span id="paymentBillId"></span>
+                        </div>
+                        <div>
+                            <span>Bill Date:</span>
+                            <span id="paymentBillDate"></span>
+                        </div>
+                        <div>
+                            <span>Bill Type:</span>
+                            <span id="paymentBillType"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-summary">
+                    <h4>Payment Summary</h4>
+                    <div class="payment-details">
+                        <div>
+                            <span>Total Amount:</span>
+                            <span id="paymentAmount"></span>
+                        </div>
+                        <div>
+                            <span>Amount Paid:</span>
+                            <span id="paymentAmountPaidDisplay">$0.00</span>
+                        </div>
+                        <div>
+                            <span>Payment Method:</span>
+                            <span id="paymentMethodDisplay">Not Selected</span>
+                        </div>
+                        <div>
+                            <span>Payment Date:</span>
+                            <span id="paymentDateDisplay"></span>
+                        </div>
+                    </div>
+                    <div class="amount-due" id="amountDue">
+                        Amount Due: $0.00
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method *</label>
+                        <select id="paymentMethod" required onchange="updatePaymentSummary()">
+                            <option value="">Select Payment Method</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Insurance">Insurance</option>
+                            <option value="Mobile Money">Mobile Money</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentAmountPaid">Amount Paid *</label>
+                        <input type="number" id="paymentAmountPaid" min="0" step="0.01" required onchange="updatePaymentSummary()">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentNotes">Payment Notes</label>
+                    <textarea id="paymentNotes" placeholder="Any additional notes about the payment"></textarea>
+                </div>
+
+                <div class="discharge-section">
+                    <h4>🏥 Patient Discharge</h4>
+                    <div class="discharge-info">
+                        <div>
+                            <span>Discharge Date:</span>
+                            <span id="dischargeDate"></span>
+                        </div>
+                        <div>
+                            <span>Discharge Type:</span>
+                            <span>Routine</span>
+                        </div>
+                        <div>
+                            <span>Discharge Reason:</span>
+                            <span>Treatment completed - Payment received</span>
+                        </div>
+                        <div>
+                            <span>Status:</span>
+                            <span>Ready for Discharge</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelPaymentBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="savePaymentBtn">
+                        <span class="spinner" id="paymentSpinner"></span>
+                        <span id="paymentBtnText">Process Payment & Discharge</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Voucher Modal -->
+    <div class="modal" id="voucherModal">
+        <div class="modal-content voucher-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📄 Payment Receipt & Discharge Certificate</h3>
+                <button class="close-btn" id="closeVoucherModal">&times;</button>
+            </div>
+            
+            <div class="voucher-content" id="voucherContent">
+                <!-- Voucher content will be generated here -->
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="closeVoucherBtn">Close</button>
+                <button class="btn btn-primary" id="downloadVoucherBtn">Download Receipt</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfTWtl-N21DxVATxVnhCofgQsVu3xK4M",
+            authDomain: "store-e88d9.firebaseapp.com",
+            projectId: "store-e88d9",
+            storageBucket: "store-e88d9.firebasestorage.app",
+            messagingSenderId: "30797525855",
+            appId: "1:30797525855:web:335287605ec648f747fcea"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let bills = [];
+        let currentBill = null;
+        let currentPayment = null;
+
+        // Toast function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadBills();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+
+        // Load bills
+        async function loadBills() {
+            try {
+                const billsSnapshot = await getDocs(collection(db, 'billing'));
+                bills = billsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                renderBills();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading bills:', error);
+                showToast('Error loading bills', 'error');
+            }
+        }
+
+        // Render bills
+        function renderBills() {
+            const pendingBills = bills.filter(bill => bill.status === 'Pending');
+            const paidBills = bills.filter(bill => bill.status === 'Paid');
+            const overdueBills = bills.filter(bill => {
+                if (bill.status === 'Pending') {
+                    const dueDate = new Date(bill.dueDate);
+                    const today = new Date();
+                    return dueDate < today;
+                }
+                return false;
+            });
+
+            renderBillSection('pendingBillsList', pendingBills, 'pending');
+            renderBillSection('paidBillsList', paidBills, 'paid');
+            renderBillSection('overdueBillsList', overdueBills, 'overdue');
+        }
+
+        // Render bill section
+        function renderBillSection(containerId, bills, status) {
+            const container = document.getElementById(containerId);
+            
+            if (bills.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No ${status} bills</h3>
+                        <p>No bills found with ${status} status</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bills.map(bill => `
+                <div class="bill-card ${status}">
+                    <div class="bill-header">
+                        <div>
+                            <div class="patient-name">${bill.patientName}</div>
+                            <div class="bill-details">
+                                Bill #${bill.id} • ${new Date(bill.billDate).toLocaleDateString()}
+                                ${bill.billType ? ` • ${bill.billType}` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="bill-amount">$${bill.totalAmount.toFixed(2)}</div>
+                            <span class="status-badge status-${status}">${status}</span>
+                        </div>
+                    </div>
+                    <div class="bill-details">
+                        <strong>Due Date:</strong> ${new Date(bill.dueDate).toLocaleDateString()}
+                    </div>
+                    <div class="services-list">
+                        ${bill.billType === 'Pharmacy' && bill.medicines && bill.medicines.length > 0 ? 
+                            bill.medicines.map(medicine => `
+                                <div class="service-item">
+                                    <span>${medicine.name} (${medicine.quantity}x ${medicine.dosage})</span>
+                                    <span>$${medicine.totalPrice.toFixed(2)}</span>
+                                </div>
+                            `).join('') :
+                            bill.services && bill.services.length > 0 ? 
+                                bill.services.map(service => `
+                                    <div class="service-item">
+                                        <span>${service.description}</span>
+                                        <span>$${service.price.toFixed(2)}</span>
+                                    </div>
+                                `).join('') : 
+                                '<div class="service-item">No services listed</div>'
+                        }
+                    </div>
+                    <div class="bill-actions">
+                        ${status === 'pending' ? `
+                            <button class="action-btn pay-btn" onclick="processPayment('${bill.id}')">Mark Paid</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewBill('${bill.id}')">View Bill</button>
+                        ${status === 'pending' ? `
+                            <button class="action-btn edit-btn" onclick="editBill('${bill.id}')">Edit</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalRevenue = bills.filter(bill => bill.status === 'Paid')
+                .reduce((sum, bill) => sum + bill.totalAmount, 0);
+            const pendingCount = bills.filter(bill => bill.status === 'Pending').length;
+            const paidCount = bills.filter(bill => bill.status === 'Paid').length;
+            const overdueCount = bills.filter(bill => {
+                if (bill.status === 'Pending') {
+                    const dueDate = new Date(bill.dueDate);
+                    const today = new Date();
+                    return dueDate < today;
+                }
+                return false;
+            }).length;
+
+            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('pendingBills').textContent = pendingCount;
+            document.getElementById('paidBills').textContent = paidCount;
+            document.getElementById('overdueBills').textContent = overdueCount;
+        }
+
+        // Search functionality
+        document.getElementById('searchPending').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredBills = bills.filter(bill => 
+                bill.status === 'Pending' &&
+                bill.patientName.toLowerCase().includes(searchTerm)
+            );
+            renderBillSection('pendingBillsList', filteredBills, 'pending');
+        });
+
+        document.getElementById('searchPaid').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredBills = bills.filter(bill => 
+                bill.status === 'Paid' &&
+                bill.patientName.toLowerCase().includes(searchTerm)
+            );
+            renderBillSection('paidBillsList', filteredBills, 'paid');
+        });
+
+        document.getElementById('searchOverdue').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredBills = bills.filter(bill => {
+                if (bill.status === 'Pending') {
+                    const dueDate = new Date(bill.dueDate);
+                    const today = new Date();
+                    return dueDate < today && bill.patientName.toLowerCase().includes(searchTerm);
+                }
+                return false;
+            });
+            renderBillSection('overdueBillsList', filteredBills, 'overdue');
+        });
+
+        // Bill actions
+        window.processPayment = function(billId) {
+            currentBill = bills.find(bill => bill.id === billId);
+            
+            // Populate patient information
+            document.getElementById('paymentPatientInfo').textContent = currentBill.patientName;
+            document.getElementById('paymentBillId').textContent = currentBill.id;
+            document.getElementById('paymentBillDate').textContent = new Date(currentBill.billDate || currentBill.createdAt).toLocaleDateString();
+            document.getElementById('paymentBillType').textContent = currentBill.billType || 'General';
+            
+            // Populate payment information
+            document.getElementById('paymentAmount').textContent = `$${currentBill.totalAmount.toFixed(2)}`;
+            document.getElementById('paymentAmountPaid').value = currentBill.totalAmount;
+            document.getElementById('dischargeDate').textContent = new Date().toLocaleDateString();
+            
+            // Set payment date
+            document.getElementById('paymentDateDisplay').textContent = new Date().toLocaleDateString();
+            
+            // Update payment summary
+            updatePaymentSummary();
+            
+            document.getElementById('paymentModal').classList.add('show');
+        };
+
+        // Update payment summary
+        window.updatePaymentSummary = function() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const amountPaid = parseFloat(document.getElementById('paymentAmountPaid').value) || 0;
+            const totalAmount = currentBill ? currentBill.totalAmount : 0;
+            const amountDue = totalAmount - amountPaid;
+            
+            document.getElementById('paymentMethodDisplay').textContent = paymentMethod || 'Not Selected';
+            document.getElementById('paymentAmountPaidDisplay').textContent = `$${amountPaid.toFixed(2)}`;
+            
+            const amountDueElement = document.getElementById('amountDue');
+            if (amountDue <= 0) {
+                amountDueElement.textContent = 'Payment Complete - Ready for Discharge';
+                amountDueElement.style.color = '#059669';
+                amountDueElement.style.background = '#f0fdf4';
+            } else {
+                amountDueElement.textContent = `Amount Due: $${amountDue.toFixed(2)}`;
+                amountDueElement.style.color = '#ef4444';
+                amountDueElement.style.background = '#fef2f2';
+            }
+        };
+
+        window.viewBill = function(billId) {
+            const bill = bills.find(bill => bill.id === billId);
+            
+            if (bill.billType === 'Pharmacy') {
+                // Show pharmacy bill details
+                const medicinesList = bill.medicines ? bill.medicines.map(med => 
+                    `${med.name} (${med.quantity}x ${med.dosage}) - $${med.totalPrice.toFixed(2)}`
+                ).join('\n') : 'No medicines listed';
+                
+                showToast(`Pharmacy Bill for ${bill.patientName}\nTotal: $${bill.totalAmount.toFixed(2)}\n\nMedicines:\n${medicinesList}`, 'success');
+            } else {
+                showToast(`Bill for ${bill.patientName} - $${bill.totalAmount.toFixed(2)}`, 'success');
+            }
+        };
+
+        window.editBill = function(billId) {
+            currentBill = bills.find(bill => bill.id === billId);
+            
+            document.getElementById('billModalTitle').textContent = 'Edit Bill';
+            document.getElementById('patientName').value = currentBill.patientName;
+            document.getElementById('patientContact').value = currentBill.patientContact;
+            document.getElementById('billDate').value = currentBill.billDate;
+            document.getElementById('dueDate').value = currentBill.dueDate;
+            document.getElementById('billNotes').value = currentBill.notes || '';
+            
+            // Load services
+            const servicesContainer = document.getElementById('servicesContainer');
+            servicesContainer.innerHTML = '';
+            if (currentBill.services && currentBill.services.length > 0) {
+                currentBill.services.forEach(service => {
+                    addServiceRow(service.description, service.quantity, service.price);
+                });
+            } else {
+                addServiceRow();
+            }
+            
+            updateBillSummary();
+            document.getElementById('billModal').classList.add('show');
+        };
+
+        // Add service row
+        function addServiceRow(description = '', quantity = 1, price = 0) {
+            const servicesContainer = document.getElementById('servicesContainer');
+            const serviceRow = document.createElement('div');
+            serviceRow.className = 'service-row';
+            serviceRow.innerHTML = `
+                <input type="text" placeholder="Service Description" class="service-description" value="${description}">
+                <input type="number" placeholder="Quantity" class="service-quantity" min="1" value="${quantity}">
+                <input type="number" placeholder="Price" class="service-price" min="0" step="0.01" value="${price}">
+                <button type="button" class="remove-service" onclick="removeServiceRow(this)">Remove</button>
+            `;
+            servicesContainer.appendChild(serviceRow);
+            
+            // Add event listeners
+            serviceRow.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', updateBillSummary);
+            });
+        }
+
+        // Remove service row
+        window.removeServiceRow = function(button) {
+            button.parentElement.remove();
+            updateBillSummary();
+        };
+
+        // Update bill summary
+        function updateBillSummary() {
+            const serviceRows = document.querySelectorAll('.service-row');
+            let subtotal = 0;
+            
+            serviceRows.forEach(row => {
+                const quantity = parseFloat(row.querySelector('.service-quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.service-price').value) || 0;
+                subtotal += quantity * price;
+            });
+            
+            const tax = subtotal * 0.1; // 10% tax
+            const total = subtotal + tax;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Add service button
+        document.getElementById('addServiceBtn').addEventListener('click', () => {
+            addServiceRow();
+        });
+
+        // Save bill form
+        document.getElementById('billForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveBillBtn');
+            const saveSpinner = document.getElementById('saveSpinner');
+            const saveBtnText = document.getElementById('saveBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Generating...';
+
+            try {
+                // Collect services
+                const services = [];
+                const serviceRows = document.querySelectorAll('.service-row');
+                serviceRows.forEach(row => {
+                    const description = row.querySelector('.service-description').value;
+                    const quantity = parseFloat(row.querySelector('.service-quantity').value) || 0;
+                    const price = parseFloat(row.querySelector('.service-price').value) || 0;
+                    
+                    if (description && quantity > 0 && price > 0) {
+                        services.push({
+                            description: description,
+                            quantity: quantity,
+                            price: price,
+                            total: quantity * price
+                        });
+                    }
+                });
+
+                const subtotal = services.reduce((sum, service) => sum + service.total, 0);
+                const tax = subtotal * 0.1;
+                const totalAmount = subtotal + tax;
+
+                const billData = {
+                    patientName: document.getElementById('patientName').value,
+                    patientContact: document.getElementById('patientContact').value,
+                    billDate: document.getElementById('billDate').value,
+                    dueDate: document.getElementById('dueDate').value,
+                    services: services,
+                    subtotal: subtotal,
+                    tax: tax,
+                    totalAmount: totalAmount,
+                    status: 'Pending',
+                    notes: document.getElementById('billNotes').value || null,
+                    createdAt: new Date().toISOString()
+                };
+
+                if (currentBill) {
+                    // Update existing bill
+                    await updateDoc(doc(db, 'billing', currentBill.id), billData);
+                    showToast('Bill updated successfully', 'success');
+                } else {
+                    // Create new bill
+                    await addDoc(collection(db, 'billing'), billData);
+                    showToast('Bill generated successfully', 'success');
+                }
+
+                closeBillModal();
+                await loadBills();
+                
+            } catch (error) {
+                console.error('Error saving bill:', error);
+                showToast('Error saving bill', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Generate Bill';
+            }
+        });
+
+        // Save payment form
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('savePaymentBtn');
+            const saveSpinner = document.getElementById('paymentSpinner');
+            const saveBtnText = document.getElementById('paymentBtnText');
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveSpinner.style.display = 'inline-block';
+            saveBtnText.textContent = 'Processing Payment & Discharge...';
+
+            try {
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                const amountPaid = parseFloat(document.getElementById('paymentAmountPaid').value);
+                const paymentNotes = document.getElementById('paymentNotes').value || null;
+                const totalAmount = currentBill.totalAmount;
+                
+                // Validate payment
+                if (amountPaid < totalAmount) {
+                    showToast('Payment amount cannot be less than total amount', 'warning');
+                    return;
+                }
+
+                const paymentData = {
+                    paymentMethod: paymentMethod,
+                    amountPaid: amountPaid,
+                    paymentNotes: paymentNotes,
+                    paidAt: new Date().toISOString(),
+                    processedBy: 'Billing Staff'
+                };
+
+                // Update bill status
+                await updateDoc(doc(db, 'billing', currentBill.id), {
+                    status: 'Paid',
+                    ...paymentData
+                });
+
+                // Create discharge record
+                const dischargeData = {
+                    patientId: currentBill.patientId,
+                    patientName: currentBill.patientName,
+                    dischargeDate: new Date().toISOString(),
+                    dischargeType: 'Routine',
+                    dischargeReason: 'Treatment completed - Payment received',
+                    billId: currentBill.id,
+                    totalAmount: totalAmount,
+                    paymentMethod: paymentMethod,
+                    amountPaid: amountPaid,
+                    status: 'Discharged',
+                    dischargedBy: 'Billing Staff'
+                };
+
+                await addDoc(collection(db, 'discharges'), dischargeData);
+
+                // Store payment data for voucher
+                currentPayment = {
+                    ...paymentData,
+                    bill: currentBill,
+                    discharge: dischargeData
+                };
+
+                showToast('Payment processed successfully! Patient discharged.', 'success');
+                closePaymentModal();
+                await loadBills();
+                
+                // Show voucher after a short delay
+                setTimeout(() => {
+                    showVoucher();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                showToast('Error processing payment', 'error');
+            } finally {
+                // Reset button state
+                saveBtn.disabled = false;
+                saveSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Process Payment & Discharge';
+            }
+        });
+
+        // Generate bill button
+        document.getElementById('generateBillBtn').addEventListener('click', () => {
+            currentBill = null;
+            document.getElementById('billModalTitle').textContent = 'Generate New Bill';
+            document.getElementById('billForm').reset();
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const dueDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            document.getElementById('billDate').value = today;
+            document.getElementById('dueDate').value = dueDate;
+            
+            // Reset services
+            const servicesContainer = document.getElementById('servicesContainer');
+            servicesContainer.innerHTML = '';
+            addServiceRow();
+            
+            updateBillSummary();
+            document.getElementById('billModal').classList.add('show');
+        });
+
+        // Show voucher
+        function showVoucher() {
+            if (!currentPayment) return;
+            
+            const voucherContent = document.getElementById('voucherContent');
+            const bill = currentPayment.bill;
+            const discharge = currentPayment.discharge;
+            
+            voucherContent.innerHTML = `
+                <div class="voucher-header">
+                    <div class="hospital-name">Prince Alex Hospital</div>
+                    <div class="hospital-details">
+                        Hospital Management System (HMS)<br>
+                        Billing Department<br>
+                        Payment Receipt & Discharge Certificate<br>
+                        ${new Date().toLocaleDateString()} • ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+                
+                <div class="voucher-body">
+                    <div class="patient-info">
+                        <h4>Patient Information</h4>
+                        <div class="patient-details">
+                            <div>
+                                <span>Patient Name:</span>
+                                <span>${bill.patientName}</span>
+                            </div>
+                            <div>
+                                <span>Bill ID:</span>
+                                <span>${bill.id}</span>
+                            </div>
+                            <div>
+                                <span>Bill Date:</span>
+                                <span>${new Date(bill.billDate || bill.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <span>Bill Type:</span>
+                                <span>${bill.billType || 'General'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${bill.billType === 'Pharmacy' && bill.medicines && bill.medicines.length > 0 ? `
+                        <table class="medicines-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Dosage</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${bill.medicines.map(medicine => `
+                                    <tr>
+                                        <td>${medicine.name}</td>
+                                        <td>${medicine.dosage}</td>
+                                        <td>${medicine.dispensedQuantity || medicine.quantity}</td>
+                                        <td>$${medicine.unitPrice.toFixed(2)}</td>
+                                        <td>$${medicine.totalPrice.toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    ` : bill.services && bill.services.length > 0 ? `
+                        <table class="medicines-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${bill.services.map(service => `
+                                    <tr>
+                                        <td>${service.description}</td>
+                                        <td>${service.quantity}</td>
+                                        <td>$${service.price.toFixed(2)}</td>
+                                        <td>$${service.total.toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    ` : ''}
+                    
+                    <div class="total-section">
+                        <div class="total-line">
+                            <span>Subtotal:</span>
+                            <span>$${bill.totalAmount.toFixed(2)}</span>
+                        </div>
+                        <div class="total-line">
+                            <span>Tax (0%):</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="total-final">
+                            <span>Total Amount:</span>
+                            <span>$${bill.totalAmount.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-summary">
+                        <h4>Payment Information</h4>
+                        <div class="payment-details">
+                            <div>
+                                <span>Payment Method:</span>
+                                <span>${currentPayment.paymentMethod}</span>
+                            </div>
+                            <div>
+                                <span>Amount Paid:</span>
+                                <span>$${currentPayment.amountPaid.toFixed(2)}</span>
+                            </div>
+                            <div>
+                                <span>Payment Date:</span>
+                                <span>${new Date(currentPayment.paidAt).toLocaleString()}</span>
+                            </div>
+                            <div>
+                                <span>Processed By:</span>
+                                <span>${currentPayment.processedBy}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="discharge-section">
+                        <h4>🏥 Discharge Certificate</h4>
+                        <div class="discharge-info">
+                            <div>
+                                <span>Discharge Date:</span>
+                                <span>${new Date(discharge.dischargeDate).toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <span>Discharge Type:</span>
+                                <span>${discharge.dischargeType}</span>
+                            </div>
+                            <div>
+                                <span>Discharge Reason:</span>
+                                <span>${discharge.dischargeReason}</span>
+                            </div>
+                            <div>
+                                <span>Status:</span>
+                                <span>${discharge.status}</span>
+                            </div>
+                            <div>
+                                <span>Discharged By:</span>
+                                <span>${discharge.dischargedBy}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="voucher-footer">
+                    <p>Thank you for choosing Prince Alex Hospital!</p>
+                    <p>This receipt serves as proof of payment and discharge certificate.</p>
+                    <p>Please keep this document for your records.</p>
+                    <p>Receipt ID: ${bill.id} | ${new Date().toLocaleDateString()}</p>
+                </div>
+            `;
+            
+            document.getElementById('voucherModal').classList.add('show');
+        }
+
+        // Download voucher
+        window.downloadVoucher = function() {
+            const voucherContent = document.getElementById('voucherContent');
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Payment Receipt & Discharge Certificate - ${currentPayment.bill.patientName}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .voucher-header { text-align: center; margin-bottom: 20px; border-bottom: 3px solid #059669; padding-bottom: 10px; }
+                            .hospital-name { font-size: 24px; font-weight: bold; color: #059669; margin-bottom: 5px; }
+                            .hospital-details { color: #666; font-size: 14px; }
+                            .patient-info { background: #f0fdf4; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #10b981; }
+                            .patient-info h4 { color: #059669; margin-bottom: 10px; }
+                            .patient-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                            .patient-details div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #d1fae5; }
+                            .medicines-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                            .medicines-table th, .medicines-table td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+                            .medicines-table th { background: #059669; color: white; font-weight: bold; }
+                            .total-section { background: #f0fdf4; padding: 15px; border-radius: 8px; border: 2px solid #10b981; }
+                            .total-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+                            .total-final { font-size: 18px; font-weight: bold; color: #059669; border-top: 2px solid #10b981; padding-top: 10px; margin-top: 10px; }
+                            .payment-summary { background: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                            .payment-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                            .payment-details div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e5e7eb; }
+                            .discharge-section { background: #f0fdf4; border: 2px solid #10b981; border-radius: 8px; padding: 15px; margin: 20px 0; }
+                            .discharge-section h4 { color: #059669; margin-bottom: 10px; }
+                            .discharge-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                            .discharge-info div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #d1fae5; }
+                            .voucher-footer { text-align: center; padding-top: 20px; border-top: 2px solid #e5e7eb; color: #666; font-size: 14px; }
+                            .voucher-footer p { margin-bottom: 5px; word-wrap: break-word; overflow-wrap: break-word; hyphens: auto; }
+                            .voucher-footer p:last-child { font-weight: bold; color: #374151; }
+                        </style>
+                    </head>
+                    <body>
+                        ${voucherContent.innerHTML}
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        };
+
+        // Close modals
+        function closeBillModal() {
+            document.getElementById('billModal').classList.remove('show');
+            document.getElementById('billForm').reset();
+            currentBill = null;
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('show');
+            document.getElementById('paymentForm').reset();
+            currentBill = null;
+        }
+
+        function closeVoucherModal() {
+            document.getElementById('voucherModal').classList.remove('show');
+            currentPayment = null;
+        }
+
+        // Modal event listeners
+        document.getElementById('closeBillModal').addEventListener('click', closeBillModal);
+        document.getElementById('closePaymentModal').addEventListener('click', closePaymentModal);
+        document.getElementById('closeVoucherModal').addEventListener('click', closeVoucherModal);
+        document.getElementById('closeVoucherBtn').addEventListener('click', closeVoucherModal);
+        document.getElementById('downloadVoucherBtn').addEventListener('click', downloadVoucher);
+        document.getElementById('cancelBillBtn').addEventListener('click', closeBillModal);
+        document.getElementById('cancelPaymentBtn').addEventListener('click', closePaymentModal);
+        
+        document.getElementById('billModal').addEventListener('click', (e) => {
+            if (e.target.id === 'billModal') closeBillModal();
+        });
+        
+        document.getElementById('paymentModal').addEventListener('click', (e) => {
+            if (e.target.id === 'paymentModal') closePaymentModal();
+        });
+        
+        document.getElementById('voucherModal').addEventListener('click', (e) => {
+            if (e.target.id === 'voucherModal') closeVoucherModal();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
