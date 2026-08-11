@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wards — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+                        <div class="page-header">
+                <div><h1>Wards</h1><p class="subtitle">Manage hospital wards</p></div>
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="add-ward-btn" data-permission="BED_ASSIGN">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Add Ward
+                    </button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span>Ward List</span></div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" id="wards-table">
+                            <thead>
+                                <tr><th>Name</th><th>Floor</th><th>Capacity</th><th>Occupied</th><th>Available</th><th class="text-right">Actions</th></tr>
+                            </thead>
+                            <tbody id="wards-tbody">
+                                <tr><td colspan="6"><div class="table-empty"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Loading wards...</h3></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/wards.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Patient — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            
+            <!-- Page Content -->
+            <div class="page-header">
+                <div>
+                    <h1>Register New Patient</h1>
+                    <p class="subtitle">Enter patient details to create a new record</p>
+                </div>
+                <div class="page-actions">
+                    <a href="patients.html" class="btn btn-secondary">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span> Back to Patients
+                    </a>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="form-container">
+                <form id="patient-register-form">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <div class="form-section-title">Personal Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label required" for="first-name">First Name</label>
+                                <input type="text" id="first-name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="middle-name">Middle Name</label>
+                                <input type="text" id="middle-name" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="last-name">Last Name</label>
+                                <input type="text" id="last-name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="date-of-birth">Date of Birth</label>
+                                <input type="date" id="date-of-birth" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="gender">Gender</label>
+                                <select id="gender" class="form-select" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone Number</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="+254 700 000 000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input type="email" id="email" class="form-input" placeholder="patient@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="national-id">National ID</label>
+                                <input type="text" id="national-id" class="form-input" placeholder="Enter National ID">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information -->
+                    <div class="form-section">
+                        <div class="form-section-title">Address Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="address">Street Address</label>
+                                <input type="text" id="address" class="form-input" placeholder="Enter street address">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="city">Town</label>
+                                <input type="text" id="city" class="form-input" placeholder="Enter city">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="county">County/Province</label>
+                                <input type="text" id="county" class="form-input" placeholder="Enter county">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="postal-code">Postal Code</label>
+                                <input type="text" id="postal-code" class="form-input" placeholder="Enter postal code">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next of Kin -->
+                    <div class="form-section">
+                        <div class="form-section-title">Next of Kin</div>
+                        <div class="form-grid form-grid-3">
+                            <div class="form-group">
+                                <label class="form-label" for="kin-name">Name</label>
+                                <input type="text" id="kin-name" class="form-input" placeholder="Next of kin's name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="kin-relationship">Relationship</label>
+                                <input type="text" id="kin-relationship" class="form-input" placeholder="e.g. Spouse, Parent">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="kin-phone">Phone</label>
+                                <input type="tel" id="kin-phone" class="form-input" placeholder="Next of kin's phone">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Information -->
+                    <div class="form-section">
+                        <div class="form-section-title">Medical Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="blood-group">Blood Group</label>
+                                <select id="blood-group" class="form-select">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="allergies">Allergies</label>
+                                <textarea id="allergies" class="form-textarea" rows="2" placeholder="e.g. Penicillin, Peanuts. Separate with commas."></textarea>
+                            </div>
+                            <div class="form-group form-group-full">
+                                <label class="form-label" for="medical-alerts">Existing Conditions / Medical Alerts</label>
+                                <textarea id="medical-alerts" class="form-textarea" rows="2" placeholder="e.g. Diabetes, Hypertension. Separate with commas."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insurance Information -->
+                    <div class="form-section">
+                        <div class="form-section-title">Insurance Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="insurance-provider">Insurance Provider</label>
+                                <input type="text" id="insurance-provider" class="form-input" placeholder="e.g. NHIF, Jubilee">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="insurance-member-number">Membership Number</label>
+                                <input type="text" id="insurance-member-number" class="form-input" placeholder="Enter membership number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <span class="btn-text">Register Patient</span>
+                            <span class="btn-loading" style="display: none;">Saving...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+    <script type="module" src="js/patient-register.js"></script>
+</body>
+</html>

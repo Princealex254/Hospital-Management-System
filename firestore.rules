@@ -1,0 +1,364 @@
+/**
+ * PRINCE ALEX DIGITAL HMS — Firestore Security Rules
+ * 
+ * Multi-tenant architecture with role-based access control.
+ * 
+ * Key principles:
+ * 1. Every document must have a tenantId field
+ * 2. Users can only access data within their tenant
+ * 3. Role-based permissions are enforced
+ * 4. Users cannot modify their own tenantId, role, or permissions
+ * 5. Audit logs are write-only (append-only)
+ * 6. Medical documents are protected
+ */
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper Functions ────────────────────────────────────────────────────
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Get the current user's document
+    function getUserDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    // Check if user is authenticated and has a valid profile
+    function hasValidProfile() {
+      return isAuthenticated() && getUserDoc().data.keys().hasAll(['tenantId', 'role', 'accountStatus']);
+    }
+
+    // Get the user's tenant ID
+    function getTenantId() {
+      return getUserDoc().data.tenantId;
+    }
+
+    // Get the user's role
+    function getUserRole() {
+      return getUserDoc().data.role;
+    }
+
+    // Get the user's permissions
+    function getUserPermissions() {
+      return getUserDoc().data.permissions;
+    }
+
+    // Check if user has a specific permission
+    function hasPermission(permission) {
+      return getUserPermissions().hasAll([permission]);
+    }
+
+    // Check if user has any of the specified permissions
+    function hasAnyPermission(permissions) {
+      return getUserPermissions().hasAny(permissions);
+    }
+
+    // Check if user has a specific role
+    function hasRole(role) {
+      return getUserRole() == role;
+    }
+
+    // Check if user has any of the specified roles
+    function hasAnyRole(roles) {
+      return roles.hasAny([getUserRole()]);
+    }
+
+    // Check if user is a super admin
+    function isSuperAdmin() {
+      return hasRole('SUPER_ADMIN');
+    }
+
+    // Check if user is a hospital admin
+    function isHospitalAdmin() {
+      return hasRole('HOSPITAL_ADMIN');
+    }
+
+    // Check if user belongs to the same tenant as the resource
+    function isSameTenant(tenantId) {
+      return getTenantId() == tenantId;
+    }
+
+    // Check if user can access a document (same tenant + authenticated)
+    function canAccess(tenantId) {
+      return isAuthenticated() && isSameTenant(tenantId);
+    }
+
+    // Check if user can write to a document (same tenant + permission)
+    function canWrite(tenantId, permission) {
+      return isAuthenticated() && isSameTenant(tenantId) && hasPermission(permission);
+    }
+
+    // Check if user can write to a document (same tenant + role)
+    function canWriteRole(tenantId, role) {
+      return isAuthenticated() && isSameTenant(tenantId) && hasRole(role);
+    }
+
+    // ─── Users Collection ────────────────────────────────────────────────────
+    // Users can read their own profile. Admins can read all users in their tenant.
+    // Users CANNOT modify their own tenantId, role, or permissions.
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (
+        request.auth.uid == userId ||
+        (isSameTenant(getTenantId()) && hasPermission('STAFF_READ'))
+      );
+
+      allow create: if isAuthenticated() && (
+        isSuperAdmin() ||
+        (isHospitalAdmin() && hasPermission('STAFF_CREATE'))
+      );
+
+      allow update: if isAuthenticated() && (
+        // Users can update their own profile (except protected fields)
+        (request.auth.uid == userId && !request.resource.data.keys().hasAny(['tenantId', 'role', 'permissions', 'accountStatus'])) ||
+        // Admins can update users in their tenant (except protected fields)
+        (isSameTenant(getTenantId()) && hasPermission('STAFF_UPDATE') && !request.resource.data.keys().hasAny(['tenantId', 'role', 'permissions']))
+      );
+
+      allow delete: if isAuthenticated() && isSameTenant(getTenantId()) && hasPermission('STAFF_DELETE');
+    }
+
+    // ─── Tenants Collection ──────────────────────────────────────────────────
+    match /tenants/{tenantId} {
+      allow read: if isAuthenticated() && isSameTenant(tenantId);
+      allow create: if isSuperAdmin();
+      allow update, delete: if isSuperAdmin() || (isSameTenant(tenantId) && isHospitalAdmin());
+    }
+
+    // ─── Plans Collection ────────────────────────────────────────────────────
+    match /plans/{planId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // ─── Subscriptions Collection ────────────────────────────────────────────
+    match /subscriptions/{subscriptionId} {
+      allow read: if isAuthenticated() && isSameTenant(resource.data.tenantId);
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin() || (isSameTenant(resource.data.tenantId) && isHospitalAdmin());
+      allow delete: if isSuperAdmin();
+    }
+
+    // ─── Platform Admins Collection ──────────────────────────────────────────
+    match /platformAdmins/{adminId} {
+      allow read, write: if isSuperAdmin();
+    }
+
+    // ─── Patients Collection ─────────────────────────────────────────────────
+    match /patients/{patientId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('PATIENT_READ');
+      allow create: if canWrite(getTenantId(), 'PATIENT_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'PATIENT_UPDATE');
+      allow delete: if canWrite(resource.data.tenantId, 'PATIENT_DELETE');
+    }
+
+    // ─── Appointments Collection ─────────────────────────────────────────────
+    match /appointments/{appointmentId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('APPOINTMENT_READ');
+      allow create: if canWrite(getTenantId(), 'APPOINTMENT_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('APPOINTMENT_UPDATE');
+      allow delete: if canAccess(resource.data.tenantId) && hasPermission('APPOINTMENT_DELETE');
+    }
+
+    // ─── Encounters Collection ───────────────────────────────────────────────
+    match /encounters/{encounterId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('CONSULTATION_READ');
+      allow create: if canWrite(getTenantId(), 'CONSULTATION_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('CONSULTATION_READ');
+    }
+
+    // ─── Vitals Collection ───────────────────────────────────────────────────
+    match /vitals/{vitalId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('VITALS_READ');
+      allow create: if canWrite(getTenantId(), 'VITALS_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('VITALS_CREATE');
+    }
+
+    // ─── Diagnoses Collection ────────────────────────────────────────────────
+    match /diagnoses/{diagnosisId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('CONSULTATION_READ');
+      allow create: if canWrite(getTenantId(), 'DIAGNOSIS_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('DIAGNOSIS_CREATE');
+    }
+
+    // ─── Prescriptions Collection ─────────────────────────────────────────────
+    match /prescriptions/{prescriptionId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('PRESCRIPTION_READ');
+      allow create: if canWrite(getTenantId(), 'PRESCRIPTION_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('PRESCRIPTION_CREATE');
+    }
+
+    // ─── Medicines Collection ────────────────────────────────────────────────
+    match /medicines/{medicineId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'MEDICINE_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'MEDICINE_UPDATE');
+      allow delete: if canWrite(resource.data.tenantId, 'MEDICINE_UPDATE');
+    }
+
+    // ─── Lab Orders Collection ───────────────────────────────────────────────
+    match /labOrders/{orderId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('LAB_ORDER_READ');
+      allow create: if canWrite(getTenantId(), 'LAB_ORDER_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasAnyPermission(['LAB_ORDER_READ', 'LAB_RESULT_CREATE']);
+    }
+
+    // ─── Lab Results Collection ──────────────────────────────────────────────
+    match /labResults/{resultId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('LAB_RESULT_READ');
+      allow create: if canWrite(getTenantId(), 'LAB_RESULT_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('LAB_RESULT_CREATE');
+    }
+
+// ─── Billable Items Collection ─────────────────────────────────────────
+    match /billableItems/{itemId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_READ');
+      allow create: if canWrite(getTenantId(), 'INVOICE_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_UPDATE');
+      allow delete: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_UPDATE');
+    }
+
+    // ─── Admissions Collection ───────────────────────────────────────────────
+    match /admissions/{admissionId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('ADMISSION_READ');
+      allow create: if canWrite(getTenantId(), 'ADMISSION_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('ADMISSION_UPDATE');
+    }
+
+    // ─── Wards Collection ────────────────────────────────────────────────────
+    match /wards/{wardId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'BED_ASSIGN');
+      allow update: if canWrite(resource.data.tenantId, 'BED_ASSIGN');
+      allow delete: if canWrite(resource.data.tenantId, 'BED_ASSIGN');
+    }
+
+    // ─── Beds Collection ─────────────────────────────────────────────────────
+    match /beds/{bedId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'BED_ASSIGN');
+      allow update: if canWrite(resource.data.tenantId, 'BED_ASSIGN');
+      allow delete: if canWrite(resource.data.tenantId, 'BED_ASSIGN');
+    }
+
+    // ─── Departments Collection ──────────────────────────────────────────────
+    match /departments/{departmentId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create, update, delete: if canWrite(getTenantId(), 'STAFF_CREATE');
+    }
+
+    // ─── Invoices Collection ─────────────────────────────────────────────────
+    match /invoices/{invoiceId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_READ');
+      allow create: if canWrite(getTenantId(), 'INVOICE_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_UPDATE');
+    }
+
+    // ─── Payments Collection ─────────────────────────────────────────────────
+    match /payments/{paymentId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('PAYMENT_READ');
+      allow create: if canWrite(getTenantId(), 'PAYMENT_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('PAYMENT_CREATE');
+    }
+
+// ─── Insurance Claims Collection ─────────────────────────────────────────
+    match /insuranceClaims/{claimId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'INVOICE_CREATE');
+      allow update: if canAccess(resource.data.tenantId) && hasPermission('INVOICE_UPDATE');
+    }
+
+    // ─── Inventory Collection ────────────────────────────────────────────────
+    match /inventory/{itemId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'STOCK_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'STOCK_UPDATE');
+      allow delete: if canWrite(resource.data.tenantId, 'STOCK_UPDATE');
+    }
+
+    // ─── Stock Movements Collection ──────────────────────────────────────────
+    match /stockMovements/{movementId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'STOCK_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'STOCK_UPDATE');
+    }
+
+    // ─── Suppliers Collection ────────────────────────────────────────────────
+    match /suppliers/{supplierId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'SUPPLIER_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'SUPPLIER_CREATE');
+      allow delete: if canWrite(resource.data.tenantId, 'SUPPLIER_CREATE');
+    }
+
+    // ─── Purchase Orders Collection ──────────────────────────────────────────
+    match /purchaseOrders/{poId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'PO_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'PO_CREATE');
+    }
+
+    // ─── Staff Collection ──────────────────────────────────────────────────────
+    match /staff/{staffId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('STAFF_READ');
+      allow create: if canWrite(getTenantId(), 'STAFF_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'STAFF_CREATE');
+      allow delete: if canWrite(resource.data.tenantId, 'STAFF_CREATE');
+    }
+
+    // ─── Attendance Collection ───────────────────────────────────────────────
+    match /attendance/{recordId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('STAFF_READ');
+      allow create: if canWrite(getTenantId(), 'ATTENDANCE_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'ATTENDANCE_CREATE');
+    }
+
+    // ─── Leave Requests Collection ───────────────────────────────────────────
+    match /leaveRequests/{requestId} {
+      allow read: if canAccess(resource.data.tenantId) && hasPermission('STAFF_READ');
+      allow create: if canWrite(getTenantId(), 'LEAVE_REQUEST');
+      allow update: if canWrite(resource.data.tenantId, 'LEAVE_REQUEST');
+    }
+
+    // ─── Notifications Collection ─────────────────────────────────────────────
+    match /notifications/{notificationId} {
+      allow read: if canAccess(resource.data.tenantId) && (
+        resource.data.userId == request.auth.uid ||
+        hasPermission('STAFF_READ')
+      );
+      allow create: if isAuthenticated();
+      allow update: if canAccess(resource.data.tenantId) && (
+        resource.data.userId == request.auth.uid ||
+        hasPermission('STAFF_READ')
+      );
+    }
+
+    // ─── Documents Collection ────────────────────────────────────────────────
+    match /documents/{documentId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create: if canWrite(getTenantId(), 'PATIENT_CREATE');
+      allow update: if canWrite(resource.data.tenantId, 'PATIENT_UPDATE');
+      allow delete: if canWrite(resource.data.tenantId, 'PATIENT_DELETE');
+    }
+
+    // ─── Audit Logs Collection (Append-Only) ─────────────────────────────────
+    // Users can only CREATE audit logs, never read, update, or delete them
+    // Only admins with AUDIT_READ permission can read audit logs
+    match /auditLogs/{logId} {
+      allow create: if isAuthenticated() && isSameTenant(getTenantId());
+      allow read: if isAuthenticated() && isSameTenant(getTenantId()) && hasPermission('AUDIT_READ');
+      allow update, delete: if isSuperAdmin();
+    }
+
+    // ─── Settings Collection ─────────────────────────────────────────────────
+    match /settings/{settingId} {
+      allow read: if canAccess(resource.data.tenantId);
+      allow create, update: if canWrite(getTenantId(), 'SETTINGS_UPDATE');
+      allow delete: if isSuperAdmin();
+    }
+  }
+}

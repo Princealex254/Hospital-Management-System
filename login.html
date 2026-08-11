@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="auth-page">
+    <div class="auth-container-premium">
+        <!-- Left Side - Branding -->
+        <div class="auth-showcase">
+            <div class="auth-logo">
+                <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+                <span class="logo-text">PRINCE ALEX DIGITAL HMS</span>
+            </div>
+            <h1 class="showcase-title">The Future of Hospital Management</h1>
+            <p class="showcase-subtitle">A secure, reliable, and intuitive platform designed for modern healthcare.</p>
+        </div>
+
+        <!-- Right Side - Form -->
+        <div class="auth-form-wrapper">
+            <div class="auth-card">
+                <!-- Login View -->
+                <div id="login-view">
+                    <div class="auth-header">
+                        <h1 class="auth-title">Welcome Back</h1>
+                        <p class="auth-subtitle">Sign in to access your hospital dashboard</p>
+                    </div>
+        
+                    <form class="auth-form" id="login-form">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address</label>
+                            <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                            <div class="form-error" id="email-error"></div>
+                        </div>
+        
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                            <div class="form-error" id="password-error"></div>
+                        </div>
+        
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="remember" class="checkbox">
+                            <label class="form-label" for="remember">Remember me</label>
+                            <a href="#" class="forgot-password" id="forgot-password-link">Forgot password?</a>
+                        </div>
+        
+                        <button type="submit" class="btn btn-primary" id="login-btn" style="width: 100%;">
+                            <span class="btn-text">Sign In</span>
+                            <span class="btn-loading" style="display: none;">Signing in...</span>
+                        </button>
+                    </form>
+        
+                    <div class="auth-footer">
+                        <p class="auth-text">
+                            Need assistance? <a href="#" class="signup-link">Contact your administrator</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Password Reset View (hidden by default) -->
+                <div id="reset-view" style="display: none;">
+                    <div class="auth-header">
+                        <h1 class="auth-title">Reset Password</h1>
+                        <p class="auth-subtitle">Enter your email to receive a reset link.</p>
+                    </div>
+                    <form class="auth-form" id="reset-form">
+                        <div class="form-group">
+                            <label class="form-label" for="reset-email">Email Address</label>
+                            <input type="email" id="reset-email" class="form-input" placeholder="your.email@example.com" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Reset Link</button>
+                    </form>
+                    <div class="auth-footer"><a href="#" id="back-to-login-link" class="signup-link">Back to Sign In</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container (managed by notifications.js) -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/login.js"></script>
+
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            background: var(--color-gray-50);
+        }
+        .auth-container-premium {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        /* Left side - Showcase */
+        .auth-showcase {
+            background: linear-gradient(160deg, var(--color-primary-600), var(--color-primary-800));
+            color: white;
+            padding: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+            opacity: 0.9;
+        }
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        .showcase-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .showcase-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-primary-200);
+            opacity: 0.9;
+            max-width: 400px;
+        }
+
+        /* Right side - Form */
+        .auth-form-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 380px;
+        }
+        .auth-header {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .auth-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: 8px;
+        }
+        .auth-subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-gray-600);
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .auth-footer {
+            padding-top: 24px;
+            text-align: center;
+        }
+        .forgot-password {
+            margin-left: auto;
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+        }
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        .auth-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-500);
+        }
+        .signup-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-loading {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-showcase {
+                display: none;
+            }
+            .auth-container-premium {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 32px auto;
+            }
+            .auth-form-wrapper {
+                padding: 32px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .auth-page {
+                background: white;
+                align-items: flex-start;
+                padding: 0;
+            }
+            .auth-container-premium {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+            }
+            .auth-form-wrapper {
+                padding: 48px 24px;
+            }
+        }
+    </style>
+</body>
+</html>

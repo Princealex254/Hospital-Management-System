@@ -1,0 +1,98 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Profile — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            
+            <!-- Patient Profile Content -->
+            <div id="patient-profile-content">
+                <!-- New Premium Profile Header -->
+                <div class="profile-header card">
+                    <div class="profile-header-main">
+                        <div class="profile-avatar" id="profile-avatar">U</div>
+                        <div class="profile-info">
+                            <h1 id="profile-patient-name">Loading...</h1>
+                            <p id="profile-patient-id">Patient ID: ...</p>
+<div class="profile-tags">
+                                <span class="badge badge-primary" id="profile-gender">...</span>
+                                <span class="badge badge-info" id="profile-blood-group">...</span>
+                                <span class="badge badge-secondary" id="profile-patient-dob">DOB: ...</span>
+                                <span class="badge badge-warning" id="profile-patient-status">...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" id="start-visit-btn">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span> Start Visit
+                        </button>
+                        <button class="btn btn-outline" id="edit-patient-btn">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Edit Patient
+                        </button>
+                        <button class="btn btn-secondary" id="download-records-btn" data-role="HOSPITAL_ADMIN">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+                            Download Records
+                        </button>
+                        <a href="patients.html" class="btn btn-secondary">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span> Back to Patients
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container">
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="overview">Overview</button>
+                        <button class="tab-btn" data-tab="medical-history">Medical History</button>
+                        <button class="tab-btn" data-tab="appointments">Appointments</button>
+                        <button class="tab-btn" data-tab="encounters">Encounters</button>
+                        <button class="tab-btn" data-tab="vitals">Vitals</button>
+                        <button class="tab-btn" data-tab="diagnoses">Diagnoses</button>
+                        <button class="tab-btn" data-tab="prescriptions">Prescriptions</button>
+                        <button class="tab-btn" data-tab="laboratory">Laboratory</button>
+                        <button class="tab-btn" data-tab="admissions">Admissions</button>
+                        <button class="tab-btn" data-tab="billing">Billing</button>
+                        <button class="tab-btn" data-tab="payments">Payments</button>
+                        <button class="tab-btn" data-tab="documents">Documents</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body" id="patient-tabs-content">
+                        <!-- Tab content is loaded dynamically by patient-profile.js -->
+                        <div class="tab-content active" data-tab-content="overview">
+                            <!-- Overview content will be rendered here by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/sidebar.js"></script>
+    <script type="module" src="js/patient-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+/**
+ * PRINCE ALEX DIGITAL HMS — Firebase Storage Security Rules
+ * 
+ * Rules for medical documents, prescriptions, lab reports, and other files.
+ * Enforces tenant isolation and role-based access.
+ */
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Helper Functions ────────────────────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserDoc() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid));
+    }
+
+    function getTenantId() {
+      return getUserDoc().data.tenantId;
+    }
+
+    function getUserRole() {
+      return getUserDoc().data.role;
+    }
+
+    function getUserPermissions() {
+      return getUserDoc().data.permissions;
+    }
+
+    function hasPermission(permission) {
+      return getUserPermissions().hasAll([permission]);
+    }
+
+    function hasRole(role) {
+      return getUserRole() == role;
+    }
+
+    function isSuperAdmin() {
+      return hasRole('SUPER_ADMIN');
+    }
+
+    function isHospitalAdmin() {
+      return hasRole('HOSPITAL_ADMIN');
+    }
+
+    // ─── Storage Paths ───────────────────────────────────────────────────────
+
+    // Patient documents: /patients/{tenantId}/{patientId}/{fileName}
+    match /patients/{tenantId}/{patientId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PATIENT_READ');
+      allow create: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PATIENT_CREATE');
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PATIENT_DELETE');
+      allow update: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PATIENT_UPDATE');
+    }
+
+    // Lab reports: /lab-reports/{tenantId}/{orderId}/{fileName}
+    match /lab-reports/{tenantId}/{orderId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId && hasPermission('LAB_RESULT_READ');
+      allow create: if isAuthenticated() && getTenantId() == tenantId && hasPermission('LAB_RESULT_CREATE');
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && hasPermission('LAB_RESULT_CREATE');
+    }
+
+    // Prescription documents: /prescriptions/{tenantId}/{prescriptionId}/{fileName}
+    match /prescriptions/{tenantId}/{prescriptionId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PRESCRIPTION_READ');
+      allow create: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PRESCRIPTION_CREATE');
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && hasPermission('PRESCRIPTION_CREATE');
+    }
+
+    // Invoice documents: /invoices/{tenantId}/{invoiceId}/{fileName}
+    match /invoices/{tenantId}/{invoiceId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId && hasPermission('INVOICE_READ');
+      allow create: if isAuthenticated() && getTenantId() == tenantId && hasPermission('INVOICE_CREATE');
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && hasPermission('INVOICE_CREATE');
+    }
+
+    // Staff documents: /staff/{tenantId}/{staffId}/{fileName}
+    match /staff/{tenantId}/{staffId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId && hasPermission('STAFF_READ');
+      allow create: if isAuthenticated() && getTenantId() == tenantId && hasPermission('STAFF_CREATE');
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && hasPermission('STAFF_CREATE');
+    }
+
+    // General documents: /documents/{tenantId}/{fileName}
+    match /documents/{tenantId}/{fileName} {
+      allow read: if isAuthenticated() && getTenantId() == tenantId;
+      allow create: if isAuthenticated() && getTenantId() == tenantId;
+      allow delete: if isAuthenticated() && getTenantId() == tenantId && (isSuperAdmin() || isHospitalAdmin());
+    }
+
+    // Default: deny all
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

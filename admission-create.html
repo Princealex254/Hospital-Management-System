@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Admission — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+                        <div class="page-header">
+                <div><h1>New Admission</h1><p class="subtitle">Admit a patient to a ward/bed</p></div>
+                <div class="page-actions"><a href="admissions.html" class="btn btn-secondary"><span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span> Back</a></div>
+            </div>
+            <div class="form-container">
+                <form id="admission-form">
+                    <div class="form-section">
+                        <div class="form-section-title">Patient Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label required" for="patient-searchable-select">Patient</label>
+                                <div class="searchable-select" id="patient-searchable-select">
+                                    <div class="select-control" tabindex="0">
+                                        <span class="select-value placeholder">Select Patient</span>
+                                        <span class="select-arrow">▼</span>
+                                    </div>
+                                    <div class="select-dropdown">
+                                        <input type="text" id="patient-search" class="select-search" placeholder="Search patients...">
+                                        <div class="select-options"></div>
+                                    </div>
+                                    <input type="hidden" id="patient-id">
+                                </div>
+                                <div class="form-error" id="patient-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="admission-date">Admission Date</label>
+                                <input type="date" id="admission-date" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-title">Bed Assignment</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label required" for="ward">Ward</label>
+                                <select id="ward" class="form-select" required>
+                                    <option value="">Select Ward</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="bed">Bed</label>
+                                <select id="bed" class="form-select" required>
+                                    <option value="">Select Bed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-title">Admission Details</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="attending-doctor">Attending Doctor</label>
+                                <select id="attending-doctor" class="form-select">
+                                    <option value="">Select Doctor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reason">Reason for Admission</label>
+                                <input type="text" id="reason" class="form-input" placeholder="Enter reason...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="admission-notes">Notes</label>
+                            <textarea id="admission-notes" class="form-textarea" placeholder="Additional notes..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <span class="btn-text">Create Admission</span>
+                            <span class="btn-loading" style="display: none;">Saving...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/admission-create.js"></script>
+</body>
+</html>

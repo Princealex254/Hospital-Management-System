@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            
+            <!-- Page Content -->
+            <div class="page-header">
+                <div>
+                    <h1>Patients</h1>
+                    <p class="subtitle">Manage all patient records</p>
+                </div>
+                <div class="page-actions">
+                    <a href="patient-register.html" class="btn btn-primary" data-permission="PATIENT_CREATE">
+                        <span class="icon-placeholder" data-icon="plus"></span> Register Patient
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="dashboard-stats" id="patient-stats">
+                <!-- Loaded by patients.js -->
+            </div>
+
+            <style>
+                /* Override to arrange patient stats in a row */
+                #patient-stats.dashboard-stats {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+            </style>
+
+            <!-- Search & Filter -->
+            <div class="table-toolbar mb-4">
+                <div class="toolbar-left">
+                    <div class="search-box">
+                        <span class="icon-placeholder search-icon" data-icon="search"></span>
+                        <input type="text" id="patient-search" placeholder="Search by name, ID, or phone...">
+                    </div>
+                </div>
+                <div class="toolbar-right">
+                    <select class="form-select" id="filter-gender" style="width: 140px;">
+                        <option value="">All Genders</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Patients Table -->
+            <div class="card">
+                <div class="card-header">
+                    <span>Patient Records</span>
+                    <div class="header-pills">
+                        <span class="badge badge-secondary" id="patient-count">0 patients</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" id="patients-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Last Visit</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-tbody">
+                                <tr>
+                                    <td colspan="7" class="table-empty">
+                                        <div class="table-empty">
+                                            <div class="empty-icon">👥</div>
+                                            <h3>Loading patients...</h3>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/patients.js"></script>
+    <script type="module" src="js/icons.js"></script>
+</body>
+</html>

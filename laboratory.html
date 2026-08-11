@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratory — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 id="page-title">Laboratory</h1>
+                    <p class="subtitle">Lab dashboard and management</p>
+                </div>
+                <div class="page-actions">
+                    <a href="lab-orders.html" class="btn btn-primary" data-permission="LAB_ORDER_CREATE">
+                        <span class="icon-placeholder" data-icon="plus"></span> Create Lab Order
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="dashboard-stats" id="lab-stats">
+                <!-- Loaded by laboratory.js -->
+            </div>
+
+            <style>
+                /* Override to arrange lab stats in a row */
+                #lab-stats.dashboard-stats {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+            </style>
+
+            <!-- Tabbed Table -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="pending">Pending Orders</button>
+                        <button class="tab-btn" data-tab="in-progress">In Progress</button>
+                        <button class="tab-btn" data-tab="completed">Completed Results</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content active" data-tab-content="pending">
+                        <div class="table-container">
+                            <table class="table" id="pending-orders-table">
+                                <thead><tr><th>Date</th><th>Patient</th><th>Test(s)</th><th>Doctor</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
+                                <tbody id="pending-orders-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-content" data-tab-content="in-progress">
+                        <div class="table-container">
+                            <table class="table" id="in-progress-table">
+                                <thead><tr><th>Date</th><th>Patient</th><th>Test(s)</th><th>Doctor</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
+                                <tbody id="in-progress-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-content" data-tab-content="completed">
+                        <div class="table-container">
+                            <table class="table" id="completed-results-table">
+                                <thead><tr><th>Date</th><th>Patient</th><th>Test(s)</th><th>Result</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
+                                <tbody id="completed-results-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/laboratory.js"></script>
+    <script type="module" src="js/icons.js"></script>
+</body>
+</html>

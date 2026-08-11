@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+                        <div class="page-header">
+                <div><h1>Settings</h1><p class="subtitle">Manage hospital settings</p></div>
+            </div>
+            <div class="form-container">
+                <form id="settings-form">
+                    <div class="form-section">
+                        <div class="form-section-title">Hospital Information</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="hospital-name">Hospital Name</label>
+                                <input type="text" id="hospital-name" class="form-input" placeholder="Hospital name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="hospital-phone">Phone</label>
+                                <input type="tel" id="hospital-phone" class="form-input" placeholder="+254 700 000 000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="hospital-email">Email</label>
+                                <input type="email" id="hospital-email" class="form-input" placeholder="info@hospital.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="hospital-address">Address</label>
+                                <input type="text" id="hospital-address" class="form-input" placeholder="Hospital address">
+                            </div>
+                        </div>
+                    </div>
+<div class="form-section">
+                        <div class="form-section-title">Billing & Fees</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="consultation-fee">Consultation Fee</label>
+                                <input type="number" id="consultation-fee" class="form-input" step="0.01" min="0" placeholder="e.g. 500">
+                                <small class="form-hint">This fee is added to each consultation and will appear on the bill.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-title">Currency & Locale</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="currency">Currency</label>
+                                <select id="currency" class="form-select">
+                                    <option value="KES">Kenyan Shilling (KES)</option>
+                                    <option value="USD">US Dollar (USD)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="timezone">Timezone</label>
+                                <select id="timezone" class="form-select">
+                                    <option value="Africa/Nairobi">Africa/Nairobi (EAT)</option>
+                                    <option value="UTC">UTC</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="save-btn">
+                            <span class="btn-text">Save Settings</span>
+                            <span class="btn-loading" style="display: none;">Saving...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

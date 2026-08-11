@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy — PRINCE ALEX DIGITAL HMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+                        <div class="page-header">
+                <div><h1>Pharmacy</h1><p class="subtitle">Pharmacy dashboard and management</p></div>
+                <div class="page-actions">
+                    <a href="medicines.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20h3a6.5 6.5 0 0 0 0-13h-3a6.5 6.5 0 0 0 0 13z"/><path d="M12 7v13"/></svg> Medicines</a>
+                    <a href="prescriptions.html" class="btn btn-outline"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Prescriptions</a>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background: var(--color-info-100);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20h3a6.5 6.5 0 0 0 0-13h-3a6.5 6.5 0 0 0 0 13z"/><path d="M12 7v13"/></svg></div>
+                    <div class="stat-card-content">
+                        <div class="stat-card-label">Total Medicines</div>
+                        <div class="stat-card-value" id="total-medicines">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background: var(--color-warning-100);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <div class="stat-card-content">
+                        <div class="stat-card-label">Low Stock</div>
+                        <div class="stat-card-value" id="low-stock-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background: var(--color-error-100);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                    <div class="stat-card-content">
+                        <div class="stat-card-label">Expiring Soon</div>
+                        <div class="stat-card-value" id="expiring-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon" style="background: var(--color-success-100);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                    <div class="stat-card-content">
+                        <div class="stat-card-label">Pending Prescriptions</div>
+                        <div class="stat-card-value" id="pending-prescriptions">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Medicines -->
+            <div class="card mt-4">
+                <div class="card-header"><span>Low Stock Medicines</span></div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" id="low-stock-table">
+                            <thead>
+                                <tr><th>Medicine</th><th>Current Stock</th><th>Minimum Stock</th><th>Unit</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="low-stock-tbody">
+                                <tr><td colspan="5"><div class="table-empty"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20h3a6.5 6.5 0 0 0 0-13h-3a6.5 6.5 0 0 0 0 13z"/><path d="M12 7v13"/></svg></div><h3>Loading...</h3></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expiring Soon -->
+            <div class="card mt-4">
+                <div class="card-header"><span>Expiring Soon (30 days)</span></div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" id="expiring-table">
+                            <thead>
+                                <tr><th>Medicine</th><th>Batch</th><th>Expiry Date</th><th>Quantity</th></tr>
+                            </thead>
+                            <tbody id="expiring-tbody">
+                                <tr><td colspan="4"><div class="table-empty"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3>Loading...</h3></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/permissions.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/pharmacy.js"></script>
+</body>
+</html>
