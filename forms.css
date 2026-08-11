@@ -1,0 +1,271 @@
+/**
+ * PRINCE ALEX DIGITAL HMS — Form Styles
+ * 
+ * Styles for forms, inputs, labels, and form layouts.
+ */
+
+/* ─── Form Layout ──────────────────────────────────────────────────────────── */
+.form-container {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-gray-200);
+    padding: 24px;
+}
+
+.form-section {
+    margin-bottom: 24px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.form-section-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-800);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.form-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .form-grid-2,
+    .form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ─── Form Groups ──────────────────────────────────────────────────────────── */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-700);
+}
+
+.form-label.required::after {
+    content: " *";
+    color: var(--color-error);
+}
+
+.form-input {
+    padding: 10px 14px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    width: 100%;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.form-input::placeholder {
+    color: var(--color-gray-400);
+}
+
+.form-input.error {
+    border-color: var(--color-error);
+}
+
+.form-input.error:focus {
+    box-shadow: 0 0 0 3px var(--color-error-light);
+}
+
+.form-textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.form-select {
+    padding: 10px 14px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    background: white;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    width: 100%;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.form-select:disabled {
+    background-color: var(--color-gray-100);
+    cursor: not-allowed;
+}
+
+/* ─── Form Row ─────────────────────────────────────────────────────────────── */
+.form-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-row .form-group.fixed-width {
+    flex: 0 0 120px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .form-row .form-group.fixed-width {
+        flex: 1;
+    }
+}
+
+/* ─── Form Actions ─────────────────────────────────────────────────────────── */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-gray-200);
+    margin-top: 24px;
+}
+
+.form-actions .btn {
+    min-width: 100px;
+}
+
+/* ─── Input Groups ─────────────────────────────────────────────────────────── */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group .form-input {
+    flex: 1;
+}
+
+.input-group .input-prefix {
+    padding: 10px 14px;
+    background-color: var(--color-gray-100);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    color: var(--color-gray-500);
+}
+
+.input-group .input-suffix {
+    padding: 10px 14px;
+    background-color: var(--color-gray-100);
+    border: 1px solid var(--color-gray-300);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    font-size: var(--font-size-base);
+    color: var(--color-gray-500);
+}
+
+/* ─── Checkbox & Radio ─────────────────────────────────────────────────────── */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-group input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+/* ─── Form Error Messages ──────────────────────────────────────────────────── */
+.form-error {
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    margin-top: 4px;
+}
+
+/* ─── File Upload ──────────────────────────────────────────────────────────── */
+.file-upload {
+    border: 2px dashed var(--color-gray-300);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.file-upload:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-50);
+}
+
+.file-upload .upload-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: var(--color-gray-400);
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}

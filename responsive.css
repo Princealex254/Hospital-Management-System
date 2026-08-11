@@ -1,0 +1,222 @@
+/**
+ * PRINCE ALEX DIGITAL HMS — Responsive Design
+ * 
+ * Media queries for desktop, tablet, and mobile.
+ */
+
+/* ─── Desktop (default) ────────────────────────────────────────────────────── */
+/* Sidebar is visible by default on desktop */
+
+/* ─── Tablet (768px - 1024px) ──────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid-2,
+    .form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ─── Mobile (up to 768px) ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Sidebar becomes overlay on mobile */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform var(--transition-normal);
+        overflow-y: auto;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display: block !important;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .main-content.with-header {
+        margin-top: 0;
+    }
+
+    /* Header adjustments */
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .header-center {
+        display: none;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    /* Grid adjustments */
+    .grid-cols-2,
+    .grid-cols-3,
+    .grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+
+    /* Table adjustments */
+    .table-container {
+        font-size: var(--font-size-xs);
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 10px;
+    }
+
+    /* Form adjustments */
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    /* Page header */
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .page-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    /* Quick actions */
+    .quick-action-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+/* ─── Small Mobile (up to 480px) ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 12px;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-xl);
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: var(--font-size-sm);
+    }
+
+    .toast {
+        min-width: 260px;
+        max-width: 90vw;
+    }
+}
+
+/* ─── Sidebar Toggle Button (hidden on desktop) ────────────────────────────── */
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    color: var(--color-gray-600);
+    transition: all var(--transition-fast);
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-800);
+}
+
+.sidebar-toggle .hamburger,
+.sidebar-toggle .hamburger::before,
+.sidebar-toggle .hamburger::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-gray-600);
+    border-radius: 2px;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-toggle .hamburger::before,
+.sidebar-toggle .hamburger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.sidebar-toggle .hamburger::before {
+    top: -6px;
+}
+
+.sidebar-toggle .hamburger::after {
+    bottom: -6px;
+}
+
+/* ─── Print Styles ──────────────────────────────────────────────────────────── */
+@media print {
+    .sidebar,
+    .header,
+    .sidebar-toggle,
+    .page-actions,
+    .table-actions {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid var(--color-gray-200);
+    }
+}

@@ -1,0 +1,386 @@
+<!-- PRINCE ALEX DIGITAL HMS — Sidebar Component -->
+<!-- This file is loaded dynamically by js/sidebar.js -->
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <span class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+            </span>
+            <span class="logo-text">PRINCE ALEX</span>
+        </div>
+        <button class="sidebar-close" id="sidebar-close" aria-label="Close sidebar">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+        </button>
+    </div>
+
+    <div class="sidebar-tenant" id="sidebar-tenant">
+        <div class="tenant-name" id="sidebar-tenant-name">Loading...</div>
+        <div class="user-badge">
+            <span class="user-avatar" id="sidebar-user-avatar">U</span>
+            <span class="user-role" id="sidebar-user-role">Role</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                    </span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Patients</span>
+            </li>
+            <li data-permission="PATIENT_READ">
+                <a href="patients.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </span>
+                    <span class="nav-label">Patients</span>
+                </a>
+            </li>
+            <li data-permission="PATIENT_CREATE">
+                <a href="patient-register.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                    <span class="nav-label">Register Patient</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Appointments</span>
+            </li>
+            <li data-permission="APPOINTMENT_READ">
+                <a href="appointments.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </span>
+                    <span class="nav-label">Appointments</span>
+                </a>
+            </li>
+            <li data-permission="APPOINTMENT_CREATE">
+                <a href="appointment-create.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                    <span class="nav-label">New Appointment</span>
+                </a>
+            </li>
+            <li data-permission="APPOINTMENT_READ">
+                <a href="queue.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </span>
+                    <span class="nav-label">Queue</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Clinical</span>
+            </li>
+            <li data-permission="APPOINTMENT_READ">
+                <a href="opd.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                    </span>
+                    <span class="nav-label">OPD</span>
+                </a>
+            </li>
+            <li data-permission="CONSULTATION_CREATE">
+                <a href="consultation.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </span>
+                    <span class="nav-label">Consultation</span>
+                </a>
+            </li>
+            <li data-permission="VITALS_CREATE">
+                <a href="vitals.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </span>
+                    <span class="nav-label">Vitals</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Admissions</span>
+            </li>
+            <li data-permission="ADMISSION_READ">
+                <a href="admissions.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/></svg>
+                    </span>
+                    <span class="nav-label">Admissions</span>
+                </a>
+            </li>
+            <li data-permission="ADMISSION_CREATE">
+                <a href="admission-create.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                    <span class="nav-label">New Admission</span>
+                </a>
+            </li>
+            <li data-permission="BED_ASSIGN">
+                <a href="wards.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </span>
+                    <span class="nav-label">Wards</span>
+                </a>
+            </li>
+            <li data-permission="BED_ASSIGN">
+                <a href="beds.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+                    </span>
+                    <span class="nav-label">Beds</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Pharmacy</span>
+            </li>
+            <li data-permission="PRESCRIPTION_READ">
+                <a href="pharmacy.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20h3a6.5 6.5 0 0 0 0-13h-3a6.5 6.5 0 0 0 0 13z"/><path d="M12 7v13"/></svg>
+                    </span>
+                    <span class="nav-label">Pharmacy</span>
+                </a>
+            </li>
+            <li data-permission="MEDICINE_CREATE">
+                <a href="medicines.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20h3a6.5 6.5 0 0 0 0-13h-3a6.5 6.5 0 0 0 0 13z"/><path d="M12 7v13"/><path d="M9 7V3h6v4"/></svg>
+                    </span>
+                    <span class="nav-label">Medicines</span>
+                </a>
+            </li>
+            <li data-permission="PRESCRIPTION_READ">
+                <a href="prescriptions.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </span>
+                    <span class="nav-label">Prescriptions</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Laboratory</span>
+            </li>
+            <li data-permission="LAB_ORDER_READ">
+                <a href="laboratory.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M8 3h8"/><path d="M10 3v6a4 4 0 0 1-4 4h12a4 4 0 0 1-4-4V3"/></svg>
+                    </span>
+                    <span class="nav-label">Laboratory</span>
+                </a>
+            </li>
+            <li data-permission="LAB_ORDER_CREATE">
+                <a href="lab-orders.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </span>
+                    <span class="nav-label">Lab Orders</span>
+                </a>
+            </li>
+            <li data-permission="LAB_RESULT_READ">
+                <a href="lab-results.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </span>
+                    <span class="nav-label">Lab Results</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Billing</span>
+            </li>
+            <li data-permission="INVOICE_READ">
+                <a href="billing.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </span>
+                    <span class="nav-label">Billing</span>
+                </a>
+            </li>
+            <li data-permission="INVOICE_READ">
+                <a href="invoices.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </span>
+                    <span class="nav-label">Invoices</span>
+                </a>
+            </li>
+            <li data-permission="PAYMENT_CREATE">
+                <a href="payments.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    </span>
+                    <span class="nav-label">Payments</span>
+                </a>
+            </li>
+            <li data-permission="PAYMENT_READ">
+                <a href="receipts.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/></svg>
+                    </span>
+                    <span class="nav-label">Receipts</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Inventory</span>
+            </li>
+            <li data-permission="STOCK_UPDATE">
+                <a href="inventory.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><line x1="12" y1="13" x2="12" y2="21"/></svg>
+                    </span>
+                    <span class="nav-label">Inventory</span>
+                </a>
+            </li>
+            <li data-permission="STOCK_CREATE">
+                <a href="stock-movements.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                    </span>
+                    <span class="nav-label">Stock Movements</span>
+                </a>
+            </li>
+            <li data-permission="SUPPLIER_CREATE">
+                <a href="suppliers.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                    </span>
+                    <span class="nav-label">Suppliers</span>
+                </a>
+            </li>
+            <li data-permission="PO_CREATE">
+                <a href="purchase-orders.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    </span>
+                    <span class="nav-label">Purchase Orders</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Staff</span>
+            </li>
+            <li data-permission="STAFF_READ">
+                <a href="staff.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </span>
+                    <span class="nav-label">Staff</span>
+                </a>
+            </li>
+            <li data-permission="ATTENDANCE_CREATE">
+                <a href="attendance.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </span>
+                    <span class="nav-label">Attendance</span>
+                </a>
+            </li>
+            <li data-permission="LEAVE_REQUEST">
+                <a href="leave.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+                    </span>
+                    <span class="nav-label">Leave</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="nav-section-title">Reports & Settings</span>
+            </li>
+            <li data-permission="REPORT_READ">
+                <a href="reports.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </span>
+                    <span class="nav-label">Reports</span>
+                </a>
+            </li>
+            <li data-permission="AUDIT_READ">
+                <a href="audit-logs.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </span>
+                    <span class="nav-label">Audit Logs</span>
+                </a>
+            </li>
+            <li data-permission="SETTINGS_UPDATE">
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </span>
+                    <span class="nav-label">Settings</span>
+                </a>
+            </li>
+
+            <li class="nav-section" data-role="SUPER_ADMIN">
+                <span class="nav-section-title">SaaS Admin</span>
+            </li>
+            <li data-role="SUPER_ADMIN">
+                <a href="admin.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </span>
+                    <span class="nav-label">Admin Panel</span>
+                </a>
+            </li>
+            <li data-role="SUPER_ADMIN">
+                <a href="hospitals.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                    </span>
+                    <span class="nav-label">Hospitals</span>
+                </a>
+            </li>
+            <li data-role="SUPER_ADMIN">
+                <a href="subscriptions.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    </span>
+                    <span class="nav-label">Subscriptions</span>
+                </a>
+            </li>
+            <li data-role="SUPER_ADMIN">
+                <a href="plans.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span class="nav-label">Plans</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="settings.html" class="nav-item">
+            <span class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </span>
+            <span class="nav-label">Help & Support</span>
+        </a>
+        <a href="#" class="nav-item" id="sidebar-logout">
+            <span class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </span>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</div>

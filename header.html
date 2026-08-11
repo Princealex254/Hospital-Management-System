@@ -1,0 +1,60 @@
+﻿<!-- PRINCE ALEX DIGITAL HMS — Header Component -->
+
+<header class="header" id="header">
+    <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">
+            <span class="hamburger"></span>
+        </button>
+        <a href="dashboard.html" class="header-dashboard-link" title="Go to Dashboard">
+            <span class="header-dashboard-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+            </span>
+        </a>
+        <h1 class="header-title" id="page-title">Dashboard</h1>
+    </div>
+
+    <div class="header-center">
+        <div class="search-box">
+            <input type="text" id="header-search" placeholder="Search patients, appointments, medicines...">
+            <button class="search-btn" id="search-btn" aria-label="Search">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <!-- Notification Bell -->
+        <div class="notification-bell" id="notification-bell">
+            <span class="bell-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </span>
+            <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+            <div class="dropdown notification-dropdown" id="notification-dropdown">
+                <div class="dropdown-header">
+                    <h4>Notifications</h4>
+                    <a href="notifications.html" class="view-all">View All</a>
+                </div>
+                <ul class="notification-list" id="notification-list">
+                    <li class="notification-empty">No notifications</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div class="user-profile" id="header-user-profile">
+            <span class="user-avatar" id="header-user-avatar">U</span>
+            <span class="user-info">
+                <span class="user-name" id="header-user-name">User</span>
+                <span class="user-role" id="header-user-role">Role</span>
+            </span>
+            <div class="dropdown user-dropdown" id="user-dropdown">
+                <a href="settings.html" class="dropdown-item">Profile</a>
+                <a href="settings.html" class="dropdown-item">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item" id="header-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
