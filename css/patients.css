@@ -1,0 +1,115 @@
+/* Patients page upper workflow */
+.patients-page .page-header {
+    margin-bottom: 20px;
+}
+
+.patients-page .page-header h1 {
+    margin-bottom: 4px;
+}
+
+.patients-page .page-actions .btn {
+    min-height: 40px;
+}
+
+.patients-page .dashboard-stats {
+    margin-bottom: 20px;
+}
+
+.patients-page .dashboard-stat-card {
+    min-height: 116px;
+    padding: 20px;
+    border-top: 3px solid var(--color-primary);
+}
+
+.patients-page .dashboard-stat-card:nth-child(2) {
+    border-top-color: var(--color-info);
+}
+
+.patients-page .dashboard-stat-card:nth-child(3) {
+    border-top-color: var(--color-success);
+}
+
+.patients-page .dashboard-stat-card:nth-child(4) {
+    border-top-color: var(--color-warning);
+}
+
+.patients-page .dashboard-stat-card .stat-icon {
+    color: var(--color-primary);
+}
+
+.patients-page .dashboard-stat-card:nth-child(2) .stat-icon {
+    color: var(--color-info);
+}
+
+.patients-page .dashboard-stat-card:nth-child(3) .stat-icon {
+    color: var(--color-success);
+}
+
+.patients-page .dashboard-stat-card:nth-child(4) .stat-icon {
+    color: var(--color-warning);
+}
+
+.patients-page .patients-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    background: white;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.patients-page .patients-toolbar .toolbar-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.patients-page .patients-toolbar .toolbar-right {
+    width: 180px;
+    flex: 0 0 180px;
+}
+
+.patients-page .toolbar-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-gray-700);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.patients-page .patients-toolbar .search-box,
+.patients-page .patients-toolbar .search-box input,
+.patients-page .patients-toolbar .form-select {
+    width: 100%;
+}
+
+.patients-page .patients-toolbar .search-box input,
+.patients-page .patients-toolbar .form-select {
+    min-height: 42px;
+}
+
+.patients-page .records-card .card-header {
+    min-height: 62px;
+}
+
+@media (max-width: 768px) {
+    .patients-page .patients-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .patients-page .patients-toolbar .toolbar-right {
+        width: 100%;
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .patients-page .page-actions,
+    .patients-page .page-actions .btn {
+        width: 100%;
+    }
+}
