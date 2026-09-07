@@ -114,9 +114,9 @@ service cloud.firestore {
 
       allow update: if isAuthenticated() && (
         // Users can update their own profile (except protected fields)
-        (request.auth.uid == userId && !request.resource.data.keys().hasAny(['tenantId', 'role', 'permissions', 'accountStatus'])) ||
+        (request.auth.uid == userId && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['tenantId', 'role', 'permissions', 'accountStatus', 'accessAreas'])) ||
         // Admins can update users in their tenant (except protected fields)
-        (isSameTenant(getTenantId()) && hasPermission('STAFF_UPDATE') && !request.resource.data.keys().hasAny(['tenantId', 'role', 'permissions']))
+        (isSameTenant(getTenantId()) && hasPermission('STAFF_UPDATE') && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['tenantId', 'role', 'permissions']))
       );
 
       allow delete: if isAuthenticated() && isSameTenant(getTenantId()) && hasPermission('STAFF_DELETE');
